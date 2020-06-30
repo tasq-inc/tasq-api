@@ -51,6 +51,5 @@ provider:
     InboundStackName: "tasq-feature-extract-${{self:provider.stage}}"
 
 
-    
 resources:
   - ${{file(./src/resources/api_gateway/api_gateway.yml)}}
