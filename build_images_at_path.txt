@@ -1,0 +1,4 @@
+# Please include the paths of any images that you
+# would like to be built or updated to the ECR repository
+
+./containers/state_change_raw/broker_build_and_push.sh

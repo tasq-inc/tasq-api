@@ -1,0 +1,18 @@
+InitiateBrokerLambda:
+    description: "This function initiates the state change detection broker"
+    handler: src/functions/initiate_broker/initiate_broker.handler
+    events:
+      - schedule: rate(50 minutes)
+    memorySize: '${{file(./src/resources/config.yml):BrokerInitiateLambdaMemSize}}'
+    timeout: '${{file(./src/resources/config.yml):BrokerInitiateLambdaTimeout}}'
+    role: !GetAtt BrokerInitiateLambdaRole.Arn
+    runtime: "${{self:provider.runtime}}"
+    environment:
+      BROKER_CLUSTER: !Ref BrokerECSCluster
+      BROKER_SERVICE: !GetAtt BrokerECSService.Name
+    vpc:
+        securityGroupIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
+        subnetIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet1}}"
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet2}}"

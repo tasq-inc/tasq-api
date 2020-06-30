@@ -1,0 +1,4 @@
+# List any pip libraries required to run your python unit tests
+
+# Additional
+# boto3 (for example)

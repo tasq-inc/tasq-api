@@ -1,0 +1,17 @@
+HistoryTableResolverFunction:
+    DependsOn: LambdaRole
+    description: "This function copies data from historic workflow table to the workflow output table"
+    handler: src/functions/stream_appsync_sources.handler
+    timeout: '${{file(./src/resources/config.yml):BrokerInitiateLambdaTimeout}}'
+    Role:
+      Fn::GetAtt: [ LambdaRole , Arn ]
+    runtime: "${{self:provider.runtime}}"
+    environment:
+      BROKER_CLUSTER: !Ref BrokerECSCluster
+      BROKER_SERVICE: !GetAtt BrokerECSService.Name
+    vpc:
+        securityGroupIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
+        subnetIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet1}}"
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet2}}"

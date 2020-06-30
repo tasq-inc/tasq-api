@@ -1,0 +1,9 @@
+  UploadInitialFiles:
+    handler: src/utils/func-copyInitialFiles.uploadLambdaScripts
+    memorySize: 129
+    timeout: 15
+    environment:
+      EnvRegionName: ${{self:provider.region}}
+      EnvS3LambdaBucketTarget: !ImportValue ${{self:provider.environment.IamNetworkStackName}}:LambdaScriptsBucketName
+      EnvS3LambdaKeyTarget: ${{self:service}}
+      EnvUploadInitialFiles: ${opt:uploadinitialfiles,False}

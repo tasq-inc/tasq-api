@@ -1,0 +1,4 @@
+influxdb-client>=1.4.0
+pandas>=0.25, <0.26
+pytz
+requests-aws4auth

@@ -1,0 +1,55 @@
+service: tasq-api # Must be the same name as your git repository
+plugins:
+  - ArtifactDirectoryNamePrefix
+  - serverless-python-requirements
+
+custom:
+  artifactDirectoryNamePrefix: ${{self:service}}
+  pythonRequirements:
+    dockerizePip: non-linux
+  # scripts:
+  #   hooks:
+  #     'deploy:finalize': sls invoke -f UploadInitialFiles --stage=${{self:provider.stage}}
+
+
+provider:
+  name: aws
+  stackName: "${{self:service}}-${{self:provider.stage}}"
+  deploymentBucket:
+    name: serverless-bucket-main
+    serverSideEncryption: AES256
+  runtime: python3.7
+  region: us-east-2
+  variableSyntax: "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}"
+  stage: ${{opt:stage, 'dev'}}
+  containerTag: ${{opt:containerTag, dev}}
+  versionFunctions: false
+  logRetentionInDays: 14
+  stackTags:
+    Environment: ${{self:provider.stage}}
+    VersionTag: ${{opt:versiontag,'v0.0-0-000000'}}
+  tags:
+    Environment: ${{self:provider.stage}}
+    VersionTag: ${{opt:versiontag,'v0.0-0-000000'}}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "*"
+      Resource: "*"
+  environment:
+    CentralLoggerStackName: "tasq-central-logger-${{self:provider.stage}}"
+    IamNetworkStackName: "tasq-aws-iam-networking-${{self:provider.stage}}"
+    MetaDataStoreStackName: "tasq-meta-datastore-${{self:provider.stage}}"
+    WellStateS3BucketName: "tasq-well-state-worker-${{self:provider.stage}}"
+    PredictionsTableStackName: "tasq-detect-state-change-${{self:provider.stage}}"
+    FailureTableStackName: "tasq-failure-prediction-${{self:provider.stage}}"
+    RawScadaIngestStackName: "tasq-raw-scada-ingest-enerplus-${{self:provider.stage}}"
+    CleanScadaIngestStackName: "tasq-clean-scada-ingest-enerplus-${{self:provider.stage}}"
+    # HistoricWorkflowTableStackName: "tasq-assign-user-tasks-${{self:provider.stage}}" # HistoricWorkflowOutputTable  tasq-assign-user-tasks-dev:WorkflowHistoricTable
+    StackMainUserId: "711589413744"
+    EcrAddress: "711589413744.dkr.ecr.us-east-2.amazonaws.com"
+    InboundStackName: "tasq-feature-extract-${{self:provider.stage}}"
+
+
+resources:
+  - ${{file(./src/resources/api_gateway/api_gateway.yml)}}

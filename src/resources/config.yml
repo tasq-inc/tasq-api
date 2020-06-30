@@ -1,0 +1,115 @@
+S3TsStoreBucket: "tasq-${{self:provider.stage}}-ts-store"
+S3TsStorePrefix: "ts_features"
+MetaDataStore: "MetaDataStore"
+
+LoggerTopicName: !ImportValue "${{self:provider.environment.CentralLoggerStackName}}:CentralLoggerTopic"
+InboundTopicName: !ImportValue "${{self:provider.environment.InboundStackName}}:FeatureExtractDataDone"
+TopicDataDoneName: "${{self:provider.stackName}}:FeatureExtractDataDone"
+InboundQueue_QueueName: "${{self:provider.stackName}}-queue"
+InboundQueue_DelaySeconds: 0
+InboundQueue_MaximumMessageSize: 262144 # 256 kb
+InboundQueue_MessageRetentionPeriod: 345600 # in seconds, 4 days
+InboundQueue_ReceiveMessageWaitTimeSeconds: 0
+InboundQueue_VisibilityTimeout: 600 # 10 minutes
+
+NetworkSecurityGroup: "${{self:provider.environment.IamNetworkStackName}}:EcsContainerSecurityGroup"
+NetworkPrivateSubnet1: "${{self:provider.environment.IamNetworkStackName}}:MainSubnet1"
+NetworkPrivateSubnet2: "${{self:provider.environment.IamNetworkStackName}}:MainSubnet2"
+
+
+ListPredictionsLambdaSourceMemSize: 192
+ListPredictionsLambdaSourceTimeout: 30
+
+BrokerKeyName: "InfluxDB"
+BrokerInstanceType: "t3.medium"
+BrokerBlockDeviceName: "/dev/xvda"
+BrokerStorageType: "gp2"
+BrokerStorageDeleteOnTermination: "true"
+BrokerStorageVolumeSize: 30
+BrokerPort1: 5672 # Default RabbitMQ port for docker
+BrokerPort2: 5671 # Alternative RabbitMQ port for docker
+BrokerPort3: 15672  # Default RabbitMQ management port
+BrokerMonitorPort: 5555
+BrokerDockerImage: "${{self:service}}-broker:${{self:provider.containerTag}}"
+BrokerContainerMemory: 2048  # <8GB safe value : dependant on BrokerInstanceType
+BrokerContainerName: "tasq-workflow-service"
+ECSLogsRetentionDays: 3653
+BrokerInitiateLambdaTimeout: 30
+BrokerInitiateLambdaMemSize: 192
+
+BrokerClusterServiceSchedulingStrategy: "REPLICA"
+BrokerClusterServiceDesiredCount: 0
+BrokerClusterServiceDeploymentController: "ECS"
+BrokerClusterServiceMaximumPercent: 100
+BrokerClusterServiceMinimumPercent: 0
+
+WorkerScalingPolicyName: "${{self:provider.stackName}}-worker-scaling-policy"
+WorkerScaleInCooldown: 60 # in seconds
+WorkerScaleOutCooldown: 60  # in seconds
+WorkerScalingTargetValue: 10  # ideal number of messages backlogged per worker
+WorkerECSTaskCPU: 2048  # 1vCPU
+WorkerECSTaskMemory: 4096  # 2GB
+WorkerContainerName: "${{self:provider.stackName}}-worker"
+WorkerDockerImage: "${{self:service}}-broker:${{self:provider.containerTag}}"
+WorkersDesiredCount: 0
+WorkerMaxCount: 5
+WorkerMinCount: 0
+WorkerConcurrency: 4
+WorkerScaleMetricName: "BacklogPerCeleryFargateTask"
+WorkerScaleMetricNamespace: "${{self:provider.stackName}}-SQS-Fargate-Autoscaling-${{self:provider.stage}}"
+WorkerScaleMetricUnit: "Count"
+WorkerScaleMetricStatistic: "Average"
+
+MetadatastoreDynamoDBTableName: !ImportValue "${{self:provider.environment.MetaDataStoreStackName}}:MetaDataTable"
+PredictionTableDynamoDBTableName: "${{self:provider.stackName}}-prediction-table"
+PredictionTableDynamoDBReadCapacity: 5
+PredictionTableDynamoDBWriteCapacity: 5
+
+SsmSecretsKmsKeyArn: "arn:aws:kms:us-east-2:711589413744:key/6a5aabc0-9c8e-4efc-9244-3054cd196cab"
+InfluxCloudAccessConfigArn: "arn:aws:secretsmanager:${{self:provider.region}}:${{self:provider.environment.StackMainUserId}}:secret:influx/enerplus/${{self:provider.stage}}/cloud-EENOZI"
+
+InfluxCloudAccessConfigSecretsManagerConfig: "influx/enerplus/${{self:provider.stage}}/cloud"
+
+
+BrokerPrivateDnsNamespaceResource: "${{self:provider.environment.IamNetworkStackName}}:ServicesDBDiscoveryNamespaceWorkerId"
+BrokerPrivateNamespace: "services.worker"
+BrokerServiceDiscoveryName: "${{self:provider.stackName}}"
+
+DataQueryApiAuthType: "AMAZON_COGNITO_USER_POOLS"
+ListWellPredictionsForUserSchemaQueryFieldName1: "list_well_predictions_for_user_${{self:provider.stage}}"
+PostLockStatusSchemaQueryFieldName: "post_lock_status_${{self:provider.stage}}"
+GetMyTasqsSchemaQueryFieldName: "get_my_tasqs_lists_${{self:provider.stage}}"
+ListNodeSignalSchemaQueryFieldName: "list_node_signal_events_${{self:provider.stage}}"
+GetPredictionRowSchemaQueryFieldName: "get_prediction_by_id_${{self:provider.stage}}"
+GetPredictionByNodeIDSchemaQueryFieldName: "get_prediction_by_node_id_${{self:provider.stage}}"
+MarkAsViewedQueryFieldName: "mark_as_viewed_${{self:provider.stage}}"
+
+
+UpdateUserResponseSchemaQueryFieldName: "update_user_response_lambda_handler_${{self:provider.stage}}"
+DeleteUserResponseSchemaQueryFieldName: "delete_user_response_lambda_handler_${{self:provider.stage}}"
+
+ListUserResponseSchemaQueryFieldName: "list_user_responses_for_well_lambda_handler_${{self:provider.stage}}"
+
+SendInviteFieldName: "send_invitation_email"
+VerifyUserInviteFieldName: "verify_invitation_id"
+SignUpUserFieldName: "user_sign_up"
+UpdateUserProfileFieldName: "update_user_profile"
+GetUserReassignmentListFieldName: "get_user_reassignment_list"
+GetUserDetailsFieldName: "get_user_details"
+UpdateWorkflowFieldName: "update_workflow"
+PostWorkflowFieldName: "post_workflow"
+DeleteWorkflowFieldName: "delete_workflow"
+GetWorkflowFieldName: "get_workflow"
+GetAllWorkflowsFieldName: "get_all_workflows"
+GetFullUserListFieldName: "get_full_user_list"
+
+GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provider.stage}}"
+
+UserPool: "${{self:provider.stage}}/enerplus/cognito/pool"
+PostPredictionStatusFieldName: "update_prediction_status"
+
+ReassignTaskQueryFieldName: "get_task"
+ReassignTaskMutationFieldName: "reassign_task"
+
+ShouldAssignTestUsers-dev: True
+ShouldAssignTestUsers-prod: False

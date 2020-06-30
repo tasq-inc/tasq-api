@@ -1,0 +1,39 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      python: 3.7
+    commands:
+      - echo testing stage started on `date`
+      - python --version
+      - 'curl -O https://bootstrap.pypa.io/get-pip.py'
+      - python3 get-pip.py
+      - pip install --upgrade pip
+      - pip3 install -U setuptools
+      - add-apt-repository main
+      - add-apt-repository universe
+      - add-apt-repository restricted
+      - add-apt-repository multiverse
+      - apt update
+      - apt-get install -y unixodbc-dev
+      - apt-get install python3-mysql.connector
+      - apt-get install jq
+      - find ./ -type f -name "requirements_for_testing.txt" -exec pip3 install -r  "{}"  \;
+      - cp tasq-codepipeline-repo/requirements.txt .
+      - pip3 install -r requirements.txt
+      - CURRENT_REPO="$(python3 tasq-codepipeline-repo/get_repo_name.py)"
+
+  build:
+    commands:
+      - cd ./tests/
+      - py.test --html=test_results.html
+      - cd ..
+  post_build:
+    commands:
+      - echo testing completed on `date`
+      - CURRENT_REPO="$(python3 tasq-codepipeline-repo/get_repo_name.py)"
+      - aws s3 cp --acl public-read ./tests/test_results.html s3://code-pipeline-test-results/${CURRENT_REPO}/test_results_$(date +%Y-%m-%d-%H:%M:%S).html
+      - aws s3 cp --recursive --acl public-read ./tests/assets s3://code-pipeline-test-results/${CURRENT_REPO}/assets/
+artifacts:
+  files:
+    - '**/*'
