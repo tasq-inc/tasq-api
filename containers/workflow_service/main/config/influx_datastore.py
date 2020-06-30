@@ -1,6 +1,0 @@
-raw_scada_database_name = 'ts_signals_raw'
-raw_scada_table_name = 'xspocdatahistory'
-clean_scada_table_name = 'xspocdatahistory'
-clean_scada_events_table_name = 'xspocdatahistory_events'
-clean_daily_scada_well_tests_table_name = 'xspocdatahistory_welltests'
-main_field_column = '_value'
