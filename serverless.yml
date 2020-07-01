@@ -1,7 +1,7 @@
 service: tasq-api # Must be the same name as your git repository
 plugins:
   - ArtifactDirectoryNamePrefix
-  - serverless-python-requirements
+  # - serverless-python-requirements
 
 custom:
   artifactDirectoryNamePrefix: ${{self:service}}
