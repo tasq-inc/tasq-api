@@ -49,8 +49,14 @@ provider:
     StackMainUserId: "711589413744"
     EcrAddress: "711589413744.dkr.ecr.us-east-2.amazonaws.com"
     InboundStackName: "tasq-feature-extract-${{self:provider.stage}}"
+    LambdaLayerStack: "tasq-lambda-layers-${{self:provider.stage}}"
 
-
+functions:
+  - ${{file(./src/functions/appsync_resolver/auth_appsync_source.yml)}}
     
 resources:
+  - ${{file(./src/resources/IAM/IAM.yml)}}
   - ${{file(./src/resources/api_gateway/api_gateway.yml)}}
+  - ${{file(./src/resources/dynamodb/dynamodb.yml)}}
+  - ${{file(./src/resources/appsync/appsync.yml)}}
+  

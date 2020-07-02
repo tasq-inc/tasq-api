@@ -1,0 +1,127 @@
+Resources:
+    AuthTableQueryApi:
+        Type: AWS::AppSync::GraphQLApi
+        Properties:
+            AuthenticationType: "${{file(./src/resources/config.yml):DataQueryApiAuthType}}"
+            Name: "AuthTableQueryApi-${{self:provider.stage}}"
+            UserPoolConfig:
+              AwsRegion: us-east-1
+              DefaultAction: ALLOW
+              UserPoolId: us-east-1_VwUkzXfIT
+            LogConfig:
+                CloudWatchLogsRoleArn: !GetAtt AppSyncPushToCloudwatchRole.Arn
+                ExcludeVerboseContent: "false"
+                FieldLogLevel: "ALL"
+    AnalyticsQuerySchema:
+        Type: "AWS::AppSync::GraphQLSchema"
+        Properties:
+            ApiId: !GetAtt AuthTableQueryApi.ApiId
+            Definition: |
+
+
+
+                type Mutation {
+                  ${{file(./src/resources/config.yml):GeneratePersonalAccessTokenSchemaQueryFieldName}}(input: CreateNewAuthTokenInput): CreateNewAuthTokenOutput
+                		@aws_auth(cognito_groups: ["NormalGroup","AdminGroup","Engineers","Automation","Testing","FieldOperator","Intervention","Maintenance","NormalGroup","Operators","Optimizer","SafetyCritical"])
+                }
+
+                input CreateNewAuthTokenInput {
+                  Username: String!
+                  TokenName: String!
+                }
+
+                type CreateNewAuthTokenOutput {
+                  TokenID: String
+                  time: String
+                  Username: String
+                  AccessToken: String
+                  TokenName: String
+                }
+
+
+                type Query {
+                  ${{file(./src/resources/config.yml):GetPersonalAccessTokenSchemaQueryFieldName}}(input: GetAuthTokensInput): GetAuthTokensOutput
+                }
+
+                input GetAuthTokensInput {
+                  Username: String!
+                }
+
+                type GetAuthTokensOutput {
+                  TokenData: [AWSJSON]
+                }
+
+         
+                schema {
+                	query: Query
+                    mutation: Mutation
+                }
+
+
+
+
+
+
+
+    GenPersAccTokenSyncSource:
+        Type: AWS::AppSync::DataSource
+        Properties:
+            ApiId: !GetAtt AuthTableQueryApi.ApiId
+            LambdaConfig:
+                LambdaFunctionArn: { "Fn::GetAtt": ["GenPersAccTokenSyncSourceLambdaFunction", "Arn" ] }
+            Name: ${{file(./src/resources/config.yml):GeneratePersonalAccessTokenSchemaQueryFieldName}}
+            ServiceRoleArn: !GetAtt AppSyncLambdaServiceRole.Arn
+            Type: AWS_LAMBDA
+
+    GenPersAccTokenAppSyncQueryResolver1:
+        Type: AWS::AppSync::Resolver
+        DependsOn: AnalyticsQuerySchema
+        Properties:
+            ApiId: !GetAtt AuthTableQueryApi.ApiId
+            DataSourceName: !GetAtt GenPersAccTokenSyncSource.Name
+            TypeName: "Mutation"
+            FieldName: ${{file(./src/resources/config.yml):GeneratePersonalAccessTokenSchemaQueryFieldName}}
+            RequestMappingTemplate: |
+                {
+                    "version": "2017-02-28",
+                    "operation": "Invoke",
+                    "payload": $utils.toJson($context.arguments)
+                }
+            ResponseMappingTemplate: |
+                $utils.toJson($context.result)
+
+
+
+    GetPersAccTokenSyncSource:
+        Type: AWS::AppSync::DataSource
+        Properties:
+            ApiId: !GetAtt AuthTableQueryApi.ApiId
+            LambdaConfig:
+                LambdaFunctionArn: { "Fn::GetAtt": ["GetPersAccTokenSyncSourceLambdaFunction", "Arn" ] }
+            Name: ${{file(./src/resources/config.yml):GetPersonalAccessTokenSchemaQueryFieldName}}
+            ServiceRoleArn: !GetAtt AppSyncLambdaServiceRole.Arn
+            Type: AWS_LAMBDA
+
+    GetPersAccTokenAppSyncQueryResolver1:
+        Type: AWS::AppSync::Resolver
+        DependsOn: AnalyticsQuerySchema
+        Properties:
+            ApiId: !GetAtt AuthTableQueryApi.ApiId
+            DataSourceName: !GetAtt GetPersAccTokenSyncSource.Name
+            TypeName: "Query"
+            FieldName: ${{file(./src/resources/config.yml):GetPersonalAccessTokenSchemaQueryFieldName}}
+            RequestMappingTemplate: |
+                {
+                    "version": "2017-02-28",
+                    "operation": "Invoke",
+                    "payload": $utils.toJson($context.arguments)
+                }
+            ResponseMappingTemplate: |
+                $utils.toJson($context.result)
+
+
+
+
+
+
+

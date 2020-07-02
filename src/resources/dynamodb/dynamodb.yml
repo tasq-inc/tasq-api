@@ -1,0 +1,50 @@
+Resources:
+    ApiGatewayTokensTable:
+      Type: "AWS::DynamoDB::Table"
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: "TokenID"
+            AttributeType: S
+          - AttributeName: "Username"
+            AttributeType: S
+          - AttributeName: "AccessToken"
+            AttributeType: S
+          - AttributeName: "time"
+            AttributeType: S
+        KeySchema: #required
+          - AttributeName: "TokenID"
+            KeyType: HASH
+          - AttributeName: "time"
+            KeyType: RANGE
+        GlobalSecondaryIndexes:
+         - IndexName: User-index
+           KeySchema:
+           - AttributeName: "Username"
+             KeyType: HASH
+           Projection:
+             ProjectionType: ALL
+           ProvisionedThroughput:
+             ReadCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBReadCapacity}}"
+             WriteCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBWriteCapacity}}"
+         - IndexName: AccessToken-index
+           KeySchema:
+           - AttributeName: "AccessToken"
+             KeyType: HASH
+           Projection:
+             ProjectionType: ALL
+           ProvisionedThroughput:
+             ReadCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBReadCapacity}}"
+             WriteCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBWriteCapacity}}"
+  
+        ProvisionedThroughput:
+          ReadCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBReadCapacity}}"
+          WriteCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBWriteCapacity}}"
+  
+  
+Outputs:
+  ApiGatewayTokensTable:
+    Description: DynamoDB table for predictions jobs
+    Value: !Ref 'ApiGatewayTokensTable'
+    Export:
+      Name: !Join [ ':', [ !Ref 'AWS::StackName', 'ApiGatewayTokensTable' ] ]

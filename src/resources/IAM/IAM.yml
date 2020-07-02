@@ -1,0 +1,336 @@
+Parameters:
+    Ec2ContainerService:
+      Type: String
+      Default: "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+    ECSTaskExecutionRole:
+      Type: String
+      Default: "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+    CloudWatchLogsPolicy:
+      Type: String
+      Default: "arn:aws:iam::711589413744:policy/ECS-CloudWatchLogs"
+    AmazonDynamoDBFullAccess:
+      Type: String
+      Default: "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+    AppSyncTutorialAmazonDynamoDBPolicy:
+      Type: String
+      Default: "arn:aws:iam::711589413744:policy/deepdish/TestAppsyncDynamoDB-AppSyncTutorialAmazonDynamoDBPolicy-TSRDEN6AVMDO"
+
+
+Resources:
+
+    BrokerInitiateLambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "lambda.amazonaws.com"
+                  - "ec2.amazonaws.com"
+                  - "ecs-tasks.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonECS_FullAccess
+          - arn:aws:iam::aws:policy/AWSLambdaExecute
+          - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+          - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+          - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+        Policies:
+        - PolicyName: "network-lambda-role-policy"
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+            - Effect: "Allow"
+              Action: [
+                "ec2:DescribeInstances",
+                "ec2:CreateNetworkInterface",
+                "ec2:AttachNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface"
+              ]
+              Resource: "*"
+
+    BrokerInstanceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "ec2.amazonaws.com"
+                  - "ecs-tasks.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonS3FullAccess
+          - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+          - arn:aws:iam::aws:policy/AmazonSQSFullAccess
+          - arn:aws:iam::aws:policy/AmazonSNSFullAccess
+          - arn:aws:iam::aws:policy/CloudWatchFullAccess
+          - arn:aws:iam::aws:policy/AmazonECS_FullAccess
+          - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+          - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - !Ref ECSSecretsAccessPolicy
+    BrokerInstanceProfile:
+      Type: AWS::IAM::InstanceProfile
+      Properties:
+        Roles:
+          - Ref: BrokerInstanceRole
+
+    # Policy allowing ECS tasks to access aws managed secrets
+    ECSSecretsAccessPolicy:
+      Type: AWS::IAM::ManagedPolicy
+      Properties:
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - ssm:GetParameters
+                - secretsmanager:GetSecretValue
+                - kms:Decrypt
+              Resource:
+                - "${{file(./src/resources/config.yml):SsmSecretsKmsKeyArn}}"
+                - "${{file(./src/resources/config.yml):InfluxCloudAccessConfigArn}}"
+
+    WorkerTaskRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "ec2.amazonaws.com"
+                  - "ecs-tasks.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonS3FullAccess
+          - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+          - arn:aws:iam::aws:policy/CloudWatchFullAccess
+          - arn:aws:iam::aws:policy/AmazonECS_FullAccess
+          - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+          - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+          - !Ref ECSSecretsAccessPolicy
+
+    WorkerAutoScalingRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "application-autoscaling.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+          - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+
+
+    AppsyncAccessDynamoDB:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "dynamodb.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole
+          - arn:aws:iam::aws:policy/AWSLambdaInvocation-DynamoDB
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+          - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+
+
+    AppSyncSourceLambdaRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                    -   Effect: "Allow"
+                        Principal:
+                            Service:
+                                -   "lambda.amazonaws.com"
+                        Action:
+                            -   "sts:AssumeRole"
+            ManagedPolicyArns:
+                -   arn:aws:iam::aws:policy/AWSLambdaExecute    # Provides Put, Get access to S3 and full access to CloudWatch Logs.
+                -   arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess   # Provides minimum permissions for a Lambda function to manage ENIs used by a VPC-enabled Lambda Function.
+                -   arn:aws:iam::aws:policy/SecretsManagerReadWrite
+                - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+                - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+                - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+            Policies:
+                -   PolicyName: "Lambda-AppSyncSourceSecrets-Policy"
+                    PolicyDocument:
+                        Statement:
+                            -   Effect: "Allow"
+                                Action:
+                                    -   "secretsmanager:GetSecretValue"
+                                    -   "secretsmanager:ListSecrets"
+                                    -   "secretsmanager:ListSecretVersionIds"
+                                Resource:
+                                    -   "${{file(./src/resources/config.yml):InfluxCloudAccessConfigArn}}"
+    AppSyncLambdaServiceRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                -   Effect: "Allow"
+                    Principal:
+                        Service:
+                            -   "appsync.amazonaws.com"
+                    Action:
+                        -   "sts:AssumeRole"
+            Policies:
+                -   PolicyName: "Lambda-AppSyncServiceRole-Policy"
+                    PolicyDocument:
+                        Statement:
+                            -   Effect: "Allow"
+                                Action:
+                                    -   "lambda:invokeFunction"
+                                Resource:
+                                    -   "*"
+    AppSyncPushToCloudwatchRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                -   Effect: "Allow"
+                    Principal:
+                        Service:
+                            -   "appsync.amazonaws.com"
+                    Action:
+                        -   "sts:AssumeRole"
+            ManagedPolicyArns:
+                -   arn:aws:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs
+                -   arn:aws:iam::aws:policy/SecretsManagerReadWrite
+                - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+                - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+    # SignalsInstanceRole:
+    #     Type: AWS::IAM::Role
+    #     Properties:
+    #         AssumeRolePolicyDocument:
+    #             Statement:
+    #                 -   Effect: "Allow"
+    #                     Principal:
+    #                         Service:
+    #                             -   "ec2.amazonaws.com"
+    #                             -   "ecs-tasks.amazonaws.com"
+    #                     Action:
+    #                         -   "sts:AssumeRole"
+    #         ManagedPolicyArns:
+    #             -   arn:aws:iam::aws:policy/AmazonS3FullAccess
+    #             -   arn:aws:iam::aws:policy/AmazonSQSFullAccess
+    #             -   arn:aws:iam::aws:policy/AmazonSNSFullAccess
+    #             -   arn:aws:iam::aws:policy/CloudWatchFullAccess
+    #             -   arn:aws:iam::aws:policy/AmazonECS_FullAccess
+    #             -   arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+    #             -   !Ref ECSSecretsAccessPolicy
+    # SignalsInstanceProfile:
+    #     Type: AWS::IAM::InstanceProfile
+    #     Properties:
+    #         Roles:
+    #             -   Ref: SignalsInstanceRole
+    #
+    # OpsTaskRole:
+    #     Type: AWS::IAM::Role
+    #     Properties:
+    #         AssumeRolePolicyDocument:
+    #             Statement:
+    #                 -   Effect: "Allow"
+    #                     Principal:
+    #                         Service:
+    #                             -   "ec2.amazonaws.com"
+    #                             -   "ecs-tasks.amazonaws.com"
+    #                     Action:
+    #                         -   "sts:AssumeRole"
+    #         ManagedPolicyArns:
+    #             -   arn:aws:iam::aws:policy/AmazonS3FullAccess
+    #             -   arn:aws:iam::aws:policy/CloudWatchFullAccess
+    #             -   arn:aws:iam::aws:policy/AmazonECS_FullAccess
+    #             -   arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+    #             -   !Ref ECSSecretsAccessPolicy
+    MainInstanceProfile:
+        Type: AWS::IAM::InstanceProfile
+        Properties:
+            Roles:
+                -   Ref: ecsInstanceRole
+    # WorkerAutoScalingRole:
+    #     Type: AWS::IAM::Role
+    #     Properties:
+    #         AssumeRolePolicyDocument:
+    #             Statement:
+    #                 -   Effect: "Allow"
+    #                     Principal:
+    #                         Service:
+    #                             -   "application-autoscaling.amazonaws.com"
+    #                     Action:
+    #                         -   "sts:AssumeRole"
+    #         ManagedPolicyArns:
+    #             -   arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole
+
+
+    ecsInstanceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "ec2.amazonaws.com"
+              Action:
+                - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref Ec2ContainerService
+          - !Ref AmazonDynamoDBFullAccess
+          - !Ref AppSyncTutorialAmazonDynamoDBPolicy
+          - arn:aws:iam::aws:policy/CloudWatchFullAccess
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        RoleName: ${{self:service}}-${{self:provider.stage}}-ecsInstanceRole
+        Path: "/"
+
+
+
+    ecsTaskExecutionRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "ecs-tasks.amazonaws.com"
+              Action:
+                - 'sts:AssumeRole'
+        ManagedPolicyArns:
+          - !Ref ECSTaskExecutionRole
+          - !Ref CloudWatchLogsPolicy
+          - !Ref AmazonDynamoDBFullAccess
+          - !Ref AppSyncTutorialAmazonDynamoDBPolicy
+          - arn:aws:iam::aws:policy/CloudWatchFullAccess
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - arn:aws:iam::aws:policy/AmazonS3FullAccess
+        RoleName: ${{self:service}}-${{self:provider.stage}}-ecsTaskExecutionRole
