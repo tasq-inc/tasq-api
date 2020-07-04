@@ -1664,7 +1664,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "get", "body": $input.json(''$'')}'
+          application/json: '{"WorkflowID": "$input.params('workflow_id')"}'
       RequestModels:
         application/json:
           Ref: Model
