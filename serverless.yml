@@ -45,11 +45,41 @@ provider:
     FailureTableStackName: "tasq-failure-prediction-${{self:provider.stage}}"
     RawScadaIngestStackName: "tasq-raw-scada-ingest-enerplus-${{self:provider.stage}}"
     CleanScadaIngestStackName: "tasq-clean-scada-ingest-enerplus-${{self:provider.stage}}"
-    # HistoricWorkflowTableStackName: "tasq-assign-user-tasks-${{self:provider.stage}}" # HistoricWorkflowOutputTable  tasq-assign-user-tasks-dev:WorkflowHistoricTable
     StackMainUserId: "711589413744"
     EcrAddress: "711589413744.dkr.ecr.us-east-2.amazonaws.com"
     InboundStackName: "tasq-feature-extract-${{self:provider.stage}}"
     LambdaLayerStack: "tasq-lambda-layers-${{self:provider.stage}}"
+
+    # /reponses Lambda Functions
+    DetectStateChangeStackName: "tasq-detect-scada-ingest-enerplus-${{self:provider.stage}}"
+      # get_user_responses_lambda_handler "${{self:provider.environment.DetectStateChangeStackName}}:"
+      # delete_user_response_lambda_handler 
+      # update_user_response_lambda_handler
+      # get_user_response_lambda_handler
+      # get_tasqs_lambda_handler
+      # post_new_tasq
+      # get_prediction_by_id
+      # delete_prediction_by_id
+      # update_tasq
+
+    TasqAnalyticsStackName: "tasq-analytics-${{self:provider.stage}}"
+      # get_tracked_issues  "${{self:provider.environment.TasqAnalyticsStackName}}:"
+      # submit_ticket
+      # get_ticket
+
+    AssignUserTasqStackName: "tasq-assign-user-tasks-${{self:provider.stage}}"
+      # sign_up_user
+      # get_all_users
+      # update_user_profile
+      # get_user_details
+      # post_workflow
+      # get_all_workflows
+      # delete_workflow
+      # get_workflow
+      # update_workflow
+
+
+
 
 functions:
   - ${{file(./src/functions/appsync_resolver/auth_appsync_source.yml)}}

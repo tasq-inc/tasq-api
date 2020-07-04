@@ -313,9 +313,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "GetTicketsArn"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -388,44 +386,7 @@ Resources:
 
 
 
-  PostResponse:
-    Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: ResponsesResource
-      HttpMethod: POST
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-        RequestTemplates:
-          application/json: '{"action": "post", "body": $input.json(''$'')}'
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+
 
 
 
@@ -480,6 +441,51 @@ Resources:
       ParentId:
         Ref: ResponsesResource
       PathPart: "{response_id}"
+
+
+
+
+  PostUserResponse:
+    Type: AWS::ApiGateway::Method
+    DependsOn: LambdaPermission
+    Properties:
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: RestApiAuthorizer
+      RestApiId:
+        Ref: RestApi
+      ResourceId:
+        Ref: ResponsesUserResource
+      HttpMethod: POST
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - Ref: AWS::Region
+            - ":lambda:path/2015-03-31/functions/"
+            - Fn::GetAtt:
+              - Lambda
+              - Arn
+            - "/invocations"
+        IntegrationResponses:
+        - StatusCode: 200
+        RequestTemplates:
+          application/json: '{"action": "post", "body": $input.json(''$'')}'
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        StatusCode: 200
+
+
+
 
 
   PutResponseUserPrediction:
@@ -938,44 +944,44 @@ Resources:
         Ref: TicketResource
       PathPart: "{ticket_id}"
 
-  PutTicket:
-    Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: TicketIDResource
-      HttpMethod: PUT
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-        RequestTemplates:
-          application/json: '{"action": "put", "body": $input.json(''$'')}'
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+  # PutTicket:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: LambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: TicketIDResource
+  #     HttpMethod: PUT
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri:
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - Fn::GetAtt:
+  #             - Lambda
+  #             - Arn
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #       RequestTemplates:
+  #         application/json: '{"action": "put", "body": $input.json(''$'')}'
+  #     RequestModels:
+  #       application/json:
+  #         Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
 
 
   DeleteTicket:
@@ -1158,7 +1164,9 @@ Resources:
 
 
 
-
+        # "${{self:provider.environment.DetectStateChangeStackName}}:"
+        # "${{self:provider.environment.TasqAnalyticsStackName}}:"
+        # "${{self:provider.environment.AssignUserTasqStackName}}:"
 
 
   WorkflowUserResource:
