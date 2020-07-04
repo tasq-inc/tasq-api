@@ -228,7 +228,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -265,7 +265,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:UserSignUpSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:UserSignUpSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -314,7 +314,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:GetUserDetailsSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetUserDetailsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -351,7 +351,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:UpdateProfileSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:UpdateProfileSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -410,7 +410,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -463,7 +463,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -504,7 +504,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -541,7 +541,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -578,7 +578,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -633,7 +633,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:GetAllTasqsSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetAllTasqsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -670,7 +670,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:PostNewTasqSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:PostNewTasqSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -720,7 +720,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:DeleteTasqSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteTasqSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -758,7 +758,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:GetPredictionRowSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetPredictionRowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -795,7 +795,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.DetectStateChangeStackName}}:UpdateTasqSyncSource"
+            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateTasqSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -850,7 +850,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.TasqAnalyticsStackName}}:SubmitTicketSyncSource"
+            - !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:SubmitTicketSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -889,7 +889,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.TasqAnalyticsStackName}}:GetTrackedTicketsSyncSource"
+            - !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:GetTrackedTicketsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -980,7 +980,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.TasqAnalyticsStackName}}:DeleteTicketSyncSource"
+            - !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:DeleteTicketSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1018,7 +1018,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.TasqAnalyticsStackName}}:GetTicketSyncSource"
+            - !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:GetTicketSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1074,7 +1074,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:PostWorkflowSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:PostWorkflowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1113,7 +1113,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:GetAllWorkflowsSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllWorkflowsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1164,7 +1164,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:UpdateWorkflowSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:UpdateWorkflowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1202,7 +1202,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "${{self:provider.environment.AssignUserTasqStackName}}:DeleteWorkflowSyncSource"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:DeleteWorkflowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1219,41 +1219,41 @@ Resources:
         StatusCode: 200
 
 
-  # GetWorkflowPrediction:
-  #   Type: AWS::ApiGateway::Method
-  #   DependsOn: LambdaPermission
-  #   Properties:
-  #     AuthorizationType: CUSTOM
-  #     AuthorizerId:
-  #       Ref: RestApiAuthorizer
-  #     RestApiId:
-  #       Ref: RestApi
-  #     ResourceId:
-  #       Ref: WorkflowUserResource
-  #     HttpMethod: GET
-  #     Integration:
-  #       Type: AWS
-  #       IntegrationHttpMethod: POST
-  #       Uri:
-  #         Fn::Join:
-  #         - ''
-  #         - - 'arn:aws:apigateway:'
-  #           - Ref: AWS::Region
-  #           - ":lambda:path/2015-03-31/functions/"
-  #           - "${{self:provider.environment.AssignUserTasqStackName}}:GetWorkflowSyncSource"
-  #           - "/invocations"
-  #       IntegrationResponses:
-  #       - StatusCode: 200
-  #       RequestTemplates:
-  #         application/json: '{"action": "get", "body": $input.json(''$'')}'
-  #     RequestModels:
-  #       application/json:
-  #         Ref: Model
-  #     RequestParameters:
-  #       method.request.header.Authorization: true
-  #     MethodResponses:
-  #     - ResponseModels:
-  #         application/json: Empty
-  #       StatusCode: 200
+  GetWorkflowPrediction:
+    Type: AWS::ApiGateway::Method
+    DependsOn: LambdaPermission
+    Properties:
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: RestApiAuthorizer
+      RestApiId:
+        Ref: RestApi
+      ResourceId:
+        Ref: WorkflowUserResource
+      HttpMethod: GET
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - Ref: AWS::Region
+            - ":lambda:path/2015-03-31/functions/"
+            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetWorkflowSyncSource"
+            - "/invocations"
+        IntegrationResponses:
+        - StatusCode: 200
+        RequestTemplates:
+          application/json: '{"action": "get", "body": $input.json(''$'')}'
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        StatusCode: 200
 
 
