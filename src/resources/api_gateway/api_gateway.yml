@@ -147,8 +147,8 @@ Resources:
     Type: AWS::ApiGateway::Stage
     DependsOn: StageV1Deployment
     Properties:
-      StageName: v2
-      Description: 'API Version 2'
+      StageName: v1
+      Description: 'API Version 1'
       DeploymentId:
         Ref: StageV1Deployment
       RestApiId:
@@ -158,7 +158,7 @@ Resources:
   ApiCustomDomainMapping:
     Type: AWS::ApiGateway::BasePathMapping
     Properties: 
-      BasePath: v2
+      BasePath: v1
       DomainName: "api.tasqinc.com"
       RestApiId:
         Ref: RestApi
