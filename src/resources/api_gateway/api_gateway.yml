@@ -186,6 +186,11 @@ Resources:
 
 
 
+
+# "${{self:provider.environment.DetectStateChangeStackName}}:"
+# "${{self:provider.environment.TasqAnalyticsStackName}}:"
+# "${{self:provider.environment.AssignUserTasqStackName}}:"
+
 ############# RESOURCE - profile ############
 
 
@@ -217,15 +222,13 @@ Resources:
       Integration:
         Type: AWS
         IntegrationHttpMethod: POST
-        Uri:
+        Uri: 
           Fn::Join:
           - ''
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -262,9 +265,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:UserSignUpSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -313,9 +314,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:GetUserDetailsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -352,9 +351,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:UpdateProfileSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -413,9 +410,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -468,9 +463,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -511,9 +504,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -550,9 +541,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -589,9 +578,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -646,9 +633,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:GetAllTasqsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -685,9 +670,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:PostNewTasqSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -737,9 +720,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:DeleteTasqSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -777,9 +758,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:GetPredictionRowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -816,9 +795,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.DetectStateChangeStackName}}:UpdateTasqSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -873,9 +850,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.TasqAnalyticsStackName}}:SubmitTicketSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -914,9 +889,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.TasqAnalyticsStackName}}:GetTrackedTicketsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1007,9 +980,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.TasqAnalyticsStackName}}:DeleteTicketSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1047,9 +1018,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.TasqAnalyticsStackName}}:GetTicketSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1105,9 +1074,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:PostWorkflowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1125,7 +1092,7 @@ Resources:
 
 
 
-  GetWorkflow:
+  GetWorkflows:
     Type: AWS::ApiGateway::Method
     DependsOn: LambdaPermission
     Properties:
@@ -1146,9 +1113,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:GetAllWorkflowsSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1166,9 +1131,7 @@ Resources:
 
 
 
-        # "${{self:provider.environment.DetectStateChangeStackName}}:"
-        # "${{self:provider.environment.TasqAnalyticsStackName}}:"
-        # "${{self:provider.environment.AssignUserTasqStackName}}:"
+        
 
 
   WorkflowUserResource:
@@ -1201,9 +1164,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:UpdateWorkflowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1241,9 +1202,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:DeleteWorkflowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -1281,9 +1240,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - Fn::GetAtt:
-              - Lambda
-              - Arn
+            - "${{self:provider.environment.AssignUserTasqStackName}}:GetWorkflowSyncSource"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
