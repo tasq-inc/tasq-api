@@ -230,8 +230,6 @@ Resources:
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
-        RequestTemplates:
-          application/json: '{"action": "get", "body": $input.json(''$'')}'
       RequestModels:
         application/json:
           Ref: Model
@@ -290,7 +288,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "post", "body": $input.json(''$'')}'
+          "application/json": "{\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"Roles\": \"$input.params('roles')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -359,7 +357,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "get", "body": $input.json(''$'')}'
+          "application/json": "{\"username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -416,7 +414,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "put", "body": $input.json(''$'')}'
+          "application/json": "{\"Username\": \"$input.params('username')\",\"Team\": \"$input.params('team')\",\"Roles\": \"$input.params('roles')\",\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"AcceptingTasqs\": \"$input.params('accepting_tasqs')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -489,13 +487,11 @@ Resources:
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
-        # RequestTemplates:
-        #   application/json: '{"action": "get", "body": $input.json(''$'')}'
-      # RequestModels:
-      #   application/json:
-      #     Ref: Model
-      # RequestParameters:
-      #   method.request.header.Authorization: true
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
       MethodResponses:
       - ResponseModels:
           application/json: Empty
@@ -559,7 +555,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "post", "body": $input.json(''$'')}'
+          "application/json": "{\"PredictionID\": \"$input.params('id')\",\"ResponseData\": \"$input.params('response_data')\",\"MarkAsComplete\": \"$input.params('mark_as_complete')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -615,7 +611,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "put", "body": $input.json(''$'')}'
+          "application/json": "{\"PredictionID\": \"$input.params('id')\",\"ResponseData\": \"$input.params('response_data')\",\"MarkAsComplete\": \"$input.params('mark_as_complete')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -671,7 +667,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "delete", "body": $input.json(''$'')}'
+          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -729,7 +725,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "get", "body": $input.json(''$'')}'
+          "application/json": "{\"prediction_id\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -804,7 +800,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "get", "body": $input.json(''$'')}'
+          "application/json": "{\"team\": \"$input.params('team')\",\"username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -861,7 +857,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "post", "body": $input.json(''$'')}'
+          "application/json": "{\"AssignedToUsername\": \"$input.params('assign_to_user')\",\"NodeID\": \"$input.params('node_id')\",\"PredictionType\": \"$input.params('prediction_type')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -930,7 +926,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "delete", "body": $input.json(''$'')}'
+          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -986,7 +982,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "delete", "body": $input.json(''$'')}'
+          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1044,7 +1040,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "put", "body": $input.json(''$'')}'
+          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1114,7 +1110,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "put", "body": $input.json(''$'')}'
+          "application/json": "{\"Username\": \"$input.params('username')\",\"Description\": \"$input.params('description')\",\"TicketTitle\": \"$input.params('ticket_title')\",\"IssueType\": \"$input.params('issue_type')\",\"Page\": \"$input.params('page')\",\"Operator\": \"$input.params('operator')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1168,7 +1164,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "get", "body": $input.json(''$'')}'
+          "application/json": "{\"IssueType\": \"$input.params('issue_type')\",\"Username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1277,7 +1273,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "delete", "body": $input.json(''$'')}'
+          "application/json": "{\"TicketId\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1332,7 +1328,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "get", "body": $input.json(''$'')}'
+          "application/json": "{\"TicketId\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1403,7 +1399,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "put", "body": $input.json(''$'')}'
+          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1480,11 +1476,9 @@ Resources:
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
-        # RequestTemplates:
-        #   application/json: '{"action": "put", "body": $input.json(''$'')}'
-      # RequestModels:
-      #   application/json:
-      #     Ref: Model
+      RequestModels:
+        application/json:
+          Ref: Model
       RequestParameters:
         method.request.header.Authorization: true
       MethodResponses:
@@ -1553,7 +1547,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "put", "body": $input.json(''$'')}'
+          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Settings\": \"$input.params('settings')\",\"Username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1609,7 +1603,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          application/json: '{"action": "delete", "body": $input.json(''$'')}'
+          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1664,10 +1658,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"WorkflowDetailsID\": \"$input.params('workflow_id')\"}"
-        # RequestTemplates:
-        #   '{"WorkflowID": "$input.params('workflow_id')"}'
-        #   application/json: '{"action": "get", "body": $input.json(''$'')}'
+          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
