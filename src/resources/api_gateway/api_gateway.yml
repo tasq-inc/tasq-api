@@ -1364,7 +1364,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:PostWorkflowSyncSource"
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:PostWorkflowSyncSource"
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -1512,7 +1512,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:UpdateWorkflowSyncSource"
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:UpdateWorkflowSyncSource"
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -1569,7 +1569,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:DeleteWorkflowSyncSource"
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:DeleteWorkflowSyncSource"
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -1625,7 +1625,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:GetWorkflowSyncSource"
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetWorkflowSyncSource"
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
