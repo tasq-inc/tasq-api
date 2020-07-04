@@ -313,7 +313,9 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "GetTicketsArn"
+            - Fn::GetAtt:
+              - Lambda
+              - Arn
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
