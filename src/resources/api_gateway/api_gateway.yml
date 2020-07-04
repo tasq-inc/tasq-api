@@ -1092,42 +1092,42 @@ Resources:
 
 
 
-  GetWorkflows:
-    Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: WorkflowResource
-      HttpMethod: GET
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllWorkflowsSyncSource"
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-        # RequestTemplates:
-        #   application/json: '{"action": "put", "body": $input.json(''$'')}'
-      # RequestModels:
-      #   application/json:
-      #     Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+  # GetWorkflows:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: LambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: WorkflowResource
+  #     HttpMethod: GET
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri:
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllWorkflowsSyncSource"
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #       # RequestTemplates:
+  #       #   application/json: '{"action": "put", "body": $input.json(''$'')}'
+  #     # RequestModels:
+  #     #   application/json:
+  #     #     Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
 
 
 
