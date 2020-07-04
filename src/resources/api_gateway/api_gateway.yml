@@ -187,10 +187,27 @@ Resources:
       PathPart: users
 
 
+  GetProfilesLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
-  GetProfile:
+
+  GetProfiles:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetProfilesLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -225,9 +242,31 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+
+
+  PostProfileLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:UserSignUpSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
+
   PostProfile:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PostProfileLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -274,9 +313,29 @@ Resources:
       PathPart: "{user}"
 
 
+
+
+
+  GetProfileUserLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetUserDetailsSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
   GetProfileUser:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetProfileUserLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -311,9 +370,29 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+  PutProfileUserLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:UpdateProfileSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
+
   PutProfileUser:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PutProfileUserLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -367,12 +446,27 @@ Resources:
 
 
 
-
+  GetResponseLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
 
   GetResponse:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetResponseLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -422,10 +516,26 @@ Resources:
 
 
 
+  PostUserResponseLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
   PostUserResponse:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PostUserResponseLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -462,11 +572,26 @@ Resources:
 
 
 
-
+  PutResponseUserPredictionLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
   PutResponseUserPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PutResponseUserPredictionLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -501,9 +626,28 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+  DeleteResponseUserPredictionLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
   DeleteResponseUserPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: DeleteResponseUserPredictionLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -538,9 +682,30 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+
+  GetResponseUserPredictionLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
+
   GetResponseUserPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetResponseUserPredictionLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -593,9 +758,29 @@ Resources:
       PathPart: tasqs
 
 
+
+  GetTasqsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetAllTasqsSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
+
   GetTasqs:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetTasqsLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -630,9 +815,29 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+  PostTasqsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:PostNewTasqSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
+
   PostTasqs:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PostTasqsLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -679,10 +884,29 @@ Resources:
         Ref: TasqsResource
       PathPart: "{tasq_id}"
 
+
+
+  DeleteTasqTasqLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteTasqSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
       
   DeleteTasqTasqPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: DeleteTasqTasqLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -718,9 +942,27 @@ Resources:
         StatusCode: 200
 
 
+  GetTasqTasqLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetPredictionRowSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
   GetTasqTasqPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetTasqTasqLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -755,9 +997,30 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+
+  PutTasqTasqLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateTasqSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
+
   PutTasqTasqPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PutTasqTasqLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -808,11 +1071,26 @@ Resources:
         - RootResourceId
       PathPart: tickets
 
-
+  PostTicketsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:SubmitTicketSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
   PostTickets:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PostTicketsLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -847,11 +1125,26 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
-
+  GetTicketsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:GetTrackedTicketsSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
   GetTickets:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetTicketsLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -940,9 +1233,27 @@ Resources:
   #       StatusCode: 200
 
 
+
+  DeleteTicketLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:DeleteTicketSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
   DeleteTicket:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: DeleteTicketLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -978,9 +1289,26 @@ Resources:
         StatusCode: 200
 
 
+  GetTicketLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:GetTicketSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
   GetTicket:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetTicketLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -1032,11 +1360,26 @@ Resources:
         - RootResourceId
       PathPart: workflows
 
-
+  PostWorkflowLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:PostWorkflowSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
   PostWorkflow:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PostWorkflowLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -1071,6 +1414,8 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+  
 
   LambdaPermission:
     Type: AWS::Lambda::Permission
@@ -1161,9 +1506,30 @@ Resources:
         Ref: WorkflowResource
       PathPart: "{workflow_id}"
 
+
+
+  PutWorkflowLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:UpdateWorkflowSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
+
   PutWorkflow:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: PutWorkflowLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -1199,9 +1565,27 @@ Resources:
         StatusCode: 200
 
 
+  DeleteWorkflowPredictionLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:DeleteWorkflowSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+
   DeleteWorkflowPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: DeleteWorkflowPredictionLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
@@ -1237,9 +1621,26 @@ Resources:
         StatusCode: 200
 
 
+  GetWorkflowPredictionLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqAnalyticsStackName}}:GetWorkflowSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
   GetWorkflowPrediction:
     Type: AWS::ApiGateway::Method
-    DependsOn: LambdaPermission
+    DependsOn: GetWorkflowPredictionLambdaPermission
     Properties:
       AuthorizationType: CUSTOM
       AuthorizerId:
