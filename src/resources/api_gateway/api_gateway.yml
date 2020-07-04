@@ -1672,7 +1672,8 @@ Resources:
         application/json:
           Ref: Model
       RequestParameters:
-        method.request.header.Authorization: true
+        method.request.querystring.name: true
+        # method.request.header.Authorization: true
       MethodResponses:
       - ResponseModels:
           application/json: Empty
