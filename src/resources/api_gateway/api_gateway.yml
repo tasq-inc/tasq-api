@@ -539,7 +539,7 @@ Resources:
       RestApiId:
         Ref: RestApi
       ResourceId:
-        Ref: ResponsesUserResource
+        Ref: ResponsesResource
       HttpMethod: POST
       Integration:
         Type: AWS
