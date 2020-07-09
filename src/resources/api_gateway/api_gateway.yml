@@ -414,7 +414,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"Username\": \"$input.params('username')\",\"Team\": \"$input.params('team')\",\"Roles\": \"$input.params('roles')\",\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"AcceptingTasqs\": \"$input.params('accepting_tasqs')\"}"
+          "application/json": "{\"Username\": \"$input.params('username')\",\"Team\": \"$input.params('teams')\",\"Roles\": \"$input.params('roles')\",\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"AcceptingTasqs\": \"$input.params('accepting_tasqs')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -555,7 +555,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"PredictionID\": \"$input.params('id')\",\"ResponseData\": \"$input.params('response_data')\",\"MarkAsComplete\": \"$input.params('mark_as_complete')\"}"
+          "application/json": "{\"id\": \"$input.params('tasq_id')\",\"PredictionID\": \"$input.params('id')\",\"ResponseData\": \"$input.params('response_data')\",\"MarkAsComplete\": \"$input.params('mark_as_complete')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -857,7 +857,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"AssignedToUsername\": \"$input.params('assign_to_user')\",\"NodeID\": \"$input.params('node_id')\",\"PredictionType\": \"$input.params('prediction_type')\"}"
+          "application/json": "{\"AssignedToUsername\": \"$input.params('assign_to_user')\",\"NodeID\": \"$input.params('node_id')\",\"PredictionType\": \"$input.params('type')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1658,7 +1658,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\"}"
+          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"AssignmentCountDays\": \"$input.params('days')\"}"
       RequestModels:
         application/json:
           Ref: Model
