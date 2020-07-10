@@ -596,7 +596,7 @@ Resources:
         Ref: RestApi
       ResourceId:
         Ref: ResponsesUserResource
-      HttpMethod: PUT
+      HttpMethod: POST
       Integration:
         Type: AWS
         IntegrationHttpMethod: POST
