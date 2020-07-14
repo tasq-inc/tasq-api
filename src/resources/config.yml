@@ -38,7 +38,7 @@ BrokerMonitorPort: 5555
 BrokerDockerImage: "${{self:service}}-broker:${{self:provider.containerTag}}"
 BrokerContainerMemory: 2048  # <8GB safe value : dependant on BrokerInstanceType
 BrokerContainerName: "tasq-workflow-service"
-ECSLogsRetentionDays: 3653
+ECSLogsRetentionDays: 30
 BrokerInitiateLambdaTimeout: 30
 BrokerInitiateLambdaMemSize: 192
 

@@ -137,11 +137,13 @@ Resources:
 
   StageV1Deployment:
     Type: AWS::ApiGateway::Deployment
+    DependsOn: ProfileResource
     Properties:
       RestApiId:
         Ref: RestApi
 
 
+        
 
   StageV1:
     Type: AWS::ApiGateway::Stage
