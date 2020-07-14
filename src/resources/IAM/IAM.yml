@@ -1,0 +1,105 @@
+Parameters:
+    Ec2ContainerService:
+      Type: String
+      Default: "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+    ECSTaskExecutionRole:
+      Type: String
+      Default: "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+    CloudWatchLogsPolicy:
+      Type: String
+      Default: "arn:aws:iam::711589413744:policy/ECS-CloudWatchLogs"
+    AmazonDynamoDBFullAccess:
+      Type: String
+      Default: "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+    AppSyncTutorialAmazonDynamoDBPolicy:
+      Type: String
+      Default: "arn:aws:iam::711589413744:policy/deepdish/TestAppsyncDynamoDB-AppSyncTutorialAmazonDynamoDBPolicy-TSRDEN6AVMDO"
+
+
+Resources:
+    AppsyncAccessDynamoDB:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Statement:
+            - Effect: "Allow"
+              Principal:
+                Service:
+                  - "dynamodb.amazonaws.com"
+              Action:
+                - "sts:AssumeRole"
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole
+          - arn:aws:iam::aws:policy/AWSLambdaInvocation-DynamoDB
+          - arn:aws:iam::aws:policy/SecretsManagerReadWrite
+          - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+          - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+
+
+    AppSyncSourceLambdaRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                    -   Effect: "Allow"
+                        Principal:
+                            Service:
+                                -   "lambda.amazonaws.com"
+                        Action:
+                            -   "sts:AssumeRole"
+            ManagedPolicyArns:
+                -   arn:aws:iam::aws:policy/AWSLambdaExecute    # Provides Put, Get access to S3 and full access to CloudWatch Logs.
+                -   arn:aws:iam::aws:policy/service-role/AWSLambdaENIManagementAccess   # Provides minimum permissions for a Lambda function to manage ENIs used by a VPC-enabled Lambda Function.
+                -   arn:aws:iam::aws:policy/SecretsManagerReadWrite
+                - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+                - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+                - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+            Policies:
+                -   PolicyName: "Lambda-AppSyncSourceSecrets-Policy"
+                    PolicyDocument:
+                        Statement:
+                            -   Effect: "Allow"
+                                Action:
+                                    -   "secretsmanager:GetSecretValue"
+                                    -   "secretsmanager:ListSecrets"
+                                    -   "secretsmanager:ListSecretVersionIds"
+                                Resource:
+                                    -   "${{file(./src/resources/config.yml):InfluxCloudAccessConfigArn}}"
+    AppSyncLambdaServiceRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                -   Effect: "Allow"
+                    Principal:
+                        Service:
+                            -   "appsync.amazonaws.com"
+                    Action:
+                        -   "sts:AssumeRole"
+            Policies:
+                -   PolicyName: "Lambda-AppSyncServiceRole-Policy"
+                    PolicyDocument:
+                        Statement:
+                            -   Effect: "Allow"
+                                Action:
+                                    -   "lambda:invokeFunction"
+                                Resource:
+                                    -   "*"
+    AppSyncPushToCloudwatchRole:
+        Type: AWS::IAM::Role
+        Properties:
+            AssumeRolePolicyDocument:
+                Statement:
+                -   Effect: "Allow"
+                    Principal:
+                        Service:
+                            -   "appsync.amazonaws.com"
+                    Action:
+                        -   "sts:AssumeRole"
+            ManagedPolicyArns:
+                -   arn:aws:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs
+                -   arn:aws:iam::aws:policy/SecretsManagerReadWrite
+                - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
+                - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
+    

@@ -1,6 +1,9 @@
 S3TsStoreBucket: "tasq-${{self:provider.stage}}-ts-store"
 S3TsStorePrefix: "ts_features"
 MetaDataStore: "MetaDataStore"
+ApiName: "TasqPublicAPI-${{self:provider.stage}}"
+AuthorizationLambdaFunction: "LambdaAuthorization-${{self:provider.stage}}"
+PostLambdaFunction: "PostLambdaAuthorization-${{self:provider.stage}}"
 
 LoggerTopicName: !ImportValue "${{self:provider.environment.CentralLoggerStackName}}:CentralLoggerTopic"
 InboundTopicName: !ImportValue "${{self:provider.environment.InboundStackName}}:FeatureExtractDataDone"
@@ -16,6 +19,8 @@ NetworkSecurityGroup: "${{self:provider.environment.IamNetworkStackName}}:EcsCon
 NetworkPrivateSubnet1: "${{self:provider.environment.IamNetworkStackName}}:MainSubnet1"
 NetworkPrivateSubnet2: "${{self:provider.environment.IamNetworkStackName}}:MainSubnet2"
 
+CleanDataLambdaSourceMemSize: 256
+CleanDataLambdaSourceTimeout: 30
 
 ListPredictionsLambdaSourceMemSize: 192
 ListPredictionsLambdaSourceTimeout: 30
@@ -103,6 +108,8 @@ GetWorkflowFieldName: "get_workflow"
 GetAllWorkflowsFieldName: "get_all_workflows"
 GetFullUserListFieldName: "get_full_user_list"
 
+TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:TasqloggingLambdaLayer"
+
 GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provider.stage}}"
 
 UserPool: "${{self:provider.stage}}/enerplus/cognito/pool"
@@ -113,3 +120,9 @@ ReassignTaskMutationFieldName: "reassign_task"
 
 ShouldAssignTestUsers-dev: True
 ShouldAssignTestUsers-prod: False
+
+
+LambdaAuthArn: "arn:aws:lambda:${{self:provider.region}}:${{self:provider.environment.StackMainUserId}}:function:${{self:service}}-${{self:provider.stage}}-AuthAppSyncSource"
+
+GeneratePersonalAccessTokenSchemaQueryFieldName: "generate_personal_access_token"
+GetPersonalAccessTokenSchemaQueryFieldName: "get_personal_access_token"

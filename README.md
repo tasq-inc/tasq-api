@@ -14,7 +14,7 @@ https://api.tasqinc.com/v1/<resource-name>
 You can create a personal access token and use it in place of a password when performing operations over HTTPS with Tasq using the API
 
 ### Creating a token
-1. Login to <operator>.tasqinc.com.
+1. Login to {OPERATOR}.tasqinc.com.
 2. In the upper-right corner of the Ops tab, select the gear icon.
 3. Scroll to the "Personal access tokens" section.
 4. Click to "Generate token".

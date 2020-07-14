@@ -1,0 +1,60 @@
+AuthAppSyncSource:
+    description: "Lambda data-source for appsync endpoint: Authorize api user"
+    handler: src/functions/appsync_resolver/appsync_sources.authorize_api_user
+    memorySize: '${{file(./src/resources/config.yml):CleanDataLambdaSourceMemSize}}'
+    timeout: '${{file(./src/resources/config.yml):CleanDataLambdaSourceTimeout}}'
+    Role:
+      Fn::GetAtt:
+      - AuthLambdaRole
+      - Arn
+    runtime: "${{self:provider.runtime}}"
+    package:
+      include:
+        - src/functions/appsync_resolver/**
+    layers:
+      - !ImportValue "${{file(./src/resources/config.yml):TasqloggingLambdaLayer}}"
+    environment:
+      API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
+    vpc:
+        securityGroupIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
+        subnetIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet1}}"
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet2}}"
+
+
+GenPersAccTokenSyncSource:
+    DependsOn: AppSyncSourceLambdaRole
+    description: "Lambda data-source for appsync endpoint: Generate a personal access token"
+    handler: src/functions/appsync_resolver/appsync_sources.create_new_auth_token
+    memorySize: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceMemSize}}'
+    timeout: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceTimeout}}'
+    role: !GetAtt AppSyncSourceLambdaRole.Arn
+    runtime: "${{self:provider.runtime}}"
+    environment:
+      API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
+    vpc:
+        securityGroupIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
+        subnetIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet1}}"
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet2}}"
+
+GetPersAccTokenSyncSource:
+    DependsOn: AppSyncSourceLambdaRole
+    description: "Lambda data-source for appsync endpoint: Get personal access token"
+    handler: src/functions/appsync_resolver/appsync_sources.get_auth_token
+    memorySize: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceMemSize}}'
+    timeout: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceTimeout}}'
+    role: !GetAtt AppSyncSourceLambdaRole.Arn
+    runtime: "${{self:provider.runtime}}"
+    environment:
+      API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
+    vpc:
+        securityGroupIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
+        subnetIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet1}}"
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet2}}"
+
+
