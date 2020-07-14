@@ -1650,7 +1650,6 @@ Resources:
 
 
 
-
   StageV1:
     Type: AWS::ApiGateway::Stage
     DependsOn: StageV1Deployment
