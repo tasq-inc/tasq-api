@@ -325,7 +325,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"username\": \"$input.params('username')\"}"
+          "application/json": "{\"username\": \"$input.params('user')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -382,7 +382,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"Username\": \"$input.params('username')\",\"Team\": \"$input.params('teams')\",\"Roles\": \"$input.params('roles')\",\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"AcceptingTasqs\": \"$input.params('accepting_tasqs')\"}"
+          "application/json": "{\"username\": \"$input.params('user')\",\"team\": $input.json('$.team') ,\"roles\": $input.json('$.roles') ,\"email\": $input.json('$.email') ,\"phone_number\": $input.json('$.phone_number') ,\"accepting_tasqs\": $input.json('$.accepting_tasqs'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
@@ -468,18 +468,6 @@ Resources:
 
 
 
-
-  ResponsesUserResource:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      RestApiId:
-        Ref: RestApi
-      ParentId:
-        Ref: ResponsesResource
-      PathPart: "{response_id}"
-
-
-
   PostUserResponseLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -523,7 +511,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"id\": \"$input.params('tasq_id')\",\"PredictionID\": \"$input.params('id')\",\"ResponseData\": \"$input.params('response_data')\",\"MarkAsComplete\": \"$input.params('mark_as_complete')\"}"
+          "application/json": "{\"id\": \"$input.params('id')\",\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
@@ -533,6 +521,22 @@ Resources:
       - ResponseModels:
           application/json: Empty
         StatusCode: 200
+
+
+
+
+
+  ResponsesUserResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: RestApi
+      ParentId:
+        Ref: ResponsesResource
+      PathPart: "{response_id}"
+
+
+
 
 
 
@@ -635,7 +639,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
+          "application/json": "{\"id\": \"$input.params('response_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -693,7 +697,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"prediction_id\": \"$input.params('id')\"}"
+          "application/json": "{\"prediction_id\": \"$input.params('response_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -825,7 +829,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"AssignedToUsername\": \"$input.params('assign_to_user')\",\"NodeID\": \"$input.params('node_id')\",\"PredictionType\": \"$input.params('type')\"}"
+          "application/json": "{\"node_id\": \"$input.params('node_id')\",\"assign_to_user\": $input.json('$.assign_to_user') ,\"type\": $input.json('$.type'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
@@ -894,7 +898,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
+          "application/json": "{\"id\": \"$input.params('tasq_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -950,7 +954,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
+          "application/json": "{\"id\": \"$input.params('tasq_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1008,7 +1012,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
+          "application/json": "{\"id\": \"$input.params('tasq_id')\", \"assign_to_user\": \"$input.params('assign_to_user')\", \"node_id\": \"$input.params('node_id')\", \"type\": \"$input.params('type')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1078,7 +1082,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"Username\": \"$input.params('username')\",\"Description\": \"$input.params('description')\",\"TicketTitle\": \"$input.params('ticket_title')\",\"IssueType\": \"$input.params('issue_type')\",\"Page\": \"$input.params('page')\",\"Operator\": \"$input.params('operator')\"}"
+          "application/json": "{\"username\": \"$input.params('username')\",\"description\": \"$input.params('description')\",\"ticket_title\": \"$input.params('ticket_title')\",\"issue_type\": \"$input.params('issue_type')\",\"page\": \"$input.params('page')\",\"operator\": \"$input.params('operator')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1132,7 +1136,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"IssueType\": \"$input.params('issue_type')\",\"Username\": \"$input.params('username')\"}"
+          "application/json": "{\"id\": \"$input.params('ticket_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1241,7 +1245,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"TicketId\": \"$input.params('id')\"}"
+          "application/json": "{\"id\": \"$input.params('ticket_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1296,7 +1300,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"TicketId\": \"$input.params('id')\"}"
+          "application/json": "{\"ticket_id\": \"$input.params('id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1367,7 +1371,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Username\": \"$input.params('username')\"}"
+          "application/json": "{\"settings\": \"$input.params('settings')\",\"username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1515,7 +1519,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Settings\": \"$input.params('settings')\",\"Username\": \"$input.params('username')\"}"
+          "application/json": "{\"id\": \"$input.params('workflow_id')\",\"settings\": \"$input.params('settings')\",\"username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1571,7 +1575,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\"}"
+          "application/json": "{\"id\": \"$input.params('workflow_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -1626,7 +1630,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"AssignmentCountDays\": \"$input.params('days')\"}"
+          "application/json": "{\"id\": \"$input.params('workflow_id')\",\"days\": \"$input.params('days')\"}"
       RequestModels:
         application/json:
           Ref: Model
