@@ -1660,11 +1660,12 @@ Resources:
         Ref: RestApi
       # AutoDeploy: true
 
+
   ApiCustomDomainMapping:
     Type: AWS::ApiGateway::BasePathMapping
     Properties: 
       BasePath: v2
-      DomainName: "dev-api.tasqinc.com" # "${{file(./src/resources/config.yml):TasqAPIDomain-${{self:provider.stage}}}}"
+      DomainName: "api.tasqinc.com" # "${{file(./src/resources/config.yml):TasqAPIDomain-${{self:provider.stage}}}}"
       RestApiId:
         Ref: RestApi
       Stage: 
