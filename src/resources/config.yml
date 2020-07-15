@@ -113,7 +113,7 @@ TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:Tasqlog
 GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provider.stage}}"
 
 TasqAPIDomain-prod: "api.tasqinc.com"
-TasqAPIDomain-dev: "api-dev.tasqinc.com"
+TasqAPIDomain-dev: "dev-api.tasqinc.com"
 
 
 UserPool: "${{self:provider.stage}}/enerplus/cognito/pool"
