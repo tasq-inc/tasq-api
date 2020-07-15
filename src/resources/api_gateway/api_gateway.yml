@@ -3,8 +3,8 @@ Resources:
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: "API-dev"
-
+      Name: "${{file(./src/resources/config.yml):TasqAPIName}}"
+      
 
   RestApiAuthorizer:
     Type: AWS::ApiGateway::Authorizer
