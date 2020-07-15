@@ -3,8 +3,7 @@ Resources:
   RestApi:
     Type: AWS::ApiGateway::RestApi
     Properties:
-      Name: Api
-
+      Name: "API-dev"
 
 
   RestApiAuthorizer:
@@ -133,39 +132,6 @@ Resources:
         - id
         - name
 
-
-
-  StageV1Deployment:
-    Type: AWS::ApiGateway::Deployment
-    DependsOn: ProfileResource
-    Properties:
-      RestApiId:
-        Ref: RestApi
-
-
-        
-
-  StageV1:
-    Type: AWS::ApiGateway::Stage
-    DependsOn: StageV1Deployment
-    Properties:
-      StageName: v1
-      Description: 'API Version 1'
-      DeploymentId:
-        Ref: StageV1Deployment
-      RestApiId:
-        Ref: RestApi
-      # AutoDeploy: true
-
-  ApiCustomDomainMapping:
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties: 
-      BasePath: v1
-      DomainName: "api.tasqinc.com"
-      RestApiId:
-        Ref: RestApi
-      Stage: 
-        Ref: StageV1
 
 
 
@@ -1671,4 +1637,38 @@ Resources:
           application/json: Empty
         StatusCode: 200
 
+
+
+
+  StageV1Deployment:
+    Type: AWS::ApiGateway::Deployment
+    DependsOn: ProfileResource
+    Properties:
+      RestApiId:
+        Ref: RestApi
+
+
+
+  StageV1:
+    Type: AWS::ApiGateway::Stage
+    DependsOn: StageV1Deployment
+    Properties:
+      StageName: v1
+      Description: 'API Version 1'
+      DeploymentId:
+        Ref: StageV1Deployment
+      RestApiId:
+        Ref: RestApi
+      # AutoDeploy: true
+
+
+  ApiCustomDomainMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties: 
+      BasePath: v1
+      DomainName: "${{file(./src/resources/config.yml):TasqAPIDomain-${{self:provider.stage}}}}"
+      RestApiId:
+        Ref: RestApi
+      Stage: 
+        Ref: StageV1
 

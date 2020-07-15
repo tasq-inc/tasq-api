@@ -5,23 +5,23 @@
       "name": "tasq-api"
     },
     "provider": {
-      "stage": "dev",
+      "stage": "prod",
       "variableSyntax": "\\${{([ ~:a-zA-Z0-9._@\\'\",\\-\\/\\(\\)]+?)}}",
       "name": "aws",
-      "stackName": "tasq-api-dev",
+      "stackName": "tasq-api-prod",
       "deploymentBucket": "serverless-bucket-main",
       "runtime": "python3.7",
       "region": "us-east-2",
-      "containerTag": "dev",
+      "containerTag": "latest",
       "versionFunctions": false,
       "logRetentionInDays": 14,
       "stackTags": {
-        "Environment": "dev",
-        "VersionTag": "v1-1-g97fd8a0"
+        "Environment": "prod",
+        "VersionTag": "v1-36-g7ad6f57"
       },
       "tags": {
-        "Environment": "dev",
-        "VersionTag": "v1-1-g97fd8a0"
+        "Environment": "prod",
+        "VersionTag": "v1-36-g7ad6f57"
       },
       "iamRoleStatements": [
         {
@@ -33,18 +33,21 @@
         }
       ],
       "environment": {
-        "CentralLoggerStackName": "tasq-central-logger-dev",
-        "IamNetworkStackName": "tasq-aws-iam-networking-dev",
-        "MetaDataStoreStackName": "tasq-meta-datastore-dev",
-        "WellStateS3BucketName": "tasq-well-state-worker-dev",
-        "PredictionsTableStackName": "tasq-detect-state-change-dev",
-        "FailureTableStackName": "tasq-failure-prediction-dev",
-        "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-dev",
-        "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-dev",
+        "CentralLoggerStackName": "tasq-central-logger-prod",
+        "IamNetworkStackName": "tasq-aws-iam-networking-prod",
+        "MetaDataStoreStackName": "tasq-meta-datastore-prod",
+        "WellStateS3BucketName": "tasq-well-state-worker-prod",
+        "PredictionsTableStackName": "tasq-detect-state-change-prod",
+        "FailureTableStackName": "tasq-failure-prediction-prod",
+        "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-prod",
+        "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-prod",
         "StackMainUserId": "711589413744",
         "EcrAddress": "711589413744.dkr.ecr.us-east-2.amazonaws.com",
-        "InboundStackName": "tasq-feature-extract-dev",
-        "LambdaLayerStack": "tasq-lambda-layers-dev"
+        "InboundStackName": "tasq-feature-extract-prod",
+        "LambdaLayerStack": "tasq-lambda-layers-prod",
+        "DetectStateChangeStackName": "tasq-detect-state-change-prod",
+        "TasqAnalyticsStackName": "tasq-analytics-prod",
+        "AssignUserTasqStackName": "tasq-assign-user-tasks-prod"
       },
       "deploymentBucketObject": {
         "name": "serverless-bucket-main",
@@ -58,21 +61,21 @@
           "AuthAppSyncSourceLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tasq-api-dev-AuthAppSyncSource",
+              "LogGroupName": "/aws/lambda/tasq-api-prod-AuthAppSyncSource",
               "RetentionInDays": 14
             }
           },
           "GenPersAccTokenSyncSourceLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tasq-api-dev-GenPersAccTokenSyncSource",
+              "LogGroupName": "/aws/lambda/tasq-api-prod-GenPersAccTokenSyncSource",
               "RetentionInDays": 14
             }
           },
           "GetPersAccTokenSyncSourceLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/tasq-api-dev-GetPersAccTokenSyncSource",
+              "LogGroupName": "/aws/lambda/tasq-api-prod-GetPersAccTokenSyncSource",
               "RetentionInDays": 14
             }
           },
@@ -102,7 +105,7 @@
                       "-",
                       [
                         "tasq-api",
-                        "dev",
+                        "prod",
                         "lambda"
                       ]
                     ]
@@ -118,7 +121,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tasq-api-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tasq-api-prod*:*"
                           }
                         ]
                       },
@@ -129,7 +132,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tasq-api-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/tasq-api-prod*:*:*"
                           }
                         ]
                       },
@@ -146,7 +149,7 @@
                   "-",
                   [
                     "tasq-api",
-                    "dev",
+                    "prod",
                     {
                       "Ref": "AWS::Region"
                     },
@@ -175,9 +178,9 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-bucket-main",
-                "S3Key": "tasq-api/serverless/tasq-api/dev/1593715523608-2020-07-02T18:45:23.608Z/tasq-api.zip"
+                "S3Key": "tasq-api/serverless/tasq-api/prod/1594746356895-2020-07-14T17:05:56.895Z/tasq-api.zip"
               },
-              "FunctionName": "tasq-api-dev-AuthAppSyncSource",
+              "FunctionName": "tasq-api-prod-AuthAppSyncSource",
               "Handler": "src/functions/appsync_resolver/appsync_sources.authorize_api_user",
               "MemorySize": 256,
               "Role": {
@@ -192,27 +195,30 @@
               "Tags": [
                 {
                   "Key": "Environment",
-                  "Value": "dev"
+                  "Value": "prod"
                 },
                 {
                   "Key": "VersionTag",
-                  "Value": "v1-1-g97fd8a0"
+                  "Value": "v1-36-g7ad6f57"
                 }
               ],
               "Environment": {
                 "Variables": {
-                  "CentralLoggerStackName": "tasq-central-logger-dev",
-                  "IamNetworkStackName": "tasq-aws-iam-networking-dev",
-                  "MetaDataStoreStackName": "tasq-meta-datastore-dev",
-                  "WellStateS3BucketName": "tasq-well-state-worker-dev",
-                  "PredictionsTableStackName": "tasq-detect-state-change-dev",
-                  "FailureTableStackName": "tasq-failure-prediction-dev",
-                  "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-dev",
-                  "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-dev",
+                  "CentralLoggerStackName": "tasq-central-logger-prod",
+                  "IamNetworkStackName": "tasq-aws-iam-networking-prod",
+                  "MetaDataStoreStackName": "tasq-meta-datastore-prod",
+                  "WellStateS3BucketName": "tasq-well-state-worker-prod",
+                  "PredictionsTableStackName": "tasq-detect-state-change-prod",
+                  "FailureTableStackName": "tasq-failure-prediction-prod",
+                  "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-prod",
+                  "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-prod",
                   "StackMainUserId": "711589413744",
                   "EcrAddress": "711589413744.dkr.ecr.us-east-2.amazonaws.com",
-                  "InboundStackName": "tasq-feature-extract-dev",
-                  "LambdaLayerStack": "tasq-lambda-layers-dev",
+                  "InboundStackName": "tasq-feature-extract-prod",
+                  "LambdaLayerStack": "tasq-lambda-layers-prod",
+                  "DetectStateChangeStackName": "tasq-detect-state-change-prod",
+                  "TasqAnalyticsStackName": "tasq-analytics-prod",
+                  "AssignUserTasqStackName": "tasq-assign-user-tasks-prod",
                   "API_GATEWAY_TOKENS_TABLE": {
                     "Ref": "ApiGatewayTokensTable"
                   }
@@ -221,21 +227,21 @@
               "VpcConfig": {
                 "SecurityGroupIds": [
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:EcsContainerSecurityGroup"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:EcsContainerSecurityGroup"
                   }
                 ],
                 "SubnetIds": [
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:MainSubnet1"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:MainSubnet1"
                   },
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:MainSubnet2"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:MainSubnet2"
                   }
                 ]
               },
               "Layers": [
                 {
-                  "Fn::ImportValue": "tasq-lambda-layers-dev:TasqloggingLambdaLayer"
+                  "Fn::ImportValue": "tasq-lambda-layers-prod:TasqloggingLambdaLayer"
                 }
               ]
             },
@@ -248,9 +254,9 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-bucket-main",
-                "S3Key": "tasq-api/serverless/tasq-api/dev/1593715523608-2020-07-02T18:45:23.608Z/tasq-api.zip"
+                "S3Key": "tasq-api/serverless/tasq-api/prod/1594746356895-2020-07-14T17:05:56.895Z/tasq-api.zip"
               },
-              "FunctionName": "tasq-api-dev-GenPersAccTokenSyncSource",
+              "FunctionName": "tasq-api-prod-GenPersAccTokenSyncSource",
               "Handler": "src/functions/appsync_resolver/appsync_sources.create_new_auth_token",
               "MemorySize": 192,
               "Role": {
@@ -265,27 +271,30 @@
               "Tags": [
                 {
                   "Key": "Environment",
-                  "Value": "dev"
+                  "Value": "prod"
                 },
                 {
                   "Key": "VersionTag",
-                  "Value": "v1-1-g97fd8a0"
+                  "Value": "v1-36-g7ad6f57"
                 }
               ],
               "Environment": {
                 "Variables": {
-                  "CentralLoggerStackName": "tasq-central-logger-dev",
-                  "IamNetworkStackName": "tasq-aws-iam-networking-dev",
-                  "MetaDataStoreStackName": "tasq-meta-datastore-dev",
-                  "WellStateS3BucketName": "tasq-well-state-worker-dev",
-                  "PredictionsTableStackName": "tasq-detect-state-change-dev",
-                  "FailureTableStackName": "tasq-failure-prediction-dev",
-                  "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-dev",
-                  "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-dev",
+                  "CentralLoggerStackName": "tasq-central-logger-prod",
+                  "IamNetworkStackName": "tasq-aws-iam-networking-prod",
+                  "MetaDataStoreStackName": "tasq-meta-datastore-prod",
+                  "WellStateS3BucketName": "tasq-well-state-worker-prod",
+                  "PredictionsTableStackName": "tasq-detect-state-change-prod",
+                  "FailureTableStackName": "tasq-failure-prediction-prod",
+                  "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-prod",
+                  "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-prod",
                   "StackMainUserId": "711589413744",
                   "EcrAddress": "711589413744.dkr.ecr.us-east-2.amazonaws.com",
-                  "InboundStackName": "tasq-feature-extract-dev",
-                  "LambdaLayerStack": "tasq-lambda-layers-dev",
+                  "InboundStackName": "tasq-feature-extract-prod",
+                  "LambdaLayerStack": "tasq-lambda-layers-prod",
+                  "DetectStateChangeStackName": "tasq-detect-state-change-prod",
+                  "TasqAnalyticsStackName": "tasq-analytics-prod",
+                  "AssignUserTasqStackName": "tasq-assign-user-tasks-prod",
                   "API_GATEWAY_TOKENS_TABLE": {
                     "Ref": "ApiGatewayTokensTable"
                   }
@@ -294,15 +303,15 @@
               "VpcConfig": {
                 "SecurityGroupIds": [
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:EcsContainerSecurityGroup"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:EcsContainerSecurityGroup"
                   }
                 ],
                 "SubnetIds": [
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:MainSubnet1"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:MainSubnet1"
                   },
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:MainSubnet2"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:MainSubnet2"
                   }
                 ]
               }
@@ -317,9 +326,9 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-bucket-main",
-                "S3Key": "tasq-api/serverless/tasq-api/dev/1593715523608-2020-07-02T18:45:23.608Z/tasq-api.zip"
+                "S3Key": "tasq-api/serverless/tasq-api/prod/1594746356895-2020-07-14T17:05:56.895Z/tasq-api.zip"
               },
-              "FunctionName": "tasq-api-dev-GetPersAccTokenSyncSource",
+              "FunctionName": "tasq-api-prod-GetPersAccTokenSyncSource",
               "Handler": "src/functions/appsync_resolver/appsync_sources.get_auth_token",
               "MemorySize": 192,
               "Role": {
@@ -334,27 +343,30 @@
               "Tags": [
                 {
                   "Key": "Environment",
-                  "Value": "dev"
+                  "Value": "prod"
                 },
                 {
                   "Key": "VersionTag",
-                  "Value": "v1-1-g97fd8a0"
+                  "Value": "v1-36-g7ad6f57"
                 }
               ],
               "Environment": {
                 "Variables": {
-                  "CentralLoggerStackName": "tasq-central-logger-dev",
-                  "IamNetworkStackName": "tasq-aws-iam-networking-dev",
-                  "MetaDataStoreStackName": "tasq-meta-datastore-dev",
-                  "WellStateS3BucketName": "tasq-well-state-worker-dev",
-                  "PredictionsTableStackName": "tasq-detect-state-change-dev",
-                  "FailureTableStackName": "tasq-failure-prediction-dev",
-                  "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-dev",
-                  "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-dev",
+                  "CentralLoggerStackName": "tasq-central-logger-prod",
+                  "IamNetworkStackName": "tasq-aws-iam-networking-prod",
+                  "MetaDataStoreStackName": "tasq-meta-datastore-prod",
+                  "WellStateS3BucketName": "tasq-well-state-worker-prod",
+                  "PredictionsTableStackName": "tasq-detect-state-change-prod",
+                  "FailureTableStackName": "tasq-failure-prediction-prod",
+                  "RawScadaIngestStackName": "tasq-raw-scada-ingest-enerplus-prod",
+                  "CleanScadaIngestStackName": "tasq-clean-scada-ingest-enerplus-prod",
                   "StackMainUserId": "711589413744",
                   "EcrAddress": "711589413744.dkr.ecr.us-east-2.amazonaws.com",
-                  "InboundStackName": "tasq-feature-extract-dev",
-                  "LambdaLayerStack": "tasq-lambda-layers-dev",
+                  "InboundStackName": "tasq-feature-extract-prod",
+                  "LambdaLayerStack": "tasq-lambda-layers-prod",
+                  "DetectStateChangeStackName": "tasq-detect-state-change-prod",
+                  "TasqAnalyticsStackName": "tasq-analytics-prod",
+                  "AssignUserTasqStackName": "tasq-assign-user-tasks-prod",
                   "API_GATEWAY_TOKENS_TABLE": {
                     "Ref": "ApiGatewayTokensTable"
                   }
@@ -363,15 +375,15 @@
               "VpcConfig": {
                 "SecurityGroupIds": [
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:EcsContainerSecurityGroup"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:EcsContainerSecurityGroup"
                   }
                 ],
                 "SubnetIds": [
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:MainSubnet1"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:MainSubnet1"
                   },
                   {
-                    "Fn::ImportValue": "tasq-aws-iam-networking-dev:MainSubnet2"
+                    "Fn::ImportValue": "tasq-aws-iam-networking-prod:MainSubnet2"
                   }
                 ]
               }
@@ -380,185 +392,6 @@
               "GetPersAccTokenSyncSourceLogGroup",
               "AppSyncSourceLambdaRole"
             ]
-          },
-          "BrokerInitiateLambdaRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-              "AssumeRolePolicyDocument": {
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": {
-                      "Service": [
-                        "lambda.amazonaws.com",
-                        "ec2.amazonaws.com",
-                        "ecs-tasks.amazonaws.com"
-                      ]
-                    },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
-                  }
-                ]
-              },
-              "ManagedPolicyArns": [
-                "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
-                "arn:aws:iam::aws:policy/AWSLambdaExecute",
-                "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-                "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-                "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-                "arn:aws:iam::aws:policy/AmazonCognitoPowerUser",
-                "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-              ],
-              "Policies": [
-                {
-                  "PolicyName": "network-lambda-role-policy",
-                  "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                      {
-                        "Effect": "Allow",
-                        "Action": [
-                          "ec2:DescribeInstances",
-                          "ec2:CreateNetworkInterface",
-                          "ec2:AttachNetworkInterface",
-                          "ec2:DescribeNetworkInterfaces",
-                          "ec2:DeleteNetworkInterface"
-                        ],
-                        "Resource": "*"
-                      }
-                    ]
-                  }
-                }
-              ]
-            }
-          },
-          "BrokerInstanceRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-              "AssumeRolePolicyDocument": {
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": {
-                      "Service": [
-                        "ec2.amazonaws.com",
-                        "ecs-tasks.amazonaws.com"
-                      ]
-                    },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
-                  }
-                ]
-              },
-              "ManagedPolicyArns": [
-                "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-                "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-                "arn:aws:iam::aws:policy/AmazonSQSFullAccess",
-                "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
-                "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-                "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
-                "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-                "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-                "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-                {
-                  "Ref": "ECSSecretsAccessPolicy"
-                }
-              ]
-            }
-          },
-          "BrokerInstanceProfile": {
-            "Type": "AWS::IAM::InstanceProfile",
-            "Properties": {
-              "Roles": [
-                {
-                  "Ref": "BrokerInstanceRole"
-                }
-              ]
-            }
-          },
-          "ECSSecretsAccessPolicy": {
-            "Type": "AWS::IAM::ManagedPolicy",
-            "Properties": {
-              "PolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Action": [
-                      "ssm:GetParameters",
-                      "secretsmanager:GetSecretValue",
-                      "kms:Decrypt"
-                    ],
-                    "Resource": [
-                      "arn:aws:kms:us-east-2:711589413744:key/6a5aabc0-9c8e-4efc-9244-3054cd196cab",
-                      "arn:aws:secretsmanager:us-east-2:711589413744:secret:influx/enerplus/dev/cloud-EENOZI"
-                    ]
-                  }
-                ]
-              }
-            }
-          },
-          "WorkerTaskRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-              "AssumeRolePolicyDocument": {
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": {
-                      "Service": [
-                        "ec2.amazonaws.com",
-                        "ecs-tasks.amazonaws.com"
-                      ]
-                    },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
-                  }
-                ]
-              },
-              "ManagedPolicyArns": [
-                "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-                "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-                "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-                "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
-                "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-                "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-                "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-                "arn:aws:iam::aws:policy/AmazonCognitoPowerUser",
-                {
-                  "Ref": "ECSSecretsAccessPolicy"
-                }
-              ]
-            }
-          },
-          "WorkerAutoScalingRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-              "AssumeRolePolicyDocument": {
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": {
-                      "Service": [
-                        "application-autoscaling.amazonaws.com"
-                      ]
-                    },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
-                  }
-                ]
-              },
-              "ManagedPolicyArns": [
-                "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole",
-                "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-                "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-                "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
-              ]
-            }
           },
           "AppsyncAccessDynamoDB": {
             "Type": "AWS::IAM::Role",
@@ -627,7 +460,7 @@
                           "secretsmanager:ListSecretVersionIds"
                         ],
                         "Resource": [
-                          "arn:aws:secretsmanager:us-east-2:711589413744:secret:influx/enerplus/dev/cloud-EENOZI"
+                          "arn:aws:secretsmanager:us-east-2:711589413744:secret:influx/enerplus/prod/cloud-EENOZI"
                         ]
                       }
                     ]
@@ -700,92 +533,6 @@
               ]
             }
           },
-          "MainInstanceProfile": {
-            "Type": "AWS::IAM::InstanceProfile",
-            "Properties": {
-              "Roles": [
-                {
-                  "Ref": "ecsInstanceRole"
-                }
-              ]
-            }
-          },
-          "ecsInstanceRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-              "AssumeRolePolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": {
-                      "Service": [
-                        "ec2.amazonaws.com"
-                      ]
-                    },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
-                  }
-                ]
-              },
-              "ManagedPolicyArns": [
-                {
-                  "Ref": "Ec2ContainerService"
-                },
-                {
-                  "Ref": "AmazonDynamoDBFullAccess"
-                },
-                {
-                  "Ref": "AppSyncTutorialAmazonDynamoDBPolicy"
-                },
-                "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-                "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-                "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-              ],
-              "RoleName": "tasq-api-dev-ecsInstanceRole",
-              "Path": "/"
-            }
-          },
-          "ecsTaskExecutionRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-              "AssumeRolePolicyDocument": {
-                "Version": "2012-10-17",
-                "Statement": [
-                  {
-                    "Effect": "Allow",
-                    "Principal": {
-                      "Service": [
-                        "ecs-tasks.amazonaws.com"
-                      ]
-                    },
-                    "Action": [
-                      "sts:AssumeRole"
-                    ]
-                  }
-                ]
-              },
-              "ManagedPolicyArns": [
-                {
-                  "Ref": "ECSTaskExecutionRole"
-                },
-                {
-                  "Ref": "CloudWatchLogsPolicy"
-                },
-                {
-                  "Ref": "AmazonDynamoDBFullAccess"
-                },
-                {
-                  "Ref": "AppSyncTutorialAmazonDynamoDBPolicy"
-                },
-                "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-                "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-                "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-              ],
-              "RoleName": "tasq-api-dev-ecsTaskExecutionRole"
-            }
-          },
           "RestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
@@ -811,7 +558,7 @@
                       "Ref": "AWS::Region"
                     },
                     ":lambda:path/2015-03-31/functions/",
-                    "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-dev-AuthAppSyncSource",
+                    "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-prod-AuthAppSyncSource",
                     "/invocations"
                   ]
                 ]
@@ -840,39 +587,6 @@
               },
               "Runtime": "python3.7",
               "Timeout": 60
-            }
-          },
-          "LambdaPermission": {
-            "Type": "AWS::Lambda::Permission",
-            "Properties": {
-              "Action": "lambda:invokeFunction",
-              "FunctionName": {
-                "Fn::GetAtt": [
-                  "Lambda",
-                  "Arn"
-                ]
-              },
-              "Principal": "apigateway.amazonaws.com",
-              "SourceArn": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:execute-api:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":",
-                    {
-                      "Ref": "AWS::AccountId"
-                    },
-                    ":",
-                    {
-                      "Ref": "RestApi"
-                    },
-                    "/*"
-                  ]
-                ]
-              }
             }
           },
           "AuthLambdaRole": {
@@ -963,7 +677,7 @@
                         "Effect": "Allow",
                         "Action": "lambda:invokeFunction",
                         "Resource": [
-                          "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-dev-AuthAppSyncSource"
+                          "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-prod-AuthAppSyncSource"
                         ]
                       }
                     ]
@@ -1000,41 +714,6 @@
               }
             }
           },
-          "StageV1Deployment": {
-            "Type": "AWS::ApiGateway::Deployment",
-            "Properties": {
-              "RestApiId": {
-                "Ref": "RestApi"
-              }
-            }
-          },
-          "StageV1": {
-            "Type": "AWS::ApiGateway::Stage",
-            "DependsOn": "StageV1Deployment",
-            "Properties": {
-              "StageName": "v2",
-              "Description": "API Version 2",
-              "DeploymentId": {
-                "Ref": "StageV1Deployment"
-              },
-              "RestApiId": {
-                "Ref": "RestApi"
-              }
-            }
-          },
-          "ApiCustomDomainMapping": {
-            "Type": "AWS::ApiGateway::BasePathMapping",
-            "Properties": {
-              "BasePath": "v2",
-              "DomainName": "api.tasqinc.com",
-              "RestApiId": {
-                "Ref": "RestApi"
-              },
-              "Stage": {
-                "Ref": "StageV1"
-              }
-            }
-          },
           "ProfileResource": {
             "Type": "AWS::ApiGateway::Resource",
             "Properties": {
@@ -1050,9 +729,39 @@
               "PathPart": "users"
             }
           },
-          "GetProfile": {
+          "GetProfilesLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllUsersSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetProfiles": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetProfilesLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1078,10 +787,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllUsersSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1091,10 +797,7 @@
                   {
                     "StatusCode": 200
                   }
-                ],
-                "RequestTemplates": {
-                  "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
-                }
+                ]
               },
               "RequestModels": {
                 "application/json": {
@@ -1114,9 +817,39 @@
               ]
             }
           },
+          "PostProfileLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:UserSignUpSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PostProfile": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PostProfileLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1142,10 +875,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:UserSignUpSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1157,7 +887,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"post\", \"body\": $input.json('$')}"
+                  "application/json": "{\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"Roles\": \"$input.params('roles')\"}"
                 }
               },
               "RequestModels": {
@@ -1190,9 +920,39 @@
               "PathPart": "{user}"
             }
           },
+          "GetProfileUserLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetUserDetailsSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GetProfileUser": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetProfileUserLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1218,10 +978,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetUserDetailsSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1233,7 +990,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                  "application/json": "{\"username\": \"$input.params('username')\"}"
                 }
               },
               "RequestModels": {
@@ -1254,9 +1011,39 @@
               ]
             }
           },
+          "PutProfileUserLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateProfileSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PutProfileUser": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PutProfileUserLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1282,10 +1069,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateProfileSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1297,7 +1081,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                  "application/json": "{\"Username\": \"$input.params('username')\",\"Team\": \"$input.params('teams')\",\"Roles\": \"$input.params('roles')\",\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"AcceptingTasqs\": \"$input.params('accepting_tasqs')\"}"
                 }
               },
               "RequestModels": {
@@ -1333,9 +1117,139 @@
               "PathPart": "responses"
             }
           },
-          "PostResponse": {
+          "GetResponseLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponsesSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetResponse": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetResponseLambdaPermission",
+            "Properties": {
+              "AuthorizationType": "CUSTOM",
+              "AuthorizerId": {
+                "Ref": "RestApiAuthorizer"
+              },
+              "RestApiId": {
+                "Ref": "RestApi"
+              },
+              "ResourceId": {
+                "Ref": "ResponsesResource"
+              },
+              "HttpMethod": "GET",
+              "Integration": {
+                "Type": "AWS",
+                "IntegrationHttpMethod": "POST",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponsesSyncSource"
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                },
+                "IntegrationResponses": [
+                  {
+                    "StatusCode": 200
+                  }
+                ]
+              },
+              "RequestModels": {
+                "application/json": {
+                  "Ref": "Model"
+                }
+              },
+              "RequestParameters": {
+                "method.request.header.Authorization": true
+              },
+              "MethodResponses": [
+                {
+                  "ResponseModels": {
+                    "application/json": "Empty"
+                  },
+                  "StatusCode": 200
+                }
+              ]
+            }
+          },
+          "ResponsesUserResource": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "RestApi"
+              },
+              "ParentId": {
+                "Ref": "ResponsesResource"
+              },
+              "PathPart": "{response_id}"
+            }
+          },
+          "PostUserResponseLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "PostUserResponse": {
+            "Type": "AWS::ApiGateway::Method",
+            "DependsOn": "PostUserResponseLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1361,10 +1275,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1376,7 +1287,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"post\", \"body\": $input.json('$')}"
+                  "application/json": "{\"id\": \"$input.params('tasq_id')\",\"PredictionID\": \"$input.params('id')\",\"ResponseData\": \"$input.params('response_data')\",\"MarkAsComplete\": \"$input.params('mark_as_complete')\"}"
                 }
               },
               "RequestModels": {
@@ -1397,74 +1308,39 @@
               ]
             }
           },
-          "GetResponse": {
-            "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+          "PutResponseUserPredictionLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
             "Properties": {
-              "AuthorizationType": "CUSTOM",
-              "AuthorizerId": {
-                "Ref": "RestApiAuthorizer"
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
               },
-              "RestApiId": {
-                "Ref": "RestApi"
-              },
-              "ResourceId": {
-                "Ref": "ResponsesResource"
-              },
-              "HttpMethod": "GET",
-              "Integration": {
-                "Type": "AWS",
-                "IntegrationHttpMethod": "POST",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
                   ]
-                },
-                "IntegrationResponses": [
-                  {
-                    "StatusCode": 200
-                  }
                 ]
-              },
-              "MethodResponses": [
-                {
-                  "ResponseModels": {
-                    "application/json": "Empty"
-                  },
-                  "StatusCode": 200
-                }
-              ]
-            }
-          },
-          "ResponsesUserResource": {
-            "Type": "AWS::ApiGateway::Resource",
-            "Properties": {
-              "RestApiId": {
-                "Ref": "RestApi"
-              },
-              "ParentId": {
-                "Ref": "ResponsesResource"
-              },
-              "PathPart": "{response_id}"
+              }
             }
           },
           "PutResponseUserPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PutResponseUserPredictionLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1476,7 +1352,7 @@
               "ResourceId": {
                 "Ref": "ResponsesUserResource"
               },
-              "HttpMethod": "PUT",
+              "HttpMethod": "POST",
               "Integration": {
                 "Type": "AWS",
                 "IntegrationHttpMethod": "POST",
@@ -1490,10 +1366,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1505,7 +1378,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                  "application/json": "{\"id\": \"$input.params('response_id')\",\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
                 }
               },
               "RequestModels": {
@@ -1526,9 +1399,39 @@
               ]
             }
           },
+          "DeleteResponseUserPredictionLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteUserResponseSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "DeleteResponseUserPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "DeleteResponseUserPredictionLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1554,10 +1457,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteUserResponseSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1569,7 +1469,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                  "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -1590,9 +1490,39 @@
               ]
             }
           },
+          "GetResponseUserPredictionLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponseSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GetResponseUserPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetResponseUserPredictionLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1618,10 +1548,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponseSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1633,7 +1560,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                  "application/json": "{\"prediction_id\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -1669,9 +1596,39 @@
               "PathPart": "tasqs"
             }
           },
+          "GetTasqsLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:GetAllTasqsSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GetTasqs": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetTasqsLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1697,10 +1654,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:GetAllTasqsSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1712,7 +1666,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                  "application/json": "{\"team\": \"$input.params('team')\",\"username\": \"$input.params('username')\"}"
                 }
               },
               "RequestModels": {
@@ -1733,9 +1687,39 @@
               ]
             }
           },
+          "PostTasqsLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:PostNewTasqSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PostTasqs": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PostTasqsLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1761,10 +1745,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:PostNewTasqSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1776,7 +1757,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"post\", \"body\": $input.json('$')}"
+                  "application/json": "{\"AssignedToUsername\": \"$input.params('assign_to_user')\",\"NodeID\": \"$input.params('node_id')\",\"PredictionType\": \"$input.params('type')\"}"
                 }
               },
               "RequestModels": {
@@ -1809,9 +1790,39 @@
               "PathPart": "{tasq_id}"
             }
           },
+          "DeleteTasqTasqLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteTasqSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "DeleteTasqTasqPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "DeleteTasqTasqLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1837,10 +1848,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteTasqSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1852,7 +1860,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                  "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -1873,9 +1881,39 @@
               ]
             }
           },
+          "GetTasqTasqLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:GetPredictionRowSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GetTasqTasqPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetTasqTasqLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1901,10 +1939,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:GetPredictionRowSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1916,7 +1951,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                  "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -1937,9 +1972,39 @@
               ]
             }
           },
+          "PutTasqTasqLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateTasqSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PutTasqTasqPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PutTasqTasqLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -1965,10 +2030,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateTasqSyncSource"
                       },
                       "/invocations"
                     ]
@@ -1980,7 +2042,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                  "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -2016,9 +2078,39 @@
               "PathPart": "tickets"
             }
           },
+          "PostTicketsLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-analytics-prod:SubmitTicketSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PostTickets": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PostTicketsLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2044,10 +2136,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-analytics-prod:SubmitTicketSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2059,7 +2148,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                  "application/json": "{\"Username\": \"$input.params('username')\",\"Description\": \"$input.params('description')\",\"TicketTitle\": \"$input.params('ticket_title')\",\"IssueType\": \"$input.params('issue_type')\",\"Page\": \"$input.params('page')\",\"Operator\": \"$input.params('operator')\"}"
                 }
               },
               "RequestModels": {
@@ -2080,9 +2169,39 @@
               ]
             }
           },
+          "GetTicketsLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-analytics-prod:GetTrackedTicketsSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GetTickets": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetTicketsLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2108,10 +2227,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-analytics-prod:GetTrackedTicketsSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2123,7 +2239,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                  "application/json": "{\"IssueType\": \"$input.params('issue_type')\",\"Username\": \"$input.params('username')\"}"
                 }
               },
               "RequestModels": {
@@ -2156,73 +2272,39 @@
               "PathPart": "{ticket_id}"
             }
           },
-          "PutTicket": {
-            "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+          "DeleteTicketLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
             "Properties": {
-              "AuthorizationType": "CUSTOM",
-              "AuthorizerId": {
-                "Ref": "RestApiAuthorizer"
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-analytics-prod:DeleteTicketSyncSource"
               },
-              "RestApiId": {
-                "Ref": "RestApi"
-              },
-              "ResourceId": {
-                "Ref": "TicketIDResource"
-              },
-              "HttpMethod": "PUT",
-              "Integration": {
-                "Type": "AWS",
-                "IntegrationHttpMethod": "POST",
-                "Uri": {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:apigateway:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":lambda:path/2015-03-31/functions/",
-                      {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
-                      },
-                      "/invocations"
-                    ]
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
                   ]
-                },
-                "IntegrationResponses": [
-                  {
-                    "StatusCode": 200
-                  }
-                ],
-                "RequestTemplates": {
-                  "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
-                }
-              },
-              "RequestModels": {
-                "application/json": {
-                  "Ref": "Model"
-                }
-              },
-              "RequestParameters": {
-                "method.request.header.Authorization": true
-              },
-              "MethodResponses": [
-                {
-                  "ResponseModels": {
-                    "application/json": "Empty"
-                  },
-                  "StatusCode": 200
-                }
-              ]
+                ]
+              }
             }
           },
           "DeleteTicket": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "DeleteTicketLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2248,10 +2330,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-analytics-prod:DeleteTicketSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2263,7 +2342,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                  "application/json": "{\"TicketId\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -2284,9 +2363,39 @@
               ]
             }
           },
+          "GetTicketLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-analytics-prod:GetTicketSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GetTicket": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetTicketLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2312,10 +2421,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-analytics-prod:GetTicketSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2327,7 +2433,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                  "application/json": "{\"TicketId\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -2363,9 +2469,39 @@
               "PathPart": "workflows"
             }
           },
+          "PostWorkflowLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:PostWorkflowSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PostWorkflow": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PostWorkflowLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2391,10 +2527,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:PostWorkflowSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2406,7 +2539,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                  "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Username\": \"$input.params('username')\"}"
                 }
               },
               "RequestModels": {
@@ -2427,9 +2560,72 @@
               ]
             }
           },
-          "GetWorkflow": {
+          "LambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "Lambda",
+                  "Arn"
+                ]
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetWorkflowsLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllWorkflowsSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetWorkflows": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetWorkflowsLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2455,10 +2651,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllWorkflowsSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2469,6 +2662,11 @@
                     "StatusCode": 200
                   }
                 ]
+              },
+              "RequestModels": {
+                "application/json": {
+                  "Ref": "Model"
+                }
               },
               "RequestParameters": {
                 "method.request.header.Authorization": true
@@ -2495,9 +2693,39 @@
               "PathPart": "{workflow_id}"
             }
           },
+          "PutWorkflowLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateWorkflowSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "PutWorkflow": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "PutWorkflowLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2523,10 +2751,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateWorkflowSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2538,7 +2763,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                  "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Settings\": \"$input.params('settings')\",\"Username\": \"$input.params('username')\"}"
                 }
               },
               "RequestModels": {
@@ -2559,9 +2784,39 @@
               ]
             }
           },
+          "DeleteWorkflowPredictionLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:DeleteWorkflowSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "DeleteWorkflowPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "DeleteWorkflowPredictionLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2587,10 +2842,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:DeleteWorkflowSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2602,7 +2854,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                  "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\"}"
                 }
               },
               "RequestModels": {
@@ -2623,9 +2875,39 @@
               ]
             }
           },
+          "GetWorkflowPredictionLambdaPermission": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "Action": "lambda:invokeFunction",
+              "FunctionName": {
+                "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetWorkflowSyncSource"
+              },
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "RestApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
           "GetWorkflowPrediction": {
             "Type": "AWS::ApiGateway::Method",
-            "DependsOn": "LambdaPermission",
+            "DependsOn": "GetWorkflowPredictionLambdaPermission",
             "Properties": {
               "AuthorizationType": "CUSTOM",
               "AuthorizerId": {
@@ -2651,10 +2933,7 @@
                       },
                       ":lambda:path/2015-03-31/functions/",
                       {
-                        "Fn::GetAtt": [
-                          "Lambda",
-                          "Arn"
-                        ]
+                        "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetWorkflowSyncSource"
                       },
                       "/invocations"
                     ]
@@ -2666,7 +2945,7 @@
                   }
                 ],
                 "RequestTemplates": {
-                  "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                  "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"AssignmentCountDays\": \"$input.params('days')\"}"
                 }
               },
               "RequestModels": {
@@ -2685,6 +2964,29 @@
                   "StatusCode": 200
                 }
               ]
+            }
+          },
+          "StageV1Deployment": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "DependsOn": "ProfileResource",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "RestApi"
+              }
+            }
+          },
+          "StageV1": {
+            "Type": "AWS::ApiGateway::Stage",
+            "DependsOn": "StageV1Deployment",
+            "Properties": {
+              "StageName": "v1",
+              "Description": "API Version 1",
+              "DeploymentId": {
+                "Ref": "StageV1Deployment"
+              },
+              "RestApiId": {
+                "Ref": "RestApi"
+              }
             }
           },
           "ApiGatewayTokensTable": {
@@ -2763,7 +3065,7 @@
             "Type": "AWS::AppSync::GraphQLApi",
             "Properties": {
               "AuthenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "Name": "AuthTableQueryApi-dev",
+              "Name": "AuthTableQueryApi-prod",
               "UserPoolConfig": {
                 "AwsRegion": "us-east-1",
                 "DefaultAction": "ALLOW",
@@ -2986,7 +3288,7 @@
           }
         },
         "events": [],
-        "name": "tasq-api-dev-AuthAppSyncSource",
+        "name": "tasq-api-prod-AuthAppSyncSource",
         "memory": 256
       },
       "GenPersAccTokenSyncSource": {
@@ -3013,7 +3315,7 @@
           }
         },
         "events": [],
-        "name": "tasq-api-dev-GenPersAccTokenSyncSource",
+        "name": "tasq-api-prod-GenPersAccTokenSyncSource",
         "package": {},
         "memory": 192
       },
@@ -3041,7 +3343,7 @@
           }
         },
         "events": [],
-        "name": "tasq-api-dev-GetPersAccTokenSyncSource",
+        "name": "tasq-api-prod-GetPersAccTokenSyncSource",
         "package": {},
         "memory": 192
       }
@@ -3070,185 +3372,6 @@
         }
       },
       "Resources": {
-        "BrokerInitiateLambdaRole": {
-          "Type": "AWS::IAM::Role",
-          "Properties": {
-            "AssumeRolePolicyDocument": {
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Principal": {
-                    "Service": [
-                      "lambda.amazonaws.com",
-                      "ec2.amazonaws.com",
-                      "ecs-tasks.amazonaws.com"
-                    ]
-                  },
-                  "Action": [
-                    "sts:AssumeRole"
-                  ]
-                }
-              ]
-            },
-            "ManagedPolicyArns": [
-              "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
-              "arn:aws:iam::aws:policy/AWSLambdaExecute",
-              "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-              "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-              "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-              "arn:aws:iam::aws:policy/AmazonCognitoPowerUser",
-              "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-            ],
-            "Policies": [
-              {
-                "PolicyName": "network-lambda-role-policy",
-                "PolicyDocument": {
-                  "Version": "2012-10-17",
-                  "Statement": [
-                    {
-                      "Effect": "Allow",
-                      "Action": [
-                        "ec2:DescribeInstances",
-                        "ec2:CreateNetworkInterface",
-                        "ec2:AttachNetworkInterface",
-                        "ec2:DescribeNetworkInterfaces",
-                        "ec2:DeleteNetworkInterface"
-                      ],
-                      "Resource": "*"
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        "BrokerInstanceRole": {
-          "Type": "AWS::IAM::Role",
-          "Properties": {
-            "AssumeRolePolicyDocument": {
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Principal": {
-                    "Service": [
-                      "ec2.amazonaws.com",
-                      "ecs-tasks.amazonaws.com"
-                    ]
-                  },
-                  "Action": [
-                    "sts:AssumeRole"
-                  ]
-                }
-              ]
-            },
-            "ManagedPolicyArns": [
-              "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-              "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-              "arn:aws:iam::aws:policy/AmazonSQSFullAccess",
-              "arn:aws:iam::aws:policy/AmazonSNSFullAccess",
-              "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-              "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
-              "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-              "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-              "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-              {
-                "Ref": "ECSSecretsAccessPolicy"
-              }
-            ]
-          }
-        },
-        "BrokerInstanceProfile": {
-          "Type": "AWS::IAM::InstanceProfile",
-          "Properties": {
-            "Roles": [
-              {
-                "Ref": "BrokerInstanceRole"
-              }
-            ]
-          }
-        },
-        "ECSSecretsAccessPolicy": {
-          "Type": "AWS::IAM::ManagedPolicy",
-          "Properties": {
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "ssm:GetParameters",
-                    "secretsmanager:GetSecretValue",
-                    "kms:Decrypt"
-                  ],
-                  "Resource": [
-                    "arn:aws:kms:us-east-2:711589413744:key/6a5aabc0-9c8e-4efc-9244-3054cd196cab",
-                    "arn:aws:secretsmanager:us-east-2:711589413744:secret:influx/enerplus/dev/cloud-EENOZI"
-                  ]
-                }
-              ]
-            }
-          }
-        },
-        "WorkerTaskRole": {
-          "Type": "AWS::IAM::Role",
-          "Properties": {
-            "AssumeRolePolicyDocument": {
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Principal": {
-                    "Service": [
-                      "ec2.amazonaws.com",
-                      "ecs-tasks.amazonaws.com"
-                    ]
-                  },
-                  "Action": [
-                    "sts:AssumeRole"
-                  ]
-                }
-              ]
-            },
-            "ManagedPolicyArns": [
-              "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-              "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-              "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-              "arn:aws:iam::aws:policy/AmazonECS_FullAccess",
-              "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
-              "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-              "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-              "arn:aws:iam::aws:policy/AmazonCognitoPowerUser",
-              {
-                "Ref": "ECSSecretsAccessPolicy"
-              }
-            ]
-          }
-        },
-        "WorkerAutoScalingRole": {
-          "Type": "AWS::IAM::Role",
-          "Properties": {
-            "AssumeRolePolicyDocument": {
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Principal": {
-                    "Service": [
-                      "application-autoscaling.amazonaws.com"
-                    ]
-                  },
-                  "Action": [
-                    "sts:AssumeRole"
-                  ]
-                }
-              ]
-            },
-            "ManagedPolicyArns": [
-              "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceAutoscaleRole",
-              "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-              "arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess",
-              "arn:aws:iam::aws:policy/AmazonCognitoPowerUser"
-            ]
-          }
-        },
         "AppsyncAccessDynamoDB": {
           "Type": "AWS::IAM::Role",
           "Properties": {
@@ -3316,7 +3439,7 @@
                         "secretsmanager:ListSecretVersionIds"
                       ],
                       "Resource": [
-                        "arn:aws:secretsmanager:us-east-2:711589413744:secret:influx/enerplus/dev/cloud-EENOZI"
+                        "arn:aws:secretsmanager:us-east-2:711589413744:secret:influx/enerplus/prod/cloud-EENOZI"
                       ]
                     }
                   ]
@@ -3389,92 +3512,6 @@
             ]
           }
         },
-        "MainInstanceProfile": {
-          "Type": "AWS::IAM::InstanceProfile",
-          "Properties": {
-            "Roles": [
-              {
-                "Ref": "ecsInstanceRole"
-              }
-            ]
-          }
-        },
-        "ecsInstanceRole": {
-          "Type": "AWS::IAM::Role",
-          "Properties": {
-            "AssumeRolePolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Principal": {
-                    "Service": [
-                      "ec2.amazonaws.com"
-                    ]
-                  },
-                  "Action": [
-                    "sts:AssumeRole"
-                  ]
-                }
-              ]
-            },
-            "ManagedPolicyArns": [
-              {
-                "Ref": "Ec2ContainerService"
-              },
-              {
-                "Ref": "AmazonDynamoDBFullAccess"
-              },
-              {
-                "Ref": "AppSyncTutorialAmazonDynamoDBPolicy"
-              },
-              "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-              "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-              "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-            ],
-            "RoleName": "tasq-api-dev-ecsInstanceRole",
-            "Path": "/"
-          }
-        },
-        "ecsTaskExecutionRole": {
-          "Type": "AWS::IAM::Role",
-          "Properties": {
-            "AssumeRolePolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Principal": {
-                    "Service": [
-                      "ecs-tasks.amazonaws.com"
-                    ]
-                  },
-                  "Action": [
-                    "sts:AssumeRole"
-                  ]
-                }
-              ]
-            },
-            "ManagedPolicyArns": [
-              {
-                "Ref": "ECSTaskExecutionRole"
-              },
-              {
-                "Ref": "CloudWatchLogsPolicy"
-              },
-              {
-                "Ref": "AmazonDynamoDBFullAccess"
-              },
-              {
-                "Ref": "AppSyncTutorialAmazonDynamoDBPolicy"
-              },
-              "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-              "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
-              "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-            ],
-            "RoleName": "tasq-api-dev-ecsTaskExecutionRole"
-          }
-        },
         "RestApi": {
           "Type": "AWS::ApiGateway::RestApi",
           "Properties": {
@@ -3500,7 +3537,7 @@
                     "Ref": "AWS::Region"
                   },
                   ":lambda:path/2015-03-31/functions/",
-                  "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-dev-AuthAppSyncSource",
+                  "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-prod-AuthAppSyncSource",
                   "/invocations"
                 ]
               ]
@@ -3529,39 +3566,6 @@
             },
             "Runtime": "python3.7",
             "Timeout": 60
-          }
-        },
-        "LambdaPermission": {
-          "Type": "AWS::Lambda::Permission",
-          "Properties": {
-            "Action": "lambda:invokeFunction",
-            "FunctionName": {
-              "Fn::GetAtt": [
-                "Lambda",
-                "Arn"
-              ]
-            },
-            "Principal": "apigateway.amazonaws.com",
-            "SourceArn": {
-              "Fn::Join": [
-                "",
-                [
-                  "arn:aws:execute-api:",
-                  {
-                    "Ref": "AWS::Region"
-                  },
-                  ":",
-                  {
-                    "Ref": "AWS::AccountId"
-                  },
-                  ":",
-                  {
-                    "Ref": "RestApi"
-                  },
-                  "/*"
-                ]
-              ]
-            }
           }
         },
         "AuthLambdaRole": {
@@ -3652,7 +3656,7 @@
                       "Effect": "Allow",
                       "Action": "lambda:invokeFunction",
                       "Resource": [
-                        "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-dev-AuthAppSyncSource"
+                        "arn:aws:lambda:us-east-2:711589413744:function:tasq-api-prod-AuthAppSyncSource"
                       ]
                     }
                   ]
@@ -3689,41 +3693,6 @@
             }
           }
         },
-        "StageV1Deployment": {
-          "Type": "AWS::ApiGateway::Deployment",
-          "Properties": {
-            "RestApiId": {
-              "Ref": "RestApi"
-            }
-          }
-        },
-        "StageV1": {
-          "Type": "AWS::ApiGateway::Stage",
-          "DependsOn": "StageV1Deployment",
-          "Properties": {
-            "StageName": "v2",
-            "Description": "API Version 2",
-            "DeploymentId": {
-              "Ref": "StageV1Deployment"
-            },
-            "RestApiId": {
-              "Ref": "RestApi"
-            }
-          }
-        },
-        "ApiCustomDomainMapping": {
-          "Type": "AWS::ApiGateway::BasePathMapping",
-          "Properties": {
-            "BasePath": "v2",
-            "DomainName": "api.tasqinc.com",
-            "RestApiId": {
-              "Ref": "RestApi"
-            },
-            "Stage": {
-              "Ref": "StageV1"
-            }
-          }
-        },
         "ProfileResource": {
           "Type": "AWS::ApiGateway::Resource",
           "Properties": {
@@ -3739,9 +3708,39 @@
             "PathPart": "users"
           }
         },
-        "GetProfile": {
+        "GetProfilesLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllUsersSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetProfiles": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetProfilesLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -3767,10 +3766,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllUsersSyncSource"
                     },
                     "/invocations"
                   ]
@@ -3780,10 +3776,7 @@
                 {
                   "StatusCode": 200
                 }
-              ],
-              "RequestTemplates": {
-                "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
-              }
+              ]
             },
             "RequestModels": {
               "application/json": {
@@ -3803,9 +3796,39 @@
             ]
           }
         },
+        "PostProfileLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:UserSignUpSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "PostProfile": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PostProfileLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -3831,10 +3854,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:UserSignUpSyncSource"
                     },
                     "/invocations"
                   ]
@@ -3846,7 +3866,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"post\", \"body\": $input.json('$')}"
+                "application/json": "{\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"Roles\": \"$input.params('roles')\"}"
               }
             },
             "RequestModels": {
@@ -3879,9 +3899,39 @@
             "PathPart": "{user}"
           }
         },
+        "GetProfileUserLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetUserDetailsSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "GetProfileUser": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetProfileUserLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -3907,10 +3957,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetUserDetailsSyncSource"
                     },
                     "/invocations"
                   ]
@@ -3922,7 +3969,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                "application/json": "{\"username\": \"$input.params('username')\"}"
               }
             },
             "RequestModels": {
@@ -3943,9 +3990,39 @@
             ]
           }
         },
+        "PutProfileUserLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateProfileSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "PutProfileUser": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PutProfileUserLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -3971,10 +4048,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateProfileSyncSource"
                     },
                     "/invocations"
                   ]
@@ -3986,7 +4060,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                "application/json": "{\"Username\": \"$input.params('username')\",\"Team\": \"$input.params('teams')\",\"Roles\": \"$input.params('roles')\",\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"AcceptingTasqs\": \"$input.params('accepting_tasqs')\"}"
               }
             },
             "RequestModels": {
@@ -4022,9 +4096,139 @@
             "PathPart": "responses"
           }
         },
-        "PostResponse": {
+        "GetResponseLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponsesSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetResponse": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetResponseLambdaPermission",
+          "Properties": {
+            "AuthorizationType": "CUSTOM",
+            "AuthorizerId": {
+              "Ref": "RestApiAuthorizer"
+            },
+            "RestApiId": {
+              "Ref": "RestApi"
+            },
+            "ResourceId": {
+              "Ref": "ResponsesResource"
+            },
+            "HttpMethod": "GET",
+            "Integration": {
+              "Type": "AWS",
+              "IntegrationHttpMethod": "POST",
+              "Uri": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:aws:apigateway:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":lambda:path/2015-03-31/functions/",
+                    {
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponsesSyncSource"
+                    },
+                    "/invocations"
+                  ]
+                ]
+              },
+              "IntegrationResponses": [
+                {
+                  "StatusCode": 200
+                }
+              ]
+            },
+            "RequestModels": {
+              "application/json": {
+                "Ref": "Model"
+              }
+            },
+            "RequestParameters": {
+              "method.request.header.Authorization": true
+            },
+            "MethodResponses": [
+              {
+                "ResponseModels": {
+                  "application/json": "Empty"
+                },
+                "StatusCode": 200
+              }
+            ]
+          }
+        },
+        "ResponsesUserResource": {
+          "Type": "AWS::ApiGateway::Resource",
+          "Properties": {
+            "RestApiId": {
+              "Ref": "RestApi"
+            },
+            "ParentId": {
+              "Ref": "ResponsesResource"
+            },
+            "PathPart": "{response_id}"
+          }
+        },
+        "PostUserResponseLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "PostUserResponse": {
+          "Type": "AWS::ApiGateway::Method",
+          "DependsOn": "PostUserResponseLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4050,10 +4254,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4065,7 +4266,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"post\", \"body\": $input.json('$')}"
+                "application/json": "{\"id\": \"$input.params('tasq_id')\",\"PredictionID\": \"$input.params('id')\",\"ResponseData\": \"$input.params('response_data')\",\"MarkAsComplete\": \"$input.params('mark_as_complete')\"}"
               }
             },
             "RequestModels": {
@@ -4086,74 +4287,39 @@
             ]
           }
         },
-        "GetResponse": {
-          "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+        "PutResponseUserPredictionLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
           "Properties": {
-            "AuthorizationType": "CUSTOM",
-            "AuthorizerId": {
-              "Ref": "RestApiAuthorizer"
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
             },
-            "RestApiId": {
-              "Ref": "RestApi"
-            },
-            "ResourceId": {
-              "Ref": "ResponsesResource"
-            },
-            "HttpMethod": "GET",
-            "Integration": {
-              "Type": "AWS",
-              "IntegrationHttpMethod": "POST",
-              "Uri": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:apigateway:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":lambda:path/2015-03-31/functions/",
-                    {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
-                    },
-                    "/invocations"
-                  ]
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
                 ]
-              },
-              "IntegrationResponses": [
-                {
-                  "StatusCode": 200
-                }
               ]
-            },
-            "MethodResponses": [
-              {
-                "ResponseModels": {
-                  "application/json": "Empty"
-                },
-                "StatusCode": 200
-              }
-            ]
-          }
-        },
-        "ResponsesUserResource": {
-          "Type": "AWS::ApiGateway::Resource",
-          "Properties": {
-            "RestApiId": {
-              "Ref": "RestApi"
-            },
-            "ParentId": {
-              "Ref": "ResponsesResource"
-            },
-            "PathPart": "{response_id}"
+            }
           }
         },
         "PutResponseUserPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PutResponseUserPredictionLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4165,7 +4331,7 @@
             "ResourceId": {
               "Ref": "ResponsesUserResource"
             },
-            "HttpMethod": "PUT",
+            "HttpMethod": "POST",
             "Integration": {
               "Type": "AWS",
               "IntegrationHttpMethod": "POST",
@@ -4179,10 +4345,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateUserResponseSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4194,7 +4357,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                "application/json": "{\"id\": \"$input.params('response_id')\",\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
               }
             },
             "RequestModels": {
@@ -4215,9 +4378,39 @@
             ]
           }
         },
+        "DeleteResponseUserPredictionLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteUserResponseSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "DeleteResponseUserPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "DeleteResponseUserPredictionLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4243,10 +4436,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteUserResponseSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4258,7 +4448,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -4279,9 +4469,39 @@
             ]
           }
         },
+        "GetResponseUserPredictionLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponseSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "GetResponseUserPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetResponseUserPredictionLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4307,10 +4527,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:GetUserResponseSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4322,7 +4539,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                "application/json": "{\"prediction_id\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -4358,9 +4575,39 @@
             "PathPart": "tasqs"
           }
         },
+        "GetTasqsLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:GetAllTasqsSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "GetTasqs": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetTasqsLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4386,10 +4633,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:GetAllTasqsSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4401,7 +4645,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                "application/json": "{\"team\": \"$input.params('team')\",\"username\": \"$input.params('username')\"}"
               }
             },
             "RequestModels": {
@@ -4422,9 +4666,39 @@
             ]
           }
         },
+        "PostTasqsLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:PostNewTasqSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "PostTasqs": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PostTasqsLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4450,10 +4724,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:PostNewTasqSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4465,7 +4736,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"post\", \"body\": $input.json('$')}"
+                "application/json": "{\"AssignedToUsername\": \"$input.params('assign_to_user')\",\"NodeID\": \"$input.params('node_id')\",\"PredictionType\": \"$input.params('type')\"}"
               }
             },
             "RequestModels": {
@@ -4498,9 +4769,39 @@
             "PathPart": "{tasq_id}"
           }
         },
+        "DeleteTasqTasqLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteTasqSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "DeleteTasqTasqPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "DeleteTasqTasqLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4526,10 +4827,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:DeleteTasqSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4541,7 +4839,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -4562,9 +4860,39 @@
             ]
           }
         },
+        "GetTasqTasqLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:GetPredictionRowSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "GetTasqTasqPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetTasqTasqLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4590,10 +4918,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:GetPredictionRowSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4605,7 +4930,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -4626,9 +4951,39 @@
             ]
           }
         },
+        "PutTasqTasqLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateTasqSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "PutTasqTasqPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PutTasqTasqLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4654,10 +5009,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-detect-state-change-prod:UpdateTasqSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4669,7 +5021,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                "application/json": "{\"PredictionID\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -4705,9 +5057,39 @@
             "PathPart": "tickets"
           }
         },
+        "PostTicketsLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-analytics-prod:SubmitTicketSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "PostTickets": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PostTicketsLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4733,10 +5115,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-analytics-prod:SubmitTicketSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4748,7 +5127,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                "application/json": "{\"Username\": \"$input.params('username')\",\"Description\": \"$input.params('description')\",\"TicketTitle\": \"$input.params('ticket_title')\",\"IssueType\": \"$input.params('issue_type')\",\"Page\": \"$input.params('page')\",\"Operator\": \"$input.params('operator')\"}"
               }
             },
             "RequestModels": {
@@ -4769,9 +5148,39 @@
             ]
           }
         },
+        "GetTicketsLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-analytics-prod:GetTrackedTicketsSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "GetTickets": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetTicketsLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4797,10 +5206,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-analytics-prod:GetTrackedTicketsSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4812,7 +5218,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                "application/json": "{\"IssueType\": \"$input.params('issue_type')\",\"Username\": \"$input.params('username')\"}"
               }
             },
             "RequestModels": {
@@ -4845,73 +5251,39 @@
             "PathPart": "{ticket_id}"
           }
         },
-        "PutTicket": {
-          "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+        "DeleteTicketLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
           "Properties": {
-            "AuthorizationType": "CUSTOM",
-            "AuthorizerId": {
-              "Ref": "RestApiAuthorizer"
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-analytics-prod:DeleteTicketSyncSource"
             },
-            "RestApiId": {
-              "Ref": "RestApi"
-            },
-            "ResourceId": {
-              "Ref": "TicketIDResource"
-            },
-            "HttpMethod": "PUT",
-            "Integration": {
-              "Type": "AWS",
-              "IntegrationHttpMethod": "POST",
-              "Uri": {
-                "Fn::Join": [
-                  "",
-                  [
-                    "arn:aws:apigateway:",
-                    {
-                      "Ref": "AWS::Region"
-                    },
-                    ":lambda:path/2015-03-31/functions/",
-                    {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
-                    },
-                    "/invocations"
-                  ]
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
                 ]
-              },
-              "IntegrationResponses": [
-                {
-                  "StatusCode": 200
-                }
-              ],
-              "RequestTemplates": {
-                "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
-              }
-            },
-            "RequestModels": {
-              "application/json": {
-                "Ref": "Model"
-              }
-            },
-            "RequestParameters": {
-              "method.request.header.Authorization": true
-            },
-            "MethodResponses": [
-              {
-                "ResponseModels": {
-                  "application/json": "Empty"
-                },
-                "StatusCode": 200
-              }
-            ]
+              ]
+            }
           }
         },
         "DeleteTicket": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "DeleteTicketLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -4937,10 +5309,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-analytics-prod:DeleteTicketSyncSource"
                     },
                     "/invocations"
                   ]
@@ -4952,7 +5321,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                "application/json": "{\"TicketId\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -4973,9 +5342,39 @@
             ]
           }
         },
+        "GetTicketLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-analytics-prod:GetTicketSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "GetTicket": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetTicketLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -5001,10 +5400,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-analytics-prod:GetTicketSyncSource"
                     },
                     "/invocations"
                   ]
@@ -5016,7 +5412,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                "application/json": "{\"TicketId\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -5052,9 +5448,39 @@
             "PathPart": "workflows"
           }
         },
+        "PostWorkflowLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:PostWorkflowSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "PostWorkflow": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PostWorkflowLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -5080,10 +5506,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:PostWorkflowSyncSource"
                     },
                     "/invocations"
                   ]
@@ -5095,7 +5518,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Username\": \"$input.params('username')\"}"
               }
             },
             "RequestModels": {
@@ -5116,9 +5539,72 @@
             ]
           }
         },
-        "GetWorkflow": {
+        "LambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "Lambda",
+                "Arn"
+              ]
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetWorkflowsLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllWorkflowsSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "GetWorkflows": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetWorkflowsLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -5144,10 +5630,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetAllWorkflowsSyncSource"
                     },
                     "/invocations"
                   ]
@@ -5158,6 +5641,11 @@
                   "StatusCode": 200
                 }
               ]
+            },
+            "RequestModels": {
+              "application/json": {
+                "Ref": "Model"
+              }
             },
             "RequestParameters": {
               "method.request.header.Authorization": true
@@ -5184,9 +5672,39 @@
             "PathPart": "{workflow_id}"
           }
         },
+        "PutWorkflowLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateWorkflowSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "PutWorkflow": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "PutWorkflowLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -5212,10 +5730,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:UpdateWorkflowSyncSource"
                     },
                     "/invocations"
                   ]
@@ -5227,7 +5742,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"put\", \"body\": $input.json('$')}"
+                "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"Settings\": \"$input.params('settings')\",\"Username\": \"$input.params('username')\"}"
               }
             },
             "RequestModels": {
@@ -5248,9 +5763,39 @@
             ]
           }
         },
+        "DeleteWorkflowPredictionLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:DeleteWorkflowSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "DeleteWorkflowPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "DeleteWorkflowPredictionLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -5276,10 +5821,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:DeleteWorkflowSyncSource"
                     },
                     "/invocations"
                   ]
@@ -5291,7 +5833,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"delete\", \"body\": $input.json('$')}"
+                "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\"}"
               }
             },
             "RequestModels": {
@@ -5312,9 +5854,39 @@
             ]
           }
         },
+        "GetWorkflowPredictionLambdaPermission": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "Action": "lambda:invokeFunction",
+            "FunctionName": {
+              "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetWorkflowSyncSource"
+            },
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:aws:execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "RestApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
         "GetWorkflowPrediction": {
           "Type": "AWS::ApiGateway::Method",
-          "DependsOn": "LambdaPermission",
+          "DependsOn": "GetWorkflowPredictionLambdaPermission",
           "Properties": {
             "AuthorizationType": "CUSTOM",
             "AuthorizerId": {
@@ -5340,10 +5912,7 @@
                     },
                     ":lambda:path/2015-03-31/functions/",
                     {
-                      "Fn::GetAtt": [
-                        "Lambda",
-                        "Arn"
-                      ]
+                      "Fn::ImportValue": "tasq-assign-user-tasks-prod:GetWorkflowSyncSource"
                     },
                     "/invocations"
                   ]
@@ -5355,7 +5924,7 @@
                 }
               ],
               "RequestTemplates": {
-                "application/json": "{\"action\": \"get\", \"body\": $input.json('$')}"
+                "application/json": "{\"WorkflowDetailsID\": \"$input.params('id')\",\"AssignmentCountDays\": \"$input.params('days')\"}"
               }
             },
             "RequestModels": {
@@ -5374,6 +5943,29 @@
                 "StatusCode": 200
               }
             ]
+          }
+        },
+        "StageV1Deployment": {
+          "Type": "AWS::ApiGateway::Deployment",
+          "DependsOn": "ProfileResource",
+          "Properties": {
+            "RestApiId": {
+              "Ref": "RestApi"
+            }
+          }
+        },
+        "StageV1": {
+          "Type": "AWS::ApiGateway::Stage",
+          "DependsOn": "StageV1Deployment",
+          "Properties": {
+            "StageName": "v1",
+            "Description": "API Version 1",
+            "DeploymentId": {
+              "Ref": "StageV1Deployment"
+            },
+            "RestApiId": {
+              "Ref": "RestApi"
+            }
           }
         },
         "ApiGatewayTokensTable": {
@@ -5452,7 +6044,7 @@
           "Type": "AWS::AppSync::GraphQLApi",
           "Properties": {
             "AuthenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "Name": "AuthTableQueryApi-dev",
+            "Name": "AuthTableQueryApi-prod",
             "UserPoolConfig": {
               "AwsRegion": "us-east-1",
               "DefaultAction": "ALLOW",
@@ -5609,7 +6201,7 @@
     "artifact": "/Users/jwenker/Documents/TasqProject/tasq-api/.serverless/tasq-api.zip"
   },
   "package": {
-    "artifactDirectoryName": "tasq-api/serverless/tasq-api/dev/1593715523608-2020-07-02T18:45:23.608Z",
+    "artifactDirectoryName": "tasq-api/serverless/tasq-api/prod/1594746356895-2020-07-14T17:05:56.895Z",
     "artifact": "tasq-api.zip"
   }
 }
