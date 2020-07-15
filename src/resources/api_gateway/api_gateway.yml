@@ -367,7 +367,7 @@ Resources:
         Ref: RestApi
       ResourceId:
         Ref: ProfileUserResource
-      HttpMethod: PUT
+      HttpMethod: POST
       Integration:
         Type: AWS
         IntegrationHttpMethod: POST
@@ -993,7 +993,7 @@ Resources:
         Ref: RestApi
       ResourceId:
         Ref: TasqsTasqResource
-      HttpMethod: PUT
+      HttpMethod: POST
       Integration:
         Type: AWS
         IntegrationHttpMethod: POST
@@ -1500,7 +1500,7 @@ Resources:
         Ref: RestApi
       ResourceId:
         Ref: WorkflowUserResource
-      HttpMethod: PUT
+      HttpMethod: POST
       Integration:
         Type: AWS
         IntegrationHttpMethod: POST
