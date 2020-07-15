@@ -2,7 +2,8 @@ Resources:
 
   RestApi:
     Type: AWS::ApiGateway::RestApi
-
+    Properties:
+      Name: "API-dev"
 
 
   RestApiAuthorizer:
