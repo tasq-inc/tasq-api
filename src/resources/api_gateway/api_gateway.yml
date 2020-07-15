@@ -2,8 +2,6 @@ Resources:
 
   RestApi:
     Type: AWS::ApiGateway::RestApi
-    Properties:
-      Name: Api
 
 
 
@@ -1666,7 +1664,7 @@ Resources:
     Type: AWS::ApiGateway::BasePathMapping
     Properties: 
       BasePath: v1
-      DomainName: "${{file(./src/resources/config.yml):TasqAPIDomain-${{self:provider.stage}}}}"
+      DomainName: "api-dev.tasqinc.com" # "${{file(./src/resources/config.yml):TasqAPIDomain-${{self:provider.stage}}}}"
       RestApiId:
         Ref: RestApi
       Stage: 
