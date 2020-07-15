@@ -511,7 +511,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"id\": $input.params('$.id'),\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
+          "application/json": "{\"id\": $input.json('$.id'),\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
