@@ -772,7 +772,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"team\": \"$input.params('team')\",\"username\": \"$input.params('username')\"}"
+          "application/json": "{\"from_time\": \"$input.params('from_time')\",\"to_time\": \"$input.params('to_time')\",\"team\": \"$input.params('team')\",\"username\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
