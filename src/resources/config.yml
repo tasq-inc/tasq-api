@@ -115,6 +115,7 @@ GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provid
 TasqAPIDomain-prod: "api.tasqinc.com"
 TasqAPIDomain-dev: "dev-api.tasqinc.com"
 
+TasqAPIName-prod: "API-${{self:provider.stage}}"
 
 UserPool: "${{self:provider.stage}}/enerplus/cognito/pool"
 PostPredictionStatusFieldName: "update_prediction_status"
