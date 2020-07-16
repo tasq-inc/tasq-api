@@ -1082,7 +1082,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"username\": \"$input.params('username')\",\"description\": \"$input.params('description')\",\"ticket_title\": \"$input.params('ticket_title')\",\"issue_type\": \"$input.params('issue_type')\",\"page\": \"$input.params('page')\",\"operator\": \"$input.params('operator')\"}"
+          "application/json": "{\"username\": $input.json('$.username'), \"description\": $input.json('$.description'), \"ticket_title\": $input.json('$.ticket_title'), \"issue_type\": $input.json('$.issue_type'), \"page\": $input.json('$.page'), \"operator\": $input.json('$.operator'), \"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
