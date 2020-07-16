@@ -256,7 +256,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"UserEmail\": \"$input.params('email')\",\"PhoneNumber\": \"$input.params('phone_number')\",\"Roles\": \"$input.params('roles')\"}"
+          "application/json": "{\"first_name\": $input.json('$.first_name') ,\"last_name\": $input.json('$.last_name') ,\"email\": $input.json('$.email') ,\"phone_number\": $input.json('$.phone_number') ,\"roles\": $input.json('$.roles') ,\"phone_number\": $input.json('$.phone_number') ,\"accepting_tasqs\": $input.json('$.accepting_tasqs'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
