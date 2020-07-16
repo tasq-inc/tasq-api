@@ -772,7 +772,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"from_time\": \"$input.params('from_time')\",\"to_time\": \"$input.params('to_time')\",\"team\": \"$input.params('team')\",\"username\": \"$input.params('username')\"}"
+          "application/json": "{\"team\": \"$input.params('team')\",\"user_email\": \"$input.params('username')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -829,7 +829,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"node_id\": \"$input.params('node_id')\",\"assign_to_user\": $input.json('$.assign_to_user') ,\"type\": $input.json('$.type'),\"body\" : $input.json('$') }"
+          "application/json": "{\"node_id\": \"$input.json('$.node_id')\",\"assign_to_user\": $input.json('$.assign_to_user') ,\"type\": $input.json('$.type'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
