@@ -731,7 +731,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetAllTasqsSyncSource"
+      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetTasqsAppSyncSource"
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
