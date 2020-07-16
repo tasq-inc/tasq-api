@@ -382,7 +382,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"username\": \"$input.params('user')\",\"team\": $input.json('$.team') ,\"roles\": $input.json('$.roles') ,\"email\": $input.json('$.email') ,\"phone_number\": $input.json('$.phone_number') ,\"accepting_tasqs\": $input.json('$.accepting_tasqs'),\"body\" : $input.json('$') }"
+          "application/json": "{\"username\": \"$input.params('user')\",\"first_name\": $input.json('$.first_name'),\"last_name\": $input.json('$.last_name'),\"team\": $input.json('$.team') ,\"roles\": $input.json('$.roles') ,\"email\": $input.json('$.email') ,\"phone_number\": $input.json('$.phone_number') ,\"accepting_tasqs\": $input.json('$.accepting_tasqs'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
