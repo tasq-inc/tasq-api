@@ -56,7 +56,7 @@ provider:
       # delete_user_response_lambda_handler 
       # update_user_response_lambda_handler
       # get_user_response_lambda_handler
-      # get_tasqs_lambda_handler
+      # get_tasq_list
       # post_new_tasq
       # get_prediction_by_id
       # delete_prediction_by_id
