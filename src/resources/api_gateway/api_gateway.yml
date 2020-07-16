@@ -1012,7 +1012,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"id\": \"$input.params('tasq_id')\", \"assign_to_user\": $input.json('$.assign_to_user') ,\"node_id\": $input.json('$.node_id'),\"body\" : $input.json('$') }"
+          "application/json": "{\"id\": \"$input.params('tasq_id')\", \"type\": $input.json('$.type') , \"assign_to_user\": $input.json('$.assign_to_user') ,\"node_id\": $input.json('$.node_id'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
