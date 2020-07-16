@@ -1300,7 +1300,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"ticket_id\": \"$input.params('id')\"}"
+          "application/json": "{\"id\": \"$input.params('ticket_id')\"}"
       RequestModels:
         application/json:
           Ref: Model
