@@ -28,28 +28,6 @@ Resources:
         Ref: RestApi
       Type: TOKEN
 
-  Lambda:
-    Type: AWS::Lambda::Function
-    Properties:
-      Code:
-        ZipFile: |
-          import json
-
-          def lambda_handler(event, context):
-              # TODO implement
-              return {
-                  'statusCode': 200,
-                  'body': 'Hello from Lambda!!!!!!!!!!!!'
-              }
-      Handler: index.lambda_handler
-      MemorySize: 128
-      Role:
-        Fn::GetAtt:
-        - AuthLambdaRole
-        - Arn
-      Runtime: python3.7
-      Timeout: 60
-
 
 
 
