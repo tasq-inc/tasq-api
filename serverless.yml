@@ -80,8 +80,6 @@ provider:
 
 
 
-
-
 functions:
   - ${{file(./src/functions/appsync_resolver/auth_appsync_source.yml)}}
     
