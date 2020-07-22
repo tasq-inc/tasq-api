@@ -1,0 +1,70 @@
+Resources:
+
+        ############# RESOURCE - workflow ############
+
+  IngestResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: RestApi
+      ParentId:
+        Fn::GetAtt:
+        - RestApi
+        - RootResourceId
+      PathPart: ingest
+
+  PostWorkflowLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.RawScadaIngestStackName}}:ClientDataIngest"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+  PostData:
+    Type: AWS::ApiGateway::Method
+    DependsOn: PostWorkflowLambdaPermission
+    Properties:
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: RestApiAuthorizer
+      RestApiId:
+        Ref: RestApi
+      ResourceId:
+        Ref: IngestResource
+      HttpMethod: POST
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - Ref: AWS::Region
+            - ":lambda:path/2015-03-31/functions/"
+            - !ImportValue "${{self:provider.environment.RawScadaIngestStackName}}:ClientDataIngest"
+            - "/invocations"
+        IntegrationResponses:
+        - StatusCode: 200
+        RequestTemplates:
+          "application/json": "{\"data\": $input.json('$.data'),\"operator\": $input.json('$.operator') ,\"database_name\": $input.json('$.database_name') ,\"table_name\": $input.json('$.table_name'),\"body\" : $input.json('$') }"
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        StatusCode: 200
+
+  
