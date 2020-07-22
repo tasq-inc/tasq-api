@@ -78,6 +78,8 @@ provider:
       # get_workflow
       # update_workflow
 
+    RawScadaIngestStackName: "tasq-raw-scada-ingest-${{self:provider.stage}}"
+
 
 
 
