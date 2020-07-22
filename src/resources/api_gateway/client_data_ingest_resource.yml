@@ -17,7 +17,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.RawScadaIngestStackName}}:IngestClientDataSyncSource"
+      FunctionName: !ImportValue "${{self:provider.environment.RawScadaIngestStackName}}:ClientDataIngest"
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -51,7 +51,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.RawScadaIngestStackName}}:IngestClientDataSyncSource"
+            - !ImportValue "${{self:provider.environment.RawScadaIngestStackName}}:ClientDataIngest"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
