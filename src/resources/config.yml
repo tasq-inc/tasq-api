@@ -108,7 +108,7 @@ GetWorkflowFieldName: "get_workflow"
 GetAllWorkflowsFieldName: "get_all_workflows"
 GetFullUserListFieldName: "get_full_user_list"
 
-TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:DummyLambdaLayer"
+TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:TasqloggingLambdaLayer"
 
 GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provider.stage}}"
 
