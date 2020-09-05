@@ -12,7 +12,7 @@ AuthAppSyncSource:
       include:
         - src/functions/appsync_resolver/**
     layers:
-      - !ImportValue "${{file(./src/resources/config.yml):DummyLambdaLayer}}"
+      - !ImportValue "${{file(./src/resources/config.yml):TasqloggingLambdaLayer}}"
     environment:
       API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
     vpc:
