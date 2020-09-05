@@ -49,6 +49,7 @@ provider:
     EcrAddress: "711589413744.dkr.ecr.us-east-2.amazonaws.com"
     InboundStackName: "tasq-feature-extract-${{self:provider.stage}}"
     LambdaLayerStack: "tasq-lambda-layers-${{self:provider.stage}}"
+    stackName: "${{self:service}}-${{self:provider.stage}}"
 
     # /reponses Lambda Functions
     DetectStateChangeStackName: "tasq-detect-state-change-${{self:provider.stage}}"
