@@ -15,7 +15,6 @@ Parameters:
       Type: String
       Default: "arn:aws:iam::711589413744:policy/deepdish/TestAppsyncDynamoDB-AppSyncTutorialAmazonDynamoDBPolicy-TSRDEN6AVMDO"
 
-
 Resources:
     AppsyncAccessDynamoDB:
       Type: AWS::IAM::Role
