@@ -110,7 +110,6 @@ GetFullUserListFieldName: "get_full_user_list"
 
 TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:DummyLambdaLayer"
 
-
 GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provider.stage}}"
 
 TasqAPIDomain-prod: "api.tasqinc.com"
