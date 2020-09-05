@@ -28,6 +28,7 @@ Resources:
                 input CreateNewAuthTokenInput {
                   Username: String!
                   TokenName: String!
+                  operator: String!
                 }
 
                 type CreateNewAuthTokenOutput {
@@ -45,6 +46,7 @@ Resources:
 
                 input GetAuthTokensInput {
                   Username: String!
+                  operator: String!
                 }
 
                 type GetAuthTokensOutput {
