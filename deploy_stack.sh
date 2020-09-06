@@ -19,4 +19,5 @@ echo "Version Tag is :"$VERSIONTAG
 
 # npm install -g serverless
 # npm install
+npm i serverless-latest-layer-version --save-dev
 npx serverless --aws-profile default deploy --force --verbose --stage ${CI_ENVIRONMENT_NAME} --containerTag ${CONTAINER_TAG} --versiontag ${VERSIONTAG} --uploadinitialfiles True
