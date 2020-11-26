@@ -111,26 +111,26 @@ Resources:
         - name
 
 
-  StageV1Deployment:
-    Type: AWS::ApiGateway::Deployment
-    DependsOn: ProfileResource
-    Properties:
-      RestApiId:
-        Ref: RestApi
+  # StageV1Deployment:
+  #   Type: AWS::ApiGateway::Deployment
+  #   DependsOn: ProfileResource
+  #   Properties:
+  #     RestApiId:
+  #       Ref: RestApi
 
 
 
-  StageV1:
-    Type: AWS::ApiGateway::Stage
-    DependsOn: StageV1Deployment
-    Properties:
-      StageName: v1
-      Description: 'API Version 1'
-      DeploymentId:
-        Ref: StageV1Deployment
-      RestApiId:
-        Ref: RestApi
-      # AutoDeploy: true
+  # StageV1:
+  #   Type: AWS::ApiGateway::Stage
+  #   DependsOn: StageV1Deployment
+  #   Properties:
+  #     StageName: v1
+  #     Description: 'API Version 1'
+  #     DeploymentId:
+  #       Ref: StageV1Deployment
+  #     RestApiId:
+  #       Ref: RestApi
+  #     # AutoDeploy: true
 
 
   ApiCustomDomainMapping:
