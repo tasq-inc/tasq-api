@@ -38,7 +38,6 @@ provider:
         - "*"
       Resource: "*"
   environment:
-    CentralLoggerStackName: "tasq-central-logger-${{self:provider.stage}}"
     IamNetworkStackName: "tasq-aws-iam-networking-${{self:provider.stage}}"
     MetaDataStoreStackName: "tasq-meta-datastore-${{self:provider.stage}}"
     WellStateS3BucketName: "tasq-well-state-worker-${{self:provider.stage}}"
@@ -94,7 +93,7 @@ resources:
   - ${{file(./src/resources/api_gateway/users_resource.yml)}}
   - ${{file(./src/resources/api_gateway/workflows_resource.yml)}}
   - ${{file(./src/resources/api_gateway/responses_resource.yml)}}
-  # - ${{file(./src/resources/api_gateway/push_notification_resource.yml)}}
+  - ${{file(./src/resources/api_gateway/push_notification_resource.yml)}}
   - ${{file(./src/resources/api_gateway/client_data_ingest_resource.yml)}}
   - ${{file(./src/resources/dynamodb/dynamodb.yml)}}
   - ${{file(./src/resources/appsync/appsync.yml)}}

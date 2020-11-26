@@ -8,7 +8,6 @@ PostLambdaFunction: "PostLambdaAuthorization-${{self:provider.stage}}"
 
 PushNotificationTableName: !ImportValue "${{self:provider.environment.PushNotificationTableStackName}}:PNSTable"
 
-LoggerTopicName: !ImportValue "${{self:provider.environment.CentralLoggerStackName}}:CentralLoggerTopic"
 InboundTopicName: !ImportValue "${{self:provider.environment.InboundStackName}}:FeatureExtractDataDone"
 TopicDataDoneName: "${{self:provider.stackName}}:FeatureExtractDataDone"
 InboundQueue_QueueName: "${{self:provider.stackName}}-queue"
@@ -112,8 +111,6 @@ GetAllWorkflowsFieldName: "get_all_workflows"
 GetFullUserListFieldName: "get_full_user_list"
 
 
-TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:tasqlogging:latest"
-  # TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:dummy:latest"
 
 GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provider.stage}}"
 

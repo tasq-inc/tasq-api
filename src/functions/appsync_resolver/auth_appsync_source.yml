@@ -11,8 +11,6 @@ AuthAppSyncSource:
     package:
       include:
         - src/functions/appsync_resolver/**
-    layers:
-      - "${{file(./src/resources/config.yml):TasqloggingLambdaLayer}}"
     environment:
       API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
     vpc:

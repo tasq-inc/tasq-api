@@ -13,59 +13,59 @@ Resources:
         - RootResourceId
       PathPart: notification
 
-  # SubmitPNTokenLambdaPermission:
-  #   Type: AWS::Lambda::Permission
-  #   Properties:
-  #     Action: lambda:invokeFunction
-  #     FunctionName: !ImportValue "${{self:provider.environment.PushNotificationTableStackName}}:UploadPushTokenSyncSource"
-  #     Principal: apigateway.amazonaws.com
-  #     SourceArn:
-  #       Fn::Join:
-  #       - ''
-  #       - - 'arn:aws:execute-api:'
-  #         - Ref: AWS::Region
-  #         - ":"
-  #         - Ref: AWS::AccountId
-  #         - ":"
-  #         - Ref: RestApi
-  #         - "/*"
+  SubmitPNTokenLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.PushNotificationTableStackName}}:UploadPushTokenSyncSource"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
-  # PostSubmitPNToken:
-  #   Type: AWS::ApiGateway::Method
-  #   DependsOn: SubmitPNTokenLambdaPermission
-  #   Properties:
-  #     AuthorizationType: CUSTOM
-  #     AuthorizerId:
-  #       Ref: RestApiAuthorizer
-  #     RestApiId:
-  #       Ref: RestApi
-  #     ResourceId:
-  #       Ref: NotificationResource
-  #     HttpMethod: POST
-  #     Integration:
-  #       Type: AWS
-  #       IntegrationHttpMethod: POST
-  #       Uri:
-  #         Fn::Join:
-  #         - ''
-  #         - - 'arn:aws:apigateway:'
-  #           - Ref: AWS::Region
-  #           - ":lambda:path/2015-03-31/functions/"
-  #           - !ImportValue "${{self:provider.environment.PushNotificationTableStackName}}:UploadPushTokenSyncSource"
-  #           - "/invocations"
-  #       IntegrationResponses:
-  #       - StatusCode: 200
-  #       RequestTemplates:
-  #         "application/json": "{\"email\": \"$input.params('email')\",\"deviceuid\": \"$input.params('deviceuid')\",\"devicetoken\": \"$input.params('devicetoken')\",\"devicename\": \"$input.params('devicename')\",\"devicemodel\": \"$input.params('devicemodel')\",\"deviceversion\": \"$input.params('deviceversion')\",\"device_type\": \"$input.params('device_type')\"}"
-  #     RequestModels:
-  #       application/json:
-  #         Ref: Model
-  #     RequestParameters:
-  #       method.request.header.Authorization: true
-  #     MethodResponses:
-  #     - ResponseModels:
-  #         application/json: Empty
-  #       StatusCode: 200
+  PostSubmitPNToken:
+    Type: AWS::ApiGateway::Method
+    DependsOn: SubmitPNTokenLambdaPermission
+    Properties:
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: RestApiAuthorizer
+      RestApiId:
+        Ref: RestApi
+      ResourceId:
+        Ref: NotificationResource
+      HttpMethod: POST
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - Ref: AWS::Region
+            - ":lambda:path/2015-03-31/functions/"
+            - !ImportValue "${{self:provider.environment.PushNotificationTableStackName}}:UploadPushTokenSyncSource"
+            - "/invocations"
+        IntegrationResponses:
+        - StatusCode: 200
+        RequestTemplates:
+          "application/json": "{\"email\": \"$input.params('email')\",\"deviceuid\": \"$input.params('deviceuid')\",\"devicetoken\": \"$input.params('devicetoken')\",\"devicename\": \"$input.params('devicename')\",\"devicemodel\": \"$input.params('devicemodel')\",\"deviceversion\": \"$input.params('deviceversion')\",\"device_type\": \"$input.params('device_type')\"}"
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        StatusCode: 200
 
 
   
