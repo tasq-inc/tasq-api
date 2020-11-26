@@ -133,13 +133,13 @@ Resources:
   #     # AutoDeploy: true
 
 
-  ApiCustomDomainMapping:
-    Type: AWS::ApiGateway::BasePathMapping
-    Properties: 
-      BasePath: v1
-      DomainName: "${{file(./src/resources/config.yml):TasqAPIDomain-${{self:provider.stage}}}}"
-      RestApiId:
-        Ref: RestApi
-      Stage: 
-        Ref: StageV1
+  # ApiCustomDomainMapping:
+  #   Type: AWS::ApiGateway::BasePathMapping
+  #   Properties: 
+  #     BasePath: v1
+  #     DomainName: "${{file(./src/resources/config.yml):TasqAPIDomain-${{self:provider.stage}}}}"
+  #     RestApiId:
+  #       Ref: RestApi
+  #     Stage: 
+  #       Ref: StageV1
 
