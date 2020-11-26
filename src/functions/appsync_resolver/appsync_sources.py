@@ -65,7 +65,7 @@ def create_new_auth_token(event, context):
 
     current_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     # object = s3.Object(analytics_bucket, "load_time/" + username + "/" + page + "/{}.txt".format(current_date))
-
+    operator = event["operator"]
 
     AccessToken = secrets.token_hex(40)
     TokenID = str(uuid.uuid4())
@@ -74,7 +74,8 @@ def create_new_auth_token(event, context):
       "time":current_date,
       "Username": username_passed,
       "AccessToken":AccessToken,
-      "TokenName":token_name
+      "TokenName":token_name,
+      "Operator":operator
     }
     api_gateway_table.put_item(
         Item=data
@@ -89,7 +90,6 @@ def get_auth_token(event, context):
         event = event["input"]
 
     username_passed = event["Username"]
-
     dynamodb = boto3.resource('dynamodb')
     api_gateway_table = dynamodb.Table(api_gateway_table_string)
 
@@ -106,3 +106,4 @@ def get_auth_token(event, context):
     return({
         "TokenData":response_items
     })
+

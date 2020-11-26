@@ -11,8 +11,6 @@ AuthAppSyncSource:
     package:
       include:
         - src/functions/appsync_resolver/**
-    layers:
-      - !ImportValue "${{file(./src/resources/config.yml):TasqloggingLambdaLayer}}"
     environment:
       API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
     vpc:
@@ -56,5 +54,4 @@ GetPersAccTokenSyncSource:
         subnetIds:
           - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet1}}"
           - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet2}}"
-
 

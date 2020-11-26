@@ -5,7 +5,9 @@ ApiName: "TasqPublicAPI-${{self:provider.stage}}"
 AuthorizationLambdaFunction: "LambdaAuthorization-${{self:provider.stage}}"
 PostLambdaFunction: "PostLambdaAuthorization-${{self:provider.stage}}"
 
-LoggerTopicName: !ImportValue "${{self:provider.environment.CentralLoggerStackName}}:CentralLoggerTopic"
+
+PushNotificationTableName: !ImportValue "${{self:provider.environment.PushNotificationTableStackName}}:PNSTable"
+
 InboundTopicName: !ImportValue "${{self:provider.environment.InboundStackName}}:FeatureExtractDataDone"
 TopicDataDoneName: "${{self:provider.stackName}}:FeatureExtractDataDone"
 InboundQueue_QueueName: "${{self:provider.stackName}}-queue"
@@ -108,7 +110,7 @@ GetWorkflowFieldName: "get_workflow"
 GetAllWorkflowsFieldName: "get_all_workflows"
 GetFullUserListFieldName: "get_full_user_list"
 
-TasqloggingLambdaLayer: "${{self:provider.environment.LambdaLayerStack}}:TasqloggingLambdaLayer"
+
 
 GetStateChangePredictionsFieldName: "get_state_change_predictions_${{self:provider.stage}}"
 
@@ -117,7 +119,8 @@ TasqAPIDomain-dev: "dev-api.tasqinc.com"
 
 TasqAPIName: "API-${{self:provider.stage}}"
 
-UserPool: "${{self:provider.stage}}/enerplus/cognito/pool"
+EnerplusUserPool: "${{self:provider.stage}}/enerplus/cognito/pool"
+RedwolfUserPool: "${{self:provider.stage}}/redwolf/cognito/pool"
 PostPredictionStatusFieldName: "update_prediction_status"
 
 ReassignTaskQueryFieldName: "get_task"
