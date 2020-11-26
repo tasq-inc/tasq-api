@@ -5,6 +5,9 @@ ApiName: "TasqPublicAPI-${{self:provider.stage}}"
 AuthorizationLambdaFunction: "LambdaAuthorization-${{self:provider.stage}}"
 PostLambdaFunction: "PostLambdaAuthorization-${{self:provider.stage}}"
 
+
+PushNotificationTableName: !ImportValue "${{self:provider.environment.PushNotificationTableStackName}}:PNSTable"
+
 LoggerTopicName: !ImportValue "${{self:provider.environment.CentralLoggerStackName}}:CentralLoggerTopic"
 InboundTopicName: !ImportValue "${{self:provider.environment.InboundStackName}}:FeatureExtractDataDone"
 TopicDataDoneName: "${{self:provider.stackName}}:FeatureExtractDataDone"

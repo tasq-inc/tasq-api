@@ -106,3 +106,4 @@ def get_auth_token(event, context):
     return({
         "TokenData":response_items
     })
+
