@@ -15,7 +15,6 @@ AuthAppSyncSource:
       - "${{file(./src/resources/config.yml):TasqloggingLambdaLayer}}"
     environment:
       API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
-      PUSH_NOTIFICATION_TABLE: !ImportValue "${{file(./src/resources/config.yml):PushNotificationTableName}}"
     vpc:
         securityGroupIds:
           - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
@@ -34,7 +33,6 @@ GenPersAccTokenSyncSource:
     runtime: "${{self:provider.runtime}}"
     environment:
       API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
-      PUSH_NOTIFICATION_TABLE: !ImportValue "${{file(./src/resources/config.yml):PushNotificationTableName}}"
     vpc:
         securityGroupIds:
           - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
@@ -52,7 +50,6 @@ GetPersAccTokenSyncSource:
     runtime: "${{self:provider.runtime}}"
     environment:
       API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
-      PUSH_NOTIFICATION_TABLE: !ImportValue "${{file(./src/resources/config.yml):PushNotificationTableName}}"
     vpc:
         securityGroupIds:
           - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
