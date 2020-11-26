@@ -34,6 +34,7 @@ def authorize_api_user(event, context):
     try:
         # Verify and get information from id_token
         token = event['authorizationToken']
+        token = token.replace("token ", "")
         print("TOKEN")
         print(token)
         print("api_gateway_table_string")
