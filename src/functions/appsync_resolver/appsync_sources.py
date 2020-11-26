@@ -6,7 +6,7 @@ from datetime import timedelta
 import secrets
 import uuid
 
-api_gateway_table_string = os.environ["API_GATEWAY_TOKENS_TABLE"]
+# api_gateway_table_string = os.environ["API_GATEWAY_TOKENS_TABLE"]
 
 
 def generatePolicy(principalId, effect, methodArn):
@@ -33,12 +33,13 @@ def generatePolicy(principalId, effect, methodArn):
 def authorize_api_user(event, context):
     try:
         # Verify and get information from id_token
+        # print(event)
         token = event['authorizationToken']
-        token = token.replace("token ", "")
-        print("TOKEN")
-        print(token)
-        print("api_gateway_table_string")
-        print(api_gateway_table_string)
+        # token = token.replace("token ", "")
+        # print("TOKEN")
+        # print(token)
+        # print("api_gateway_table_string")
+        # print(api_gateway_table_string)
         # Check that token exists in DB
         dynamodb = boto3.resource('dynamodb')
         ae = Attr('AccessToken').eq(token)
