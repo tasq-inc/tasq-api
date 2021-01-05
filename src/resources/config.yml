@@ -121,6 +121,7 @@ TasqAPIName: "API-${{self:provider.stage}}"
 
 EnerplusUserPool: "${{self:provider.stage}}/enerplus/cognito/pool"
 RedwolfUserPool: "${{self:provider.stage}}/redwolf/cognito/pool"
+RileyUserPool: "${{self:provider.stage}}/riley/cognito/pool"
 PostPredictionStatusFieldName: "update_prediction_status"
 
 ReassignTaskQueryFieldName: "get_task"
