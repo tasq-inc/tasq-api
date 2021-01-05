@@ -56,7 +56,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"email\": \"$input.params('email')\",\"deviceuid\": \"$input.params('deviceuid')\",\"devicetoken\": \"$input.params('devicetoken')\",\"devicename\": \"$input.params('devicename')\",\"devicemodel\": \"$input.params('devicemodel')\",\"deviceversion\": \"$input.params('deviceversion')\",\"device_type\": \"$input.params('device_type')\"}"
+          "application/json": "{\"email\": $input.json('$.email'), \"deviceuid\": $input.json('$.deviceuid'), \"devicetoken\": $input.json('$.devicetoken'), \"devicename\": $input.json('$.devicename'), \"devicemodel\": $input.json('$.devicemodel'), \"device_type\": $input.json('$.device_type'), \"deviceversion\": $input.json('$.deviceversion'), \"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
