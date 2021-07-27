@@ -30,8 +30,8 @@ jobs:
 
         npm install serverless-python-requirements
 
-        git clone https://${{secrets.GITHUBFULLACCESSTOKEN}}@github.com/tasq-inc/tasq-codepipeline-repo.git
-        cp tasq-codepipeline-repo/ecs_pull_newest_image.py .
+        # git clone https://${{secrets.GITHUBFULLACCESSTOKEN}}@github.com/tasq-inc/tasq-codepipeline-repo.git
+        # cp tasq-codepipeline-repo/ecs_pull_newest_image.py .
 
         python --version
         curl -O https://bootstrap.pypa.io/get-pip.py
