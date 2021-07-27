@@ -3,6 +3,7 @@ Resources:
       Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
+        BillingMode: PAY_PER_REQUEST
         AttributeDefinitions:
           - AttributeName: "TokenID"
             AttributeType: S
@@ -24,23 +25,13 @@ Resources:
              KeyType: HASH
            Projection:
              ProjectionType: ALL
-           ProvisionedThroughput:
-             ReadCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBReadCapacity}}"
-             WriteCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBWriteCapacity}}"
          - IndexName: AccessToken-index
            KeySchema:
            - AttributeName: "AccessToken"
              KeyType: HASH
            Projection:
              ProjectionType: ALL
-           ProvisionedThroughput:
-             ReadCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBReadCapacity}}"
-             WriteCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBWriteCapacity}}"
-  
-        ProvisionedThroughput:
-          ReadCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBReadCapacity}}"
-          WriteCapacityUnits: "${{file(./src/resources/config.yml):PredictionTableDynamoDBWriteCapacity}}"
-  
+
   
 Outputs:
   ApiGatewayTokensTable:
