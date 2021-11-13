@@ -8,10 +8,10 @@ Resources:
               AwsRegion: us-east-1
               DefaultAction: ALLOW
               UserPoolId: us-east-1_VwUkzXfIT
-            LogConfig:
-                CloudWatchLogsRoleArn: !GetAtt AppSyncPushToCloudwatchRole.Arn
-                ExcludeVerboseContent: "false"
-                FieldLogLevel: "ALL"
+            # LogConfig:
+            #     CloudWatchLogsRoleArn: !GetAtt AppSyncPushToCloudwatchRole.Arn
+            #     ExcludeVerboseContent: "false"
+            #     FieldLogLevel: "ALL"
     AnalyticsQuerySchema:
         Type: "AWS::AppSync::GraphQLSchema"
         Properties:
