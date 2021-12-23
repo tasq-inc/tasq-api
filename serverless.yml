@@ -70,7 +70,7 @@ provider:
       # submit_ticket
       # get_ticket
 
-    AssignUserTasqStackName: "tasq-assign-user-tasks-${{self:provider.stage}}"
+    # AssignUserTasqStackName: "tasq-assign-user-tasks-${{self:provider.stage}}"
       # sign_up_user
       # get_all_users
       # update_user_profile
