@@ -91,8 +91,8 @@ resources:
   - ${{file(./src/resources/api_gateway/api_gateway.yml)}}
   - ${{file(./src/resources/api_gateway/tasqs_resource.yml)}}
   - ${{file(./src/resources/api_gateway/tickets_resource.yml)}}
-  - ${{file(./src/resources/api_gateway/users_resource.yml)}}
-  - ${{file(./src/resources/api_gateway/workflows_resource.yml)}}
+  # - ${{file(./src/resources/api_gateway/users_resource.yml)}}
+  # - ${{file(./src/resources/api_gateway/workflows_resource.yml)}}
   - ${{file(./src/resources/api_gateway/responses_resource.yml)}}
   - ${{file(./src/resources/api_gateway/push_notification_resource.yml)}}
   - ${{file(./src/resources/api_gateway/client_data_ingest_resource.yml)}}
