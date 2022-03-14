@@ -1,23 +1,15 @@
 #!/usr/bin/env bash
 VERSIONTAG=$(git describe --tags --long)
-short_commit_hash=$(git log --pretty=format:'%h' -n 1)
-full_commit_hash=$(git rev-parse $short_commit_hash)
-BRANCH_NAME_STRING=$(git name-rev --name-only --exclude=tags/* $full_commit_hash)
-# Split the string on a forward slash "/", then grab the last element in the array
-CI_ENVIRONMENT_NAME="${BRANCH_NAME_STRING##*/}"
-
-CONTAINER_TAG=${CI_ENVIRONMENT_NAME}
-
-if [ "${CI_ENVIRONMENT_NAME}" == "prod" ];
-then
-    CONTAINER_TAG=latest
-fi
-
-
-echo $CONTAINER_TAG
+CI_ENVIRONMENT_NAME=$(git rev-parse --abbrev-ref HEAD)
 echo "Version Tag is :"$VERSIONTAG
-
-# npm install -g serverless
+echo "CI stage is: "$CI_ENVIRONMENT_NAME
+echo "hmm 1"
+npm i -g serverless@2.32.0 npm@latest
+echo "hmm 2"
 # npm install
 npm i serverless-latest-layer-version --save-dev
-npx serverless --aws-profile default deploy --force --verbose --stage ${CI_ENVIRONMENT_NAME} --containerTag ${CONTAINER_TAG} --versiontag ${VERSIONTAG} --uploadinitialfiles True
+echo "hmm 3"
+npm i serverless-plugin-ifelse --save-dev
+echo "hmm 4"
+npx serverless --aws-profile default deploy --force --stage ${CI_ENVIRONMENT_NAME} --versiontag ${VERSIONTAG} --uploadinitialfiles True
+echo "hmm 5"

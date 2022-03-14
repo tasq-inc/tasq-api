@@ -40,8 +40,8 @@ provider:
   environment:
     IamNetworkStackName: "tasq-aws-iam-networking-${{self:provider.stage}}"
     MetaDataStoreStackName: "tasq-meta-datastore-${{self:provider.stage}}"
-    WellStateS3BucketName: "tasq-well-state-worker-${{self:provider.stage}}"
-    PredictionsTableStackName: "tasq-detect-state-change-${{self:provider.stage}}"
+    # WellStateS3BucketName: "tasq-well-state-worker-${{self:provider.stage}}"
+    # PredictionsTableStackName: "tasq-detect-state-change-${{self:provider.stage}}"
     FailureTableStackName: "tasq-failure-prediction-${{self:provider.stage}}"
     PushNotificationTableStackName: "tasq-notification-server-${{self:provider.stage}}"
     RawScadaIngestStackName: "tasq-raw-scada-ingest-enerplus-${{self:provider.stage}}"
