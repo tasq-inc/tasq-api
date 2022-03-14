@@ -17,115 +17,115 @@ Resources:
 
 
 
-  GetResponseLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Join:
-        - ''
-        - - 'arn:aws:execute-api:'
-          - Ref: AWS::Region
-          - ":"
-          - Ref: AWS::AccountId
-          - ":"
-          - Ref: RestApi
-          - "/*"
+  # GetResponseLambdaPermission:
+  #   Type: AWS::Lambda::Permission
+  #   Properties:
+  #     Action: lambda:invokeFunction
+  #     FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
+  #     Principal: apigateway.amazonaws.com
+  #     SourceArn:
+  #       Fn::Join:
+  #       - ''
+  #       - - 'arn:aws:execute-api:'
+  #         - Ref: AWS::Region
+  #         - ":"
+  #         - Ref: AWS::AccountId
+  #         - ":"
+  #         - Ref: RestApi
+  #         - "/*"
 
 
-  GetResponse:
-    Type: AWS::ApiGateway::Method
-    DependsOn: GetResponseLambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: ResponsesResource
-      HttpMethod: GET
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+  # GetResponse:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: GetResponseLambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: ResponsesResource
+  #     HttpMethod: GET
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri:
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponsesSyncSource"
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #     RequestModels:
+  #       application/json:
+  #         Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
 
 
 
 
-  PostUserResponseLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Join:
-        - ''
-        - - 'arn:aws:execute-api:'
-          - Ref: AWS::Region
-          - ":"
-          - Ref: AWS::AccountId
-          - ":"
-          - Ref: RestApi
-          - "/*"
+  # PostUserResponseLambdaPermission:
+  #   Type: AWS::Lambda::Permission
+  #   Properties:
+  #     Action: lambda:invokeFunction
+  #     FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+  #     Principal: apigateway.amazonaws.com
+  #     SourceArn:
+  #       Fn::Join:
+  #       - ''
+  #       - - 'arn:aws:execute-api:'
+  #         - Ref: AWS::Region
+  #         - ":"
+  #         - Ref: AWS::AccountId
+  #         - ":"
+  #         - Ref: RestApi
+  #         - "/*"
 
-  PostUserResponse:
-    Type: AWS::ApiGateway::Method
-    DependsOn: PostUserResponseLambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: ResponsesResource
-      HttpMethod: POST
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-        RequestTemplates:
-          "application/json": "{\"id\": $input.json('$.id'),\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+  # PostUserResponse:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: PostUserResponseLambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: ResponsesResource
+  #     HttpMethod: POST
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri:
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #       RequestTemplates:
+  #         "application/json": "{\"id\": $input.json('$.id'),\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
+  #     RequestModels:
+  #       application/json:
+  #         Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
 
 
 
@@ -145,172 +145,172 @@ Resources:
 
 
 
-  PutResponseUserPredictionLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Join:
-        - ''
-        - - 'arn:aws:execute-api:'
-          - Ref: AWS::Region
-          - ":"
-          - Ref: AWS::AccountId
-          - ":"
-          - Ref: RestApi
-          - "/*"
+  # PutResponseUserPredictionLambdaPermission:
+  #   Type: AWS::Lambda::Permission
+  #   Properties:
+  #     Action: lambda:invokeFunction
+  #     FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+  #     Principal: apigateway.amazonaws.com
+  #     SourceArn:
+  #       Fn::Join:
+  #       - ''
+  #       - - 'arn:aws:execute-api:'
+  #         - Ref: AWS::Region
+  #         - ":"
+  #         - Ref: AWS::AccountId
+  #         - ":"
+  #         - Ref: RestApi
+  #         - "/*"
 
-  PutResponseUserPrediction:
-    Type: AWS::ApiGateway::Method
-    DependsOn: PutResponseUserPredictionLambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: ResponsesUserResource
-      HttpMethod: POST
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-        RequestTemplates:
-          "application/json": "{\"id\": \"$input.params('response_id')\",\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
-
-
-  DeleteResponseUserPredictionLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Join:
-        - ''
-        - - 'arn:aws:execute-api:'
-          - Ref: AWS::Region
-          - ":"
-          - Ref: AWS::AccountId
-          - ":"
-          - Ref: RestApi
-          - "/*"
+  # PutResponseUserPrediction:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: PutResponseUserPredictionLambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: ResponsesUserResource
+  #     HttpMethod: POST
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri:
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:UpdateUserResponseSyncSource"
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #       RequestTemplates:
+  #         "application/json": "{\"id\": \"$input.params('response_id')\",\"mark_as_complete\": $input.json('$.mark_as_complete') ,\"response_data\": $input.json('$.response_data'),\"body\" : $input.json('$') }"
+  #     RequestModels:
+  #       application/json:
+  #         Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
 
 
-  DeleteResponseUserPrediction:
-    Type: AWS::ApiGateway::Method
-    DependsOn: DeleteResponseUserPredictionLambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: ResponsesUserResource
-      HttpMethod: DELETE
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-        RequestTemplates:
-          "application/json": "{\"id\": \"$input.params('response_id')\"}"
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+  # DeleteResponseUserPredictionLambdaPermission:
+  #   Type: AWS::Lambda::Permission
+  #   Properties:
+  #     Action: lambda:invokeFunction
+  #     FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
+  #     Principal: apigateway.amazonaws.com
+  #     SourceArn:
+  #       Fn::Join:
+  #       - ''
+  #       - - 'arn:aws:execute-api:'
+  #         - Ref: AWS::Region
+  #         - ":"
+  #         - Ref: AWS::AccountId
+  #         - ":"
+  #         - Ref: RestApi
+  #         - "/*"
 
 
-
-  GetResponseUserPredictionLambdaPermission:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
-      Principal: apigateway.amazonaws.com
-      SourceArn:
-        Fn::Join:
-        - ''
-        - - 'arn:aws:execute-api:'
-          - Ref: AWS::Region
-          - ":"
-          - Ref: AWS::AccountId
-          - ":"
-          - Ref: RestApi
-          - "/*"
+  # DeleteResponseUserPrediction:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: DeleteResponseUserPredictionLambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: ResponsesUserResource
+  #     HttpMethod: DELETE
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri:
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:DeleteUserResponseSyncSource"
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #       RequestTemplates:
+  #         "application/json": "{\"id\": \"$input.params('response_id')\"}"
+  #     RequestModels:
+  #       application/json:
+  #         Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
 
 
 
-  GetResponseUserPrediction:
-    Type: AWS::ApiGateway::Method
-    DependsOn: GetResponseUserPredictionLambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: ResponsesUserResource
-      HttpMethod: GET
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri:
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-        RequestTemplates:
-          "application/json": "{\"prediction_id\": \"$input.params('response_id')\"}"
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+  # GetResponseUserPredictionLambdaPermission:
+  #   Type: AWS::Lambda::Permission
+  #   Properties:
+  #     Action: lambda:invokeFunction
+  #     FunctionName: !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
+  #     Principal: apigateway.amazonaws.com
+  #     SourceArn:
+  #       Fn::Join:
+  #       - ''
+  #       - - 'arn:aws:execute-api:'
+  #         - Ref: AWS::Region
+  #         - ":"
+  #         - Ref: AWS::AccountId
+  #         - ":"
+  #         - Ref: RestApi
+  #         - "/*"
+
+
+
+  # GetResponseUserPrediction:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: GetResponseUserPredictionLambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: ResponsesUserResource
+  #     HttpMethod: GET
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri:
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - !ImportValue "${{self:provider.environment.DetectStateChangeStackName}}:GetUserResponseSyncSource"
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #       RequestTemplates:
+  #         "application/json": "{\"prediction_id\": \"$input.params('response_id')\"}"
+  #     RequestModels:
+  #       application/json:
+  #         Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
   
 
