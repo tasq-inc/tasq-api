@@ -54,7 +54,7 @@ provider:
     stackName: "${{self:service}}-${{self:provider.stage}}"
 
     # /reponses Lambda Functions
-    DetectStateChangeStackName: "tasq-detect-state-change-${{self:provider.stage}}"
+    # DetectStateChangeStackName: "tasq-detect-state-change-${{self:provider.stage}}"
       # get_user_responses_lambda_handler "${{self:provider.environment.DetectStateChangeStackName}}:"
       # delete_user_response_lambda_handler 
       # update_user_response_lambda_handler
