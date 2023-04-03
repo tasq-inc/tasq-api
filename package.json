@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "serverless-latest-layer-version": "^2.1.2",
+    "serverless-plugin-ifelse": "^1.0.7"
+  }
+}

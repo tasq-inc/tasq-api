@@ -1,37 +1,37 @@
-name: CI
+# name: CI
 
-on:
-  push:
-    branches:
-    - dev
+# on:
+#   push:
+#     branches:
+#     - dev
 
-jobs:
-  build:
+# jobs:
+#   build:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Run a multi-line script
-      run: |
-        mkdir ~/.aws
-        touch ~/.aws/credentials
-        touch ~/.aws/config
-        git tag v1
-        echo "[default]
-        aws_access_key_id = ${{secrets.AWS_ACCESS_KEY_ID}}
-        aws_secret_access_key = ${{secrets.AWS_SECRET_ACCESS_KEY}}
-        region = us-east-2" > ~/.aws/credentials
-        echo "[default]
-        output = text
-        region = us-east-2" > ~/.aws/config
-        # git clone https://${{secrets.GITHUBFULLACCESSTOKEN}}@github.com/tasq-inc/tasq-codepipeline-repo.git
-        # cp tasq-codepipeline-repo/ecs_pull_newest_image.py .
-        python --version
-        curl -O https://bootstrap.pypa.io/get-pip.py
-        python3 get-pip.py
-        pip install --upgrade pip
-        pip3 install PyYAML
-        pip3 install boto3
-        # python3 tasq-codepipeline-repo/include_pipelines_in_stack.py dev
-        sh deploy_stack.sh
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Run a multi-line script
+#       run: |
+#         mkdir ~/.aws
+#         touch ~/.aws/credentials
+#         touch ~/.aws/config
+#         git tag v1
+#         echo "[default]
+#         aws_access_key_id = ${{secrets.AWS_ACCESS_KEY_ID}}
+#         aws_secret_access_key = ${{secrets.AWS_SECRET_ACCESS_KEY}}
+#         region = us-east-2" > ~/.aws/credentials
+#         echo "[default]
+#         output = text
+#         region = us-east-2" > ~/.aws/config
+#         # git clone https://${{secrets.GITHUBFULLACCESSTOKEN}}@github.com/tasq-inc/tasq-codepipeline-repo.git
+#         # cp tasq-codepipeline-repo/ecs_pull_newest_image.py .
+#         python --version
+#         curl -O https://bootstrap.pypa.io/get-pip.py
+#         python3 get-pip.py
+#         pip install --upgrade pip
+#         pip3 install PyYAML
+#         pip3 install boto3
+#         # python3 tasq-codepipeline-repo/include_pipelines_in_stack.py dev
+#         sh deploy_stack.sh
