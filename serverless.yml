@@ -47,6 +47,7 @@ provider:
     RawScadaIngestStackName: "tasq-raw-scada-ingest-enerplus-${{self:provider.stage}}"
     CleanScadaIngestStackName: "tasq-clean-scada-ingest-enerplus-${{self:provider.stage}}"
     ProceduresStackName: "tasq-procedures-${{self:provider.stage}}"
+    OperatorsAlertStackName: "tasq-workflow-${{self:provider.stage}}"
     StackMainUserId: "711589413744"
     EcrAddress: "711589413744.dkr.ecr.us-east-2.amazonaws.com"
     InboundStackName: "tasq-feature-extract-${{self:provider.stage}}"
@@ -97,6 +98,7 @@ resources:
   - ${{file(./src/resources/api_gateway/push_notification_resource.yml)}}
   - ${{file(./src/resources/api_gateway/client_data_ingest_resource.yml)}}
   - ${{file(./src/resources/api_gateway/procedures_resource.yml)}}
+  - ${{file(./src/resources/api_gateway/operators_resource.yml)}}
   - ${{file(./src/resources/dynamodb/dynamodb.yml)}}
   - ${{file(./src/resources/appsync/appsync.yml)}}
   
