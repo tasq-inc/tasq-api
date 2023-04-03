@@ -1,7 +1,6 @@
 Resources:
 
         ############# RESOURCE - operators ############
-
   OperatorsAlertResource:
     Type: AWS::ApiGateway::Resource
     Properties:
