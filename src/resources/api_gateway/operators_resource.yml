@@ -56,7 +56,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"visibility\": $input.params('visibility'),\"msg\": $input.params('msg'),\"operator\": $input.params('operator')}"
+          "application/json": "{\"visibility\": $input.json('visibility'),\"msg\": $input.json('msg'),\"operator\": $input.json('operator')}"
       RequestModels:
         application/json:
           Ref: Model
