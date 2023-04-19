@@ -113,7 +113,7 @@ Resources:
 
   StageV1Deployment:
     Type: AWS::ApiGateway::Deployment
-    DependsOn: ProfileResource
+    DependsOn: NotificationResource
     Properties:
       RestApiId:
         Ref: RestApi

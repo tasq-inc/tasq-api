@@ -13,6 +13,7 @@ Resources:
         - RootResourceId
       PathPart: workflows
 
+# Post Workflow Function
   PostWorkflowLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
@@ -70,7 +71,7 @@ Resources:
 
   
 
-
+# Get All Workflows Function
 
   GetWorkflowsLambdaPermission:
     Type: AWS::Lambda::Permission

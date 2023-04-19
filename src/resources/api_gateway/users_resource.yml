@@ -129,6 +129,7 @@ Resources:
 
 
 
+
   ProfileUserResource:
     Type: AWS::ApiGateway::Resource
     Properties:
@@ -137,6 +138,80 @@ Resources:
       ParentId:
         Ref: ProfileResource
       PathPart: "{user}"
+
+
+
+
+
+  # GetProfileUserLambdaPermission:
+  #   Type: AWS::Lambda::Permission
+  #   Properties:
+  #     Action: lambda:invokeFunction
+  #     FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetUserDetailsSyncSource"
+  #     Principal: apigateway.amazonaws.com
+  #     SourceArn:
+  #       Fn::Join:
+  #       - ''
+  #       - - 'arn:aws:execute-api:'
+  #         - Ref: AWS::Region
+  #         - ":"
+  #         - Ref: AWS::AccountId
+  #         - ":"
+  #         - Ref: RestApi
+  #         - "/*"
+
+  # # GetProfileUser:
+  # #   Type: AWS::ApiGateway::Method
+  # #   DependsOn: GetProfileUserLambdaPermission
+  # #   Properties:
+  # #     AuthorizationType: CUSTOM
+  # #     AuthorizerId:
+  # #       Ref: RestApiAuthorizer
+  # #     RestApiId:
+  # #       Ref: RestApi
+  # #     ResourceId:
+  # #       Ref: ProfileUserResource
+  # #     HttpMethod: GET
+  # #     Integration:
+  # #       Type: AWS
+  # #       IntegrationHttpMethod: POST
+  # #       Uri:
+  # #         Fn::Join:
+  # #         - ''
+  # #         - - 'arn:aws:apigateway:'
+  # #           - Ref: AWS::Region
+  # #           - ":lambda:path/2015-03-31/functions/"
+  # #           - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetUserDetailsSyncSource"
+  # #           - "/invocations"
+  # #       IntegrationResponses:
+  # #       - StatusCode: 200
+  # #       RequestTemplates:
+  # #         "application/json": "{\"username\": \"$input.params('user')\"}"
+  # #     RequestModels:
+  # #       application/json:
+  # #         Ref: Model
+  # #     RequestParameters:
+  # #       method.request.header.Authorization: true
+  # #     MethodResponses:
+  # #     - ResponseModels:
+  # #         application/json: Empty
+  # #       StatusCode: 200
+
+
+
+
+
+
+
+
+  ProfileOperatorUserResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: RestApi
+      ParentId:
+        Ref: ProfileUserResource
+      PathPart: "{operator}"
 
 
 
@@ -169,7 +244,7 @@ Resources:
       RestApiId:
         Ref: RestApi
       ResourceId:
-        Ref: ProfileUserResource
+        Ref: ProfileOperatorUserResource
       HttpMethod: GET
       Integration:
         Type: AWS
@@ -185,7 +260,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"username\": \"$input.params('user')\"}"
+          "application/json": "{\"username\": \"$input.params('user')\",\"operator\": \"$input.params('operator')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -195,6 +270,19 @@ Resources:
       - ResponseModels:
           application/json: Empty
         StatusCode: 200
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   PutProfileUserLambdaPermission:

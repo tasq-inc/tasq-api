@@ -40,8 +40,8 @@ provider:
   environment:
     IamNetworkStackName: "tasq-aws-iam-networking-${{self:provider.stage}}"
     MetaDataStoreStackName: "tasq-meta-datastore-${{self:provider.stage}}"
-    WellStateS3BucketName: "tasq-well-state-worker-${{self:provider.stage}}"
-    PredictionsTableStackName: "tasq-detect-state-change-${{self:provider.stage}}"
+    # WellStateS3BucketName: "tasq-well-state-worker-${{self:provider.stage}}"
+    # PredictionsTableStackName: "tasq-detect-state-change-${{self:provider.stage}}"
     FailureTableStackName: "tasq-failure-prediction-${{self:provider.stage}}"
     PushNotificationTableStackName: "tasq-notification-server-${{self:provider.stage}}"
     RawScadaIngestStackName: "tasq-raw-scada-ingest-enerplus-${{self:provider.stage}}"
@@ -54,7 +54,7 @@ provider:
     stackName: "${{self:service}}-${{self:provider.stage}}"
 
     # /reponses Lambda Functions
-    DetectStateChangeStackName: "tasq-detect-state-change-${{self:provider.stage}}"
+    # DetectStateChangeStackName: "tasq-detect-state-change-${{self:provider.stage}}"
       # get_user_responses_lambda_handler "${{self:provider.environment.DetectStateChangeStackName}}:"
       # delete_user_response_lambda_handler 
       # update_user_response_lambda_handler
@@ -70,7 +70,7 @@ provider:
       # submit_ticket
       # get_ticket
 
-    AssignUserTasqStackName: "tasq-assign-user-tasks-${{self:provider.stage}}"
+    AssignUserTasqStackName: "tasq-workflow-${{self:provider.stage}}"
       # sign_up_user
       # get_all_users
       # update_user_profile
@@ -92,7 +92,8 @@ resources:
   - ${{file(./src/resources/api_gateway/tasqs_resource.yml)}}
   - ${{file(./src/resources/api_gateway/tickets_resource.yml)}}
   - ${{file(./src/resources/api_gateway/users_resource.yml)}}
-  - ${{file(./src/resources/api_gateway/workflows_resource.yml)}}
+  - ${{file(./src/resources/api_gateway/operators_resource.yml)}}
+  # - ${{file(./src/resources/api_gateway/workflows_resource.yml)}}
   - ${{file(./src/resources/api_gateway/responses_resource.yml)}}
   - ${{file(./src/resources/api_gateway/push_notification_resource.yml)}}
   - ${{file(./src/resources/api_gateway/client_data_ingest_resource.yml)}}
