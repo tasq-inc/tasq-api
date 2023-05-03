@@ -1,0 +1,144 @@
+Resources:
+
+        ############# RESOURCE - tasq-data-service ############
+
+  SignalsResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: RestApi
+      ParentId:
+        Fn::GetAtt:
+        - RestApi
+        - RootResourceId
+      PathPart: signals
+
+
+  ProductionResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: RestApi
+      ParentId:
+        Fn::GetAtt:
+        - RestApi
+        - RootResourceId
+      PathPart: production
+
+
+
+
+  GetProductionDataLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSource5v2"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+  GetProductionData:
+    Type: AWS::ApiGateway::Method
+    DependsOn: GetProductionDataLambdaPermission
+    Properties:
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: RestApiAuthorizer
+      RestApiId:
+        Ref: RestApi
+      ResourceId:
+        Ref: ProductionResource
+      HttpMethod: GET
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - Ref: AWS::Region
+            - ":lambda:path/2015-03-31/functions/"
+            - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSource5v2"
+            - "/invocations"
+        IntegrationResponses:
+        - StatusCode: 200
+        RequestTemplates:
+          "application/json": "{\"fillna_method\": \"$input.params('fillna_method')\",\"operator\": \"$input.params('operator')\",\"from_date\": \"$input.params('from_date')\",\"node_type\": \"$input.params('node_type')\",\"to_date\": \"$input.params('to_date')\",\"nodeid\": \"$input.params('nodeid')\"}"
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        StatusCode: 200
+
+
+
+
+
+
+  GetCleanDataSignalLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSourcev2"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
+
+  GetCleanDataSignals:
+    Type: AWS::ApiGateway::Method
+    DependsOn: GetCleanDataSignalLambdaPermission
+    Properties:
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: RestApiAuthorizer
+      RestApiId:
+        Ref: RestApi
+      ResourceId:
+        Ref: SignalsResource
+      HttpMethod: GET
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - Ref: AWS::Region
+            - ":lambda:path/2015-03-31/functions/"
+            - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSourcev2"
+            - "/invocations"
+        IntegrationResponses:
+        - StatusCode: 200
+        RequestTemplates:
+          "application/json": "{\"description\": \"$input.params('description')\",\"downsample_method\": \"$input.params('downsample_method')\",\"fillna_method\": \"$input.params('fillna_method')\",\"from_time\": \"$input.params('from_time')\",\"gorilla_compress\": \"$input.params('gorilla_compress')\",\"nodeid\": \"$input.params('nodeid')\",\"operator\": \"$input.params('operator')\",\"raw\": \"$input.params('raw')\",\"reg_freq\": \"$input.params('reg_freq')\",\"to_time\": \"$input.params('to_time')\"}"
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        StatusCode: 200
+
+
