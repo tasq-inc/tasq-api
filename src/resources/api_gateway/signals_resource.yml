@@ -70,8 +70,8 @@ Resources:
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
-        RequestTemplates:
-          "application/json": "{\"fillna_method\": \"$input.params('fillna_method')\",\"operator\": \"$input.params('operator')\",\"from_date\": \"$input.params('from_date')\",\"node_type\": \"$input.params('node_type')\",\"to_date\": \"$input.params('to_date')\",\"nodeid\": \"$input.params('nodeid')\"}"
+        # RequestTemplates:
+        #   "application/json": "{\"fillna_method\": \"$input.params('fillna_method')\",\"operator\": \"$input.params('operator')\",\"from_date\": \"$input.params('from_date')\",\"node_type\": \"$input.params('node_type')\",\"to_date\": \"$input.params('to_date')\",\"nodeid\": \"$input.params('nodeid')\"}"
       RequestModels:
         application/json:
           Ref: Model
@@ -129,8 +129,8 @@ Resources:
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
-        RequestTemplates:
-          "application/json": "{\"description\": \"$input.params('description')\",\"downsample_method\": \"$input.params('downsample_method')\",\"fillna_method\": \"$input.params('fillna_method')\",\"from_time\": \"$input.params('from_time')\",\"gorilla_compress\": \"$input.params('gorilla_compress')\",\"nodeid\": \"$input.params('nodeid')\",\"operator\": \"$input.params('operator')\",\"raw\": \"$input.params('raw')\",\"reg_freq\": \"$input.params('reg_freq')\",\"to_time\": \"$input.params('to_time')\"}"
+        # RequestTemplates:
+        #   "application/json": "{\"description\": \"$input.params('description')\",\"downsample_method\": \"$input.params('downsample_method')\",\"fillna_method\": \"$input.params('fillna_method')\",\"from_time\": \"$input.params('from_time')\",\"gorilla_compress\": \"$input.params('gorilla_compress')\",\"nodeid\": \"$input.params('nodeid')\",\"operator\": \"$input.params('operator')\",\"raw\": \"$input.params('raw')\",\"reg_freq\": \"$input.params('reg_freq')\",\"to_time\": \"$input.params('to_time')\"}"
       RequestModels:
         application/json:
           Ref: Model
