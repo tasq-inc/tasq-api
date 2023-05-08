@@ -86,7 +86,6 @@ Resources:
 
 
 
-
   GetCleanDataSignalLambdaPermission:
     Type: AWS::Lambda::Permission
     Properties:
