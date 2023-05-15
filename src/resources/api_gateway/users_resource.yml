@@ -3,16 +3,16 @@ Resources:
 ############# RESOURCE - profile ############
 
 
-  # ProfileResource:
-  #   Type: AWS::ApiGateway::Resource
-  #   Properties:
-  #     RestApiId:
-  #       Ref: RestApi
-  #     ParentId:
-  #       Fn::GetAtt:
-  #       - RestApi
-  #       - RootResourceId
-  #     PathPart: users
+  ProfileResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId:
+        Ref: RestApi
+      ParentId:
+        Fn::GetAtt:
+        - RestApi
+        - RootResourceId
+      PathPart: users
 
   # SignalsResource:
   #   Type: AWS::ApiGateway::Resource
