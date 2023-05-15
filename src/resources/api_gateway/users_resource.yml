@@ -16,16 +16,16 @@ Resources:
 
 
 
-  HmmResource:
-    Type: AWS::ApiGateway::Resource
-    Properties:
-      RestApiId:
-        Ref: RestApi
-      ParentId:
-        Fn::GetAtt:
-        - RestApi
-        - RootResourceId
-      PathPart: hmm
+  # HmmResource:
+  #   Type: AWS::ApiGateway::Resource
+  #   Properties:
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ParentId:
+  #       Fn::GetAtt:
+  #       - RestApi
+  #       - RootResourceId
+  #     PathPart: hmm
 
   GetHmmLambdaPermission:
     Type: AWS::Lambda::Permission
@@ -45,40 +45,40 @@ Resources:
           - "/*"
 
 
-  GetHmm:
-    Type: AWS::ApiGateway::Method
-    DependsOn: GetHmmLambdaPermission
-    Properties:
-      AuthorizationType: CUSTOM
-      AuthorizerId:
-        Ref: RestApiAuthorizer
-      RestApiId:
-        Ref: RestApi
-      ResourceId:
-        Ref: HmmResource
-      HttpMethod: GET
-      Integration:
-        Type: AWS
-        IntegrationHttpMethod: POST
-        Uri: 
-          Fn::Join:
-          - ''
-          - - 'arn:aws:apigateway:'
-            - Ref: AWS::Region
-            - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
-            - "/invocations"
-        IntegrationResponses:
-        - StatusCode: 200
-      RequestModels:
-        application/json:
-          Ref: Model
-      RequestParameters:
-        method.request.header.Authorization: true
-      MethodResponses:
-      - ResponseModels:
-          application/json: Empty
-        StatusCode: 200
+  # GetHmm:
+  #   Type: AWS::ApiGateway::Method
+  #   DependsOn: GetHmmLambdaPermission
+  #   Properties:
+  #     AuthorizationType: CUSTOM
+  #     AuthorizerId:
+  #       Ref: RestApiAuthorizer
+  #     RestApiId:
+  #       Ref: RestApi
+  #     ResourceId:
+  #       Ref: HmmResource
+  #     HttpMethod: GET
+  #     Integration:
+  #       Type: AWS
+  #       IntegrationHttpMethod: POST
+  #       Uri: 
+  #         Fn::Join:
+  #         - ''
+  #         - - 'arn:aws:apigateway:'
+  #           - Ref: AWS::Region
+  #           - ":lambda:path/2015-03-31/functions/"
+  #           - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
+  #           - "/invocations"
+  #       IntegrationResponses:
+  #       - StatusCode: 200
+  #     RequestModels:
+  #       application/json:
+  #         Ref: Model
+  #     RequestParameters:
+  #       method.request.header.Authorization: true
+  #     MethodResponses:
+  #     - ResponseModels:
+  #         application/json: Empty
+  #       StatusCode: 200
 
 
 
@@ -102,23 +102,61 @@ Resources:
 
 
 
-  # GetSignalsLambdaPermission:
-  #   Type: AWS::Lambda::Permission
-  #   Properties:
-  #     Action: lambda:invokeFunction
-  #     FunctionName: !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
-  #     Principal: apigateway.amazonaws.com
-  #     SourceArn:
-  #       Fn::Join:
-  #       - ''
-  #       - - 'arn:aws:execute-api:'
-  #         - Ref: AWS::Region
-  #         - ":"
-  #         - Ref: AWS::AccountId
-  #         - ":"
-  #         - Ref: RestApi
-  #         - "/*"
+  PostSignalsLambdaPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:invokeFunction
+      FunctionName: !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSourcev2"
+      Principal: apigateway.amazonaws.com
+      SourceArn:
+        Fn::Join:
+        - ''
+        - - 'arn:aws:execute-api:'
+          - Ref: AWS::Region
+          - ":"
+          - Ref: AWS::AccountId
+          - ":"
+          - Ref: RestApi
+          - "/*"
 
+
+
+  PostSignals:
+    Type: AWS::ApiGateway::Method
+    DependsOn: PostSignalsLambdaPermission
+    Properties:
+      AuthorizationType: CUSTOM
+      AuthorizerId:
+        Ref: RestApiAuthorizer
+      RestApiId:
+        Ref: RestApi
+      ResourceId:
+        Ref: SignalResource
+      HttpMethod: POST
+      Integration:
+        Type: AWS
+        IntegrationHttpMethod: POST
+        Uri:
+          Fn::Join:
+          - ''
+          - - 'arn:aws:apigateway:'
+            - Ref: AWS::Region
+            - ":lambda:path/2015-03-31/functions/"
+            - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSourcev2"
+            - "/invocations"
+        IntegrationResponses:
+        - StatusCode: 200
+        RequestTemplates:
+          "application/json": "{\"nodeid\": $input.json('$.nodeid') ,\"description\": $input.json('$.description') ,\"from_time\": $input.json('$.from_time') ,\"to_time\": $input.json('$.to_time') ,\"raw\": $input.json('$.raw') ,\"operator\": $input.json('$.operator') ,\"gorilla_compress\": $input.json('$.gorilla_compress'),\"reg_freq\": $input.json('$.reg_freq'),\"fillna_method\": $input.json('$.fillna_method'),\"body\" : $input.json('$') }"
+      RequestModels:
+        application/json:
+          Ref: Model
+      RequestParameters:
+        method.request.header.Authorization: true
+      MethodResponses:
+      - ResponseModels:
+          application/json: Empty
+        StatusCode: 200
 
   # GetSignals:
   #   Type: AWS::ApiGateway::Method
@@ -131,7 +169,7 @@ Resources:
   #       Ref: RestApi
   #     ResourceId:
   #       Ref: SignalsResource
-  #     HttpMethod: GET
+  #     HttpMethod: 
   #     Integration:
   #       Type: AWS
   #       IntegrationHttpMethod: POST
@@ -141,7 +179,7 @@ Resources:
   #         - - 'arn:aws:apigateway:'
   #           - Ref: AWS::Region
   #           - ":lambda:path/2015-03-31/functions/"
-  #           - !ImportValue "${{self:provider.environment.AssignUserTasqStackName}}:GetAllUsersSyncSource"
+  #           - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:GetAllUsersSyncSource"
   #           - "/invocations"
   #       IntegrationResponses:
   #       - StatusCode: 200
