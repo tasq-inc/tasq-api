@@ -80,7 +80,7 @@ Resources:
         IntegrationResponses:
         - StatusCode: 200
         RequestTemplates:
-          "application/json": "{\"nodeid\": $input.json('$.nodeid') ,\"description\": $input.json('$.description') ,\"from_time\": $input.json('$.from_time') ,\"to_time\": $input.json('$.to_time') ,\"raw\": $input.json('$.raw') ,\"operator\": $input.json('$.operator') ,\"gorilla_compress\": $input.json('$.gorilla_compress'),\"reg_freq\": $input.json('$.reg_freq'),\"fillna_method\": $input.json('$.fillna_method'),\"body\" : $input.json('$') }"
+          "application/json": "{\"headers\": $input.params().header, \"nodeid\": $input.json('$.nodeid') ,\"description\": $input.json('$.description') ,\"from_time\": $input.json('$.from_time') ,\"to_time\": $input.json('$.to_time') ,\"raw\": $input.json('$.raw') ,\"operator\": $input.json('$.operator') ,\"gorilla_compress\": $input.json('$.gorilla_compress'),\"reg_freq\": $input.json('$.reg_freq'),\"fillna_method\": $input.json('$.fillna_method'),\"body\" : $input.json('$') }"
       RequestModels:
         application/json:
           Ref: Model
