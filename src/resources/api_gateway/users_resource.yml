@@ -39,7 +39,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !GetAtt GetSignalsDataSyncSource.Arn
+      FunctionName: !GetAtt GetSignalsDataSyncSourceLambdaFunction.Arn
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -75,7 +75,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - !GetAtt GetSignalsDataSyncSource.Arn
+            - !GetAtt GetSignalsDataSyncSourceLambdaFunction.Arn
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
