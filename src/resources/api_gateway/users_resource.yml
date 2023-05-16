@@ -39,7 +39,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: "get_def_agg_from_api"
+      FunctionName: !Ref GetSignalsDataSyncSource
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -75,7 +75,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - "get_def_agg_from_api"
+            - !Ref GetSignalsDataSyncSource
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
