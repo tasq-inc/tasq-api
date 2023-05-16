@@ -34,6 +34,9 @@ def authorize_api_user(event, context):
     try:
         # Verify and get information from id_token
         token = event['authorizationToken']
+        print("EVENT: ")
+        print(event)
+        print(context)
         # token = token.replace("token ", "")
 
         # Check that token exists in DB
