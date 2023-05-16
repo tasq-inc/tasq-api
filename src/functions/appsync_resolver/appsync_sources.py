@@ -5,6 +5,8 @@ from datetime import date, datetime
 from datetime import timedelta
 import secrets
 import uuid
+import botocore
+import json
 
 api_gateway_table_string = os.environ["API_GATEWAY_TOKENS_TABLE"]
 
@@ -111,4 +113,126 @@ def get_auth_token(event, context):
     return({
         "TokenData":response_items
     })
+
+
+
+
+''' Fetch dynamodb data by scan or query
+
+    :param table: String - <DYNAMODB_TABLE_NAME>
+    :param kce: KeyConditionExpression - Key("<KEY>").eq("<VALUE>") & Key("<KEY_TWO>").eq("<VALUE_TWO>")
+    :param index_name: String - "<FIELD>-index"
+    :param mode: String - "query" | "scan"
+    :return results: Array - [<WORKFLOW_RECORED_ONE>, <WORKFLOW_RECORED_TWO>, ...]
+'''
+def _query_dynamodb(table: str, kce=None, index_name=None, mode="query"):
+    results = []
+    table = boto3.resource("dynamodb").Table(table)
+    if mode == "query" and kce and index_name:
+        query = {}
+        while not query or "LastEvaluatedKey" in query:
+            if query and "LastEvaluatedKey" in query:
+                query = table.query(
+                    IndexName=index_name,
+                    ExclusiveStartKey=query["LastEvaluatedKey"],
+                    KeyConditionExpression=kce,
+                )
+            else:
+                query = table.query(IndexName=index_name, KeyConditionExpression=kce)
+            results.extend(query["Items"])
+    elif mode == "query" and kce:
+        query = {}
+        while not query or "LastEvaluatedKey" in query:
+            if query and "LastEvaluatedKey" in query:
+                query = table.query(
+                    ExclusiveStartKey=query["LastEvaluatedKey"],
+                    KeyConditionExpression=kce,
+                )
+            else:
+                query = table.query(KeyConditionExpression=kce)
+            results.extend(query["Items"])
+    elif mode == "scan" and kce == None:
+        scan = {}
+        while not scan or "LastEvaluatedKey" in scan:
+            if scan and "LastEvaluatedKey" in scan:
+                scan = table.scan(
+                    ExclusiveStartKey=scan["LastEvaluatedKey"],
+                )
+            else:
+                scan = table.scan()
+            results.extend(scan["Items"])
+    elif mode == "scan":
+        scan = {}
+        while not scan or "LastEvaluatedKey" in scan:
+            if scan and "LastEvaluatedKey" in scan:
+                scan = table.scan(
+                    ExclusiveStartKey=scan["LastEvaluatedKey"],
+                    FilterExpression=kce
+                )
+            else:
+                scan = table.scan(FilterExpression=kce)
+            results.extend(scan["Items"])
+    return results
+
+
+
+
+def _resolve_operator_syntax(operator, mode=None):
+    operator_map = {
+        "Enerplus": ["enerplus"],
+        "Red Wolf": [
+            "redwolf",
+            "red-wolf",
+            "Redwolf",
+            "RedWolf",
+            "Red-Wolf",
+            "red wolf",
+        ],
+        "Riley": ["riley"],
+        "Extraction": ["extraction", "civitas", "Civitas"],
+        "SWN": ["swn"],
+        "pdce": ["pdc", "PDC", "PDCE"],
+        "FC": ["fc"],
+        "Validus": ["validus"],
+        "caerus": ["Caerus"],
+        "taprock": ["Taprock", "taprock"],
+        "petronas": ["petronascanada", "Petronascanada", "PetronasCanada", "Petronas Canada", "petronas canada"],
+    }
+    resolved_operator = [
+        k for k, v in operator_map.items() if operator in v or operator == k
+    ]
+    if len(resolved_operator) > 1 or not resolved_operator:
+        raise ValueError("Could not resolve Operator")
+    else:
+        resolved_operator_result = resolved_operator[0].replace(" ", "-") if mode == "github" else resolved_operator[0]
+        return resolved_operator_result
+
+
+
+def get_def_agg_from_api(event, context):
+    print(event)
+    print(context)
+
+    kce = Key("AccessToken").eq(event['authorizationToken'])
+    records = _query_dynamodb(api_gateway_table_string, kce=kce, index_name="AccessToken-index", mode="query")
+
+    event["Operator"] = _resolve_operator_syntax(records[0]["Operator"])
+    
+    config = botocore.config.Config(
+        read_timeout=11000,
+        connect_timeout=11000,
+    )
+
+
+    session = boto3.Session()
+    client = session.client("lambda", config=config)
+
+    response = client.invoke(
+        FunctionName='tasq-prioritization-{env}-DefermentAggSyncSource'.format(env=os.environ["STAGE"]),
+        Payload=json.dumps(event),
+    )
+
+    data = json.loads(response['Payload'].read())
+    
+    return data
 

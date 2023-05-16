@@ -39,7 +39,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSourcev2"
+      FunctionName: "get_def_agg_from_api"
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -75,7 +75,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSourcev2"
+            - "get_def_agg_from_api"
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
