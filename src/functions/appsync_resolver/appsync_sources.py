@@ -216,7 +216,8 @@ def get_def_agg_from_api(event, context):
     kce = Key("AccessToken").eq(event["headers"]['Authorization'])
     records = _query_dynamodb(api_gateway_table_string, kce=kce, index_name="AccessToken-index", mode="query")
 
-    event["Operator"] = _resolve_operator_syntax(records[0]["Operator"])
+    event_body = event["body"]
+    event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
     
     config = botocore.config.Config(
         read_timeout=11000,
@@ -226,10 +227,9 @@ def get_def_agg_from_api(event, context):
 
     session = boto3.Session()
     client = session.client("lambda", config=config)
-
     response = client.invoke(
         FunctionName='tasq-prioritization-{env}-DefermentAggSyncSource'.format(env=os.environ["STAGE"]),
-        Payload=json.dumps(event),
+        Payload=json.dumps(event_body),
     )
 
     data = json.loads(response['Payload'].read())
