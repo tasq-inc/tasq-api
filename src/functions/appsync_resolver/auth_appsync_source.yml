@@ -60,7 +60,25 @@ GetPersAccTokenSyncSource:
 GetSignalsDataSyncSource:
     DependsOn: AppSyncSourceLambdaRole
     description: "Lambda data-source for appsync endpoint: Get personal access token"
-    handler: src/functions/appsync_resolver/appsync_sources.get_def_agg_from_api
+    handler: src/functions/appsync_resolver/appsync_sources.get_signals_from_api
+    memorySize: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceMemSize}}'
+    timeout: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceTimeout}}'
+    role: !GetAtt AppSyncSourceLambdaRole.Arn
+    runtime: "${{self:provider.runtime}}"
+    environment:
+      API_GATEWAY_TOKENS_TABLE: !Ref ApiGatewayTokensTable
+      STAGE: "${{self:provider.stage}}"
+    vpc:
+        securityGroupIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkSecurityGroup}}"
+        subnetIds:
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet1}}"
+          - !ImportValue "${{file(./src/resources/config.yml):NetworkPrivateSubnet2}}"
+
+GetProductionDataSyncSource:
+    DependsOn: AppSyncSourceLambdaRole
+    description: "Lambda data-source for appsync endpoint: Get personal access token"
+    handler: src/functions/appsync_resolver/appsync_sources.get_production_data_from_api
     memorySize: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceMemSize}}'
     timeout: '${{file(./src/resources/config.yml):ListPredictionsLambdaSourceTimeout}}'
     role: !GetAtt AppSyncSourceLambdaRole.Arn

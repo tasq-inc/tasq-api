@@ -209,7 +209,7 @@ def _resolve_operator_syntax(operator, mode=None):
 
 
 
-def get_def_agg_from_api(event, context):
+def get_signals_from_api(event, context):
     print(event)
     print(context)
 
@@ -224,11 +224,40 @@ def get_def_agg_from_api(event, context):
         connect_timeout=11000,
     )
 
-
+    # tasq-data-service-dev-CleanDataAppSyncSourcev2
     session = boto3.Session()
     client = session.client("lambda", config=config)
     response = client.invoke(
-        FunctionName='tasq-prioritization-{env}-DefermentAggSyncSource'.format(env=os.environ["STAGE"]),
+        FunctionName='tasq-data-service-{env}-CleanDataAppSyncSourcev2'.format(env=os.environ["STAGE"]),
+        Payload=json.dumps(event_body),
+    )
+
+    data = json.loads(response['Payload'].read())
+    
+    return data
+
+
+
+def get_production_data_from_api(event, context):
+    print(event)
+    print(context)
+
+    kce = Key("AccessToken").eq(event["headers"]['Authorization'])
+    records = _query_dynamodb(api_gateway_table_string, kce=kce, index_name="AccessToken-index", mode="query")
+
+    event_body = event["body"]
+    event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
+    
+    config = botocore.config.Config(
+        read_timeout=11000,
+        connect_timeout=11000,
+    )
+
+    # tasq-data-service-dev-CleanDataAppSyncSourcev2
+    session = boto3.Session()
+    client = session.client("lambda", config=config)
+    response = client.invoke(
+        FunctionName='tasq-data-service-{env}-CleanDataAppSyncSource5v2'.format(env=os.environ["STAGE"]),
         Payload=json.dumps(event_body),
     )
 
