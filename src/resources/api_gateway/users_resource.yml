@@ -81,7 +81,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:MetadataEnabledWellsAppSyncSource1"
+      FunctionName: !GetAtt GetEnabledWellsDataSyncSourceLambdaFunction.Arn
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -117,7 +117,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:MetadataEnabledWellsAppSyncSource1"
+            - !GetAtt GetEnabledWellsDataSyncSourceLambdaFunction.Arn
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -142,7 +142,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:MetadataNodeMetaAppSyncSource1"
+      FunctionName: !GetAtt GetMetaDataSyncSourceLambdaFunction.Arn
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -178,7 +178,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:MetadataNodeMetaAppSyncSource1"
+            - !GetAtt GetMetaDataSyncSourceLambdaFunction.Arn
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200
@@ -209,7 +209,7 @@ Resources:
     Type: AWS::Lambda::Permission
     Properties:
       Action: lambda:invokeFunction
-      FunctionName: !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSource3v2"
+      FunctionName: !GetAtt GetDescriptionDataSyncSourceLambdaFunction.Arn
       Principal: apigateway.amazonaws.com
       SourceArn:
         Fn::Join:
@@ -245,7 +245,7 @@ Resources:
           - - 'arn:aws:apigateway:'
             - Ref: AWS::Region
             - ":lambda:path/2015-03-31/functions/"
-            - !ImportValue "${{self:provider.environment.TasqDataServiceStackName}}:CleanDataAppSyncSource3v2"
+            - !GetAtt GetDescriptionDataSyncSourceLambdaFunction.Arn
             - "/invocations"
         IntegrationResponses:
         - StatusCode: 200

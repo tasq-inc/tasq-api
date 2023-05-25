@@ -265,3 +265,90 @@ def get_production_data_from_api(event, context):
     
     return data
 
+
+
+
+def get_meta_data_from_api(event, context):
+    print(event)
+    print(context)
+
+    kce = Key("AccessToken").eq(event["headers"]['Authorization'])
+    records = _query_dynamodb(api_gateway_table_string, kce=kce, index_name="AccessToken-index", mode="query")
+
+    event_body = event["body"]
+    event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
+    
+    config = botocore.config.Config(
+        read_timeout=11000,
+        connect_timeout=11000,
+    )
+
+    # tasq-data-service-dev-CleanDataAppSyncSourcev2
+    session = boto3.Session()
+    client = session.client("lambda", config=config)
+    response = client.invoke(
+        FunctionName='tasq-data-service-{env}-MetadataNodeMetaAppSyncSource1'.format(env=os.environ["STAGE"]),
+        Payload=json.dumps(event_body),
+    )
+
+    data = json.loads(response['Payload'].read())
+    
+    return data
+
+
+
+def get_enabled_wells_from_api(event, context):
+    print(event)
+    print(context)
+
+    kce = Key("AccessToken").eq(event["headers"]['Authorization'])
+    records = _query_dynamodb(api_gateway_table_string, kce=kce, index_name="AccessToken-index", mode="query")
+
+    event_body = event["body"]
+    event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
+    
+    config = botocore.config.Config(
+        read_timeout=11000,
+        connect_timeout=11000,
+    )
+
+    # tasq-data-service-dev-CleanDataAppSyncSourcev2
+    session = boto3.Session()
+    client = session.client("lambda", config=config)
+    response = client.invoke(
+        FunctionName='tasq-data-service-{env}-MetadataEnabledWellsAppSyncSource1'.format(env=os.environ["STAGE"]),
+        Payload=json.dumps(event_body),
+    )
+
+    data = json.loads(response['Payload'].read())
+    
+    return data
+
+
+
+def get_description_from_api(event, context):
+    print(event)
+    print(context)
+
+    kce = Key("AccessToken").eq(event["headers"]['Authorization'])
+    records = _query_dynamodb(api_gateway_table_string, kce=kce, index_name="AccessToken-index", mode="query")
+
+    event_body = event["body"]
+    event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
+    
+    config = botocore.config.Config(
+        read_timeout=11000,
+        connect_timeout=11000,
+    )
+
+    # tasq-data-service-dev-CleanDataAppSyncSourcev2
+    session = boto3.Session()
+    client = session.client("lambda", config=config)
+    response = client.invoke(
+        FunctionName='tasq-data-service-{env}-CleanDataAppSyncSource3v2'.format(env=os.environ["STAGE"]),
+        Payload=json.dumps(event_body),
+    )
+
+    data = json.loads(response['Payload'].read())
+    
+    return data
