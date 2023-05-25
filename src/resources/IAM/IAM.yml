@@ -54,6 +54,7 @@ Resources:
                 - arn:aws:iam::711589413744:policy/FullCognitoIdentityAccess
                 - arn:aws:iam::aws:policy/AmazonCognitoPowerUser
                 - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+                - arn:aws:iam::aws:policy/AWSLambda_FullAccess
             Policies:
                 -   PolicyName: "Lambda-AppSyncSourceSecrets-Policy"
                     PolicyDocument:
