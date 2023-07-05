@@ -7,9 +7,7 @@ sys.path.insert(1, '../tasq_package')
 
 # To run, simply type py.test in the same directory as this file
 def test_simple():
-    # added a comment
-    a = 1
-    assert a == 1
+    pass
 
 
 # def test_get_utc_timestamp():
