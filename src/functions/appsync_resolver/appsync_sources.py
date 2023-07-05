@@ -12,9 +12,7 @@ api_gateway_table_string = os.environ["API_GATEWAY_TOKENS_TABLE"]
 
 
 def generatePolicy(principalId, effect, methodArn):
-    authResponse = {}
-    authResponse['principalId'] = principalId
-
+    authResponse = {'principalId': principalId}
     if effect and methodArn:
         policyDocument = {
             'Version': '2012-10-17',
@@ -131,7 +129,7 @@ def _query_dynamodb(table: str, kce=None, index_name=None, mode="query"):
     if mode == "query" and kce and index_name:
         query = {}
         while not query or "LastEvaluatedKey" in query:
-            if query and "LastEvaluatedKey" in query:
+            if query:
                 query = table.query(
                     IndexName=index_name,
                     ExclusiveStartKey=query["LastEvaluatedKey"],
@@ -143,7 +141,7 @@ def _query_dynamodb(table: str, kce=None, index_name=None, mode="query"):
     elif mode == "query" and kce:
         query = {}
         while not query or "LastEvaluatedKey" in query:
-            if query and "LastEvaluatedKey" in query:
+            if query:
                 query = table.query(
                     ExclusiveStartKey=query["LastEvaluatedKey"],
                     KeyConditionExpression=kce,
@@ -151,10 +149,10 @@ def _query_dynamodb(table: str, kce=None, index_name=None, mode="query"):
             else:
                 query = table.query(KeyConditionExpression=kce)
             results.extend(query["Items"])
-    elif mode == "scan" and kce == None:
+    elif mode == "scan" and kce is None:
         scan = {}
         while not scan or "LastEvaluatedKey" in scan:
-            if scan and "LastEvaluatedKey" in scan:
+            if scan:
                 scan = table.scan(
                     ExclusiveStartKey=scan["LastEvaluatedKey"],
                 )
@@ -164,7 +162,7 @@ def _query_dynamodb(table: str, kce=None, index_name=None, mode="query"):
     elif mode == "scan":
         scan = {}
         while not scan or "LastEvaluatedKey" in scan:
-            if scan and "LastEvaluatedKey" in scan:
+            if scan:
                 scan = table.scan(
                     ExclusiveStartKey=scan["LastEvaluatedKey"],
                     FilterExpression=kce
@@ -204,8 +202,11 @@ def _resolve_operator_syntax(operator, mode=None):
     if len(resolved_operator) > 1 or not resolved_operator:
         raise ValueError("Could not resolve Operator")
     else:
-        resolved_operator_result = resolved_operator[0].replace(" ", "-") if mode == "github" else resolved_operator[0]
-        return resolved_operator_result
+        return (
+            resolved_operator[0].replace(" ", "-")
+            if mode == "github"
+            else resolved_operator[0]
+        )
 
 
 
@@ -218,7 +219,7 @@ def get_signals_from_api(event, context):
 
     event_body = event["body"]
     event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
-    
+
     config = botocore.config.Config(
         read_timeout=11000,
         connect_timeout=11000,
@@ -232,9 +233,7 @@ def get_signals_from_api(event, context):
         Payload=json.dumps(event_body),
     )
 
-    data = json.loads(response['Payload'].read())
-    
-    return data
+    return json.loads(response['Payload'].read())
 
 
 
@@ -247,7 +246,7 @@ def get_production_data_from_api(event, context):
 
     event_body = event["body"]
     event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
-    
+
     config = botocore.config.Config(
         read_timeout=11000,
         connect_timeout=11000,
@@ -261,9 +260,7 @@ def get_production_data_from_api(event, context):
         Payload=json.dumps(event_body),
     )
 
-    data = json.loads(response['Payload'].read())
-    
-    return data
+    return json.loads(response['Payload'].read())
 
 
 
@@ -277,7 +274,7 @@ def get_meta_data_from_api(event, context):
 
     event_body = event["body"]
     event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
-    
+
     config = botocore.config.Config(
         read_timeout=11000,
         connect_timeout=11000,
@@ -291,9 +288,7 @@ def get_meta_data_from_api(event, context):
         Payload=json.dumps(event_body),
     )
 
-    data = json.loads(response['Payload'].read())
-    
-    return data
+    return json.loads(response['Payload'].read())
 
 
 
@@ -306,7 +301,7 @@ def get_enabled_wells_from_api(event, context):
 
     event_body = event["body"]
     event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
-    
+
     config = botocore.config.Config(
         read_timeout=11000,
         connect_timeout=11000,
@@ -320,9 +315,7 @@ def get_enabled_wells_from_api(event, context):
         Payload=json.dumps(event_body),
     )
 
-    data = json.loads(response['Payload'].read())
-    
-    return data
+    return json.loads(response['Payload'].read())
 
 
 
@@ -335,7 +328,7 @@ def get_description_from_api(event, context):
 
     event_body = event["body"]
     event_body["operator"] = _resolve_operator_syntax(records[0]["Operator"])
-    
+
     config = botocore.config.Config(
         read_timeout=11000,
         connect_timeout=11000,
@@ -349,6 +342,4 @@ def get_description_from_api(event, context):
         Payload=json.dumps(event_body),
     )
 
-    data = json.loads(response['Payload'].read())
-    
-    return data
+    return json.loads(response['Payload'].read())
